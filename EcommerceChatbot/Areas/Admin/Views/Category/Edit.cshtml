@@ -1,0 +1,31 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Category";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model EcommerceChatbot.Models.ProductCategory
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Edit Category</h2>
+
+    <form asp-action="Edit" method="post" class="p-4 border rounded bg-light shadow-sm">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="CategoryId" /> <!-- Hidden field for the ID -->
+
+        <div class="mb-3">
+            <label asp-for="CategoryName" class="form-label fw-bold">Category Name</label>
+            <input asp-for="CategoryName" class="form-control" placeholder="Enter category name" />
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save2"></i> Save Changes
+            </button>
+            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>

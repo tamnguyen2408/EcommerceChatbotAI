@@ -1,0 +1,54 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutAuth.cshtml";
+}
+@model ECommerceChatbot.Models.Login
+
+<div class="wrapper">
+    <div class="title">Login</div>
+    <form asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="field">
+            <input type="text" asp-for="UserName" required>
+            <label>Username</label>
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+
+        <div class="field">
+            <input type="password" asp-for="Password" required>
+            <label>Password</label>
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Role)
+            <select asp-for="Role" style="height: 50px;">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+            @Html.ValidationMessageFor(m => m.Role)
+        </div>
+
+        <div class="content">
+            <div class="checkbox">
+                <input type="checkbox" id="remember-me">
+                <label for="remember-me">Remember me</label>
+            </div>
+            <div class="pass-link">
+                <a href="#">Forgot password?</a>
+            </div>
+        </div>
+
+        <div class="field">
+            <input type="submit" value="Login">
+        </div>
+
+        <div class="signup-link">
+            Don't have an account?
+            <a href="~/Auth/Register">Signup now</a>
+        </div>
+    </form>
+</div>
+
