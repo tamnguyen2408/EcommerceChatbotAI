@@ -64,138 +64,84 @@
             </ul>
         </div>
     </div>
-    @RenderSection("header")
+    @RenderSection("header", required: true)
 
     <section id="billboard" class="overflow-hidden">
-        @RenderBody()
+        <button class="button-prev">
+            <i class="icon icon-chevron-left"></i>
+        </button>
+        <button class="button-next">
+            <i class="icon icon-chevron-right"></i>
+        </button>
+        <div class="swiper main-swiper">
+            <div class="swiper-wrapper">
+                <!-- Handbags Slide -->
+                <div class="swiper-slide"
+                     style="background-image: url('images/banner0.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                    <div class="banner-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2 class="banner-title">Elegant Handbag</h2>
+                                    <p>Discover the finest handbags that blend fashion with functionality. Perfect for any occasion.</p>
+                                    <div class="btn-wrap">
+                                        <a href="shop.html" class="btn btn-light btn-medium d-flex align-items-center" tabindex="0">
+                                            Shop Handbags <i class="icon icon-arrow-io"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clothes Slide -->
+                <div class="swiper-slide"
+                     style="background-image: url('images/banner4.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                    <div class="banner-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2 class="banner-title">Stylish Clothes</h2>
+                                    <p>Upgrade your wardrobe with trendy outfits. From casual wear to formal styles, we’ve got you covered.</p>
+                                    <div class="btn-wrap">
+                                        <a href="shop.html" class="btn btn-light btn-light-arrow btn-medium d-flex align-items-center" tabindex="0">
+                                            Shop Clothes <i class="icon icon-arrow-io"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shoes Slide -->
+                <div class="swiper-slide"
+                     style="background-image: url('images/banner5.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                    <div class="banner-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h2 class="banner-title">Exclusive Shoe</h2>
+                                    <p>Step into comfort and style with our premium shoe selection, perfect for every step of your day.</p>
+                                    <div class="btn-wrap">
+                                        <a href="shop.html" class="btn btn-light btn-light-arrow btn-medium d-flex align-items-center" tabindex="0">
+                                            Shop Shoes <i class="icon icon-arrow-io"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </section>
 
     <section id="featured-products" class="product-store padding-large">
-        <div class="container">
-            <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
-                <h2 class="section-title">Featured Products</h2>
-                <div class="btn-wrap">
-                    <a href="shop.html" class="d-flex align-items-center">View all products <i class="icon icon icon-arrow-io"></i></a>
-                </div>
-            </div>
-            <div class="swiper product-swiper overflow-hidden">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="product-item">
-                            <div class="image-holder">
-                                <img src="images/product-item1.jpg" alt="Books" class="product-image">
-                            </div>
-                            <div class="cart-concern">
-                                <div class="cart-button d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn-wrap cart-link d-flex align-items-center">
-                                        add to cart <i class="icon icon-arrow-io"></i>
-                                    </button>
-                                    <button type="button" class="view-btn tooltip
-                        d-flex">
-                                        <i class="icon icon-screen-full"></i>
-                                        <span class="tooltip-text">Quick view</span>
-                                    </button>
-                                    <button type="button" class="wishlist-btn">
-                                        <i class="icon icon-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <h3 class="product-title">
-                                    <a href="single-product.html">Full sleeve cover shirt</a>
-                                </h3>
-                                <span class="item-price text-primary">$40.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-item">
-                            <div class="image-holder">
-                                <img src="images/product-item2.jpg" alt="Books" class="product-image">
-                            </div>
-                            <div class="cart-concern">
-                                <div class="cart-button d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn-wrap cart-link d-flex align-items-center">
-                                        add to cart <i class="icon icon-arrow-io"></i>
-                                    </button>
-                                    <button type="button" class="view-btn tooltip
-                        d-flex">
-                                        <i class="icon icon-screen-full"></i>
-                                        <span class="tooltip-text">Quick view</span>
-                                    </button>
-                                    <button type="button" class="wishlist-btn">
-                                        <i class="icon icon-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <h3 class="product-title">
-                                    <a href="single-product.html">Volunteer Half blue</a>
-                                </h3>
-                                <span class="item-price text-primary">$38.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-item">
-                            <div class="image-holder">
-                                <img src="images/product-item3.jpg" alt="Books" class="product-image">
-                            </div>
-                            <div class="cart-concern">
-                                <div class="cart-button d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn-wrap cart-link d-flex align-items-center">
-                                        add to cart <i class="icon icon-arrow-io"></i>
-                                    </button>
-                                    <button type="button" class="view-btn tooltip
-                        d-flex">
-                                        <i class="icon icon-screen-full"></i>
-                                        <span class="tooltip-text">Quick view</span>
-                                    </button>
-                                    <button type="button" class="wishlist-btn">
-                                        <i class="icon icon-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <h3 class="product-title">
-                                    <a href="single-product.html">Double yellow shirt</a>
-                                </h3>
-                                <span class="item-price text-primary">$44.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="product-item">
-                            <div class="image-holder">
-                                <img src="images/product-item4.jpg" alt="Books" class="product-image">
-                            </div>
-                            <div class="cart-concern">
-                                <div class="cart-button d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn-wrap cart-link d-flex align-items-center">
-                                        add to cart <i class="icon icon-arrow-io"></i>
-                                    </button>
-                                    <button type="button" class="view-btn tooltip
-                        d-flex">
-                                        <i class="icon icon-screen-full"></i>
-                                        <span class="tooltip-text">Quick view</span>
-                                    </button>
-                                    <button type="button" class="wishlist-btn">
-                                        <i class="icon icon-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <h3 class="product-title">
-                                    <a href="single-product.html">Long belly grey pant</a>
-                                </h3>
-                                <span class="item-price text-primary">$33.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-pagination"></div>
-        </div>
+        @RenderBody()
     </section>
 
     <section id="latest-collection">

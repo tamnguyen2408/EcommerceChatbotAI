@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "BPf3bdBV5TgtSkuDSCYE0E00q3NiebzHf336AdRm0/w=",
+  "Hash": "91zz6HEPHI6p7SAsBE3WRTPXKb7DRE28eIaybzsaUyc=",
   "Source": "EcommerceChatbot",
   "BasePath": "_content/EcommerceChatbot",
   "Mode": "Default",
@@ -302,12 +302,12 @@
       "OriginalItemSpec": "wwwroot\\images\\app-store.jpg"
     },
     {
-      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner1.jpg",
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner0.jpg",
       "SourceId": "EcommerceChatbot",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
       "BasePath": "_content/EcommerceChatbot",
-      "RelativePath": "images/banner1.jpg",
+      "RelativePath": "images/banner0.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -318,15 +318,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\banner1.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\banner0.jpg"
     },
     {
-      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner2.jpg",
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner4.jpg",
       "SourceId": "EcommerceChatbot",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
       "BasePath": "_content/EcommerceChatbot",
-      "RelativePath": "images/banner2.jpg",
+      "RelativePath": "images/banner4.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -337,7 +337,26 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\banner2.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\banner4.jpg"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner5.jpg",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "images/banner5.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\banner5.jpg"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner-image3.jpg",
@@ -834,12 +853,12 @@
       "OriginalItemSpec": "wwwroot\\images\\leaf.png"
     },
     {
-      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo.jpg",
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo1.png",
       "SourceId": "EcommerceChatbot",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
       "BasePath": "_content/EcommerceChatbot",
-      "RelativePath": "images/logo.jpg",
+      "RelativePath": "images/logo1.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -850,15 +869,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\logo.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\logo1.png"
     },
     {
-      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo.png",
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo2.png",
       "SourceId": "EcommerceChatbot",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
       "BasePath": "_content/EcommerceChatbot",
-      "RelativePath": "images/logo.png",
+      "RelativePath": "images/logo2.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -869,7 +888,26 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\logo.png"
+      "OriginalItemSpec": "wwwroot\\images\\logo2.png"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo3.png",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "images/logo3.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\logo3.png"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\main-banner.jpg",

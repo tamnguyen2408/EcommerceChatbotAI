@@ -90,6 +90,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Shop/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Shop/Shoes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxTaG9lcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/User/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

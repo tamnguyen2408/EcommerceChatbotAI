@@ -7485,12 +7485,16 @@
       "PackagePath": "staticwebassets\\images\\banner-image4.jpg"
     },
     {
-      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner1.jpg",
-      "PackagePath": "staticwebassets\\images\\banner1.jpg"
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner0.jpg",
+      "PackagePath": "staticwebassets\\images\\banner0.jpg"
     },
     {
-      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner2.jpg",
-      "PackagePath": "staticwebassets\\images\\banner2.jpg"
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner4.jpg",
+      "PackagePath": "staticwebassets\\images\\banner4.jpg"
+    },
+    {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\banner5.jpg",
+      "PackagePath": "staticwebassets\\images\\banner5.jpg"
     },
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\brand1.png",
@@ -7589,12 +7593,16 @@
       "PackagePath": "staticwebassets\\images\\leaf.png"
     },
     {
-      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo.jpg",
-      "PackagePath": "staticwebassets\\images\\logo.jpg"
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo1.png",
+      "PackagePath": "staticwebassets\\images\\logo1.png"
     },
     {
-      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo.png",
-      "PackagePath": "staticwebassets\\images\\logo.png"
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo2.png",
+      "PackagePath": "staticwebassets\\images\\logo2.png"
+    },
+    {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\logo3.png",
+      "PackagePath": "staticwebassets\\images\\logo3.png"
     },
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\main-banner.jpg",

@@ -5,7 +5,6 @@ namespace ECommerceChatbot.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin")]
-    [Route("admin/HomeAdmin")]
 
     public class HomeController : Controller
     {
@@ -15,11 +14,6 @@ namespace ECommerceChatbot.Areas.Admin.Controllers
         {
             return View();
         }
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync("AuthCookie"); // Adjust the authentication scheme if necessary
-            return RedirectToAction("Index", "Login", new { area = "Admin" }); // Redirect to the admin login page
-        }
+        
     }
 }

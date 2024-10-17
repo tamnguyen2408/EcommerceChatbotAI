@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EcommerceChatbot.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceChatbot.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        private readonly ECommerceAiDbContext _context;
+
+        public UserController(ECommerceAiDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        // GET: User/Index
+        public async Task<IActionResult> Index()
+        {
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            return View(products);
         }
     }
 }
