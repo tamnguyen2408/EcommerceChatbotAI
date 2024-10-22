@@ -1,0 +1,170 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+@model List<EcommerceChatbot.Models.Product>
+@section header {
+    <header id="header">
+        <div id="header-wrap">
+            <nav class="secondary-nav border-bottom">
+                <div class="container">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-4">
+                            <p>Let's talk! <strong>+57 444 11 00 35</strong></p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search anything...">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="d-flex justify-content-end list-unstyled mb-0 gap-4">
+                                <div class="dropdown">
+                                    <a href="#" class="text-muted" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="icon icon-user fs-5"></i> <!-- Biểu tượng người dùng -->
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="dropdown-item-text text-dark fw-bold bg-light p-2 rounded shadow-sm">
+                                                Hello, <strong class="text-primary">@User.Identity.Name</strong>
+                                            </li>
+
+
+                                            <li>
+                                                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="dropdown-item">
+                                                        Logout
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown-item-text extra-bold text-primary text-uppercase">Hello, Guest</li>
+                                            <li>
+                                                <form asp-controller="Auth" asp-action="Login" method="get" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="dropdown-item">
+                                                        Login
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <li>
+                                    <a href="cart.html" class="text-muted">
+                                        <i class="icon icon-shopping-cart fs-5"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="wishlist.html" class="text-muted">
+                                        <i class="icon icon-heart fs-5"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <nav class="primary-nav padding-small">
+                <div class="container">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-lg-2 col-md-2">
+                            <div class="main-logo">
+                                <a asp-controller="User" asp-action="Index">
+                                    <img src="images/logo3.png" alt="logo">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-10 col-md-10">
+                            <div class="navbar">
+                                <div id="main-nav" class="stellarnav d-flex justify-content-end right">
+                                    <ul class="menu-list">
+                                        <li class="menu-item has-sub">
+                                            <a asp-controller="User" asp-action="Index" class="item-anchor" data-effect="Home">Home</a>
+                                        </li>
+                                        <li><a href="about.html" class="item-anchor" data-effect="About">About</a></li>
+                                        <li class="menu-item has-sub">
+                                            <a href="#" class="item-anchor d-flex align-items-center" data-effect="Shop">
+                                                Shop <i class="icon icon-chevron-down"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="Shoe" class="item-anchor">Shoes Shop</a>
+                                                </li>
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="Clothes" class="item-anchor">Clothes Shop</a>
+                                                </li>
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="Handbag" class="item-anchor">Handbags Shop</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html" class="item-anchor" data-effect="Contact">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+}
+
+<div class="container">
+    <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="btn-wrap">
+            <a href="shop.html" class="d-flex align-items-center">View all products <i class="icon icon-arrow-io"></i></a>
+        </div>
+    </div>
+
+    <div class="swiper product-swiper overflow-hidden">
+        <div class="swiper-wrapper">
+            @foreach (var product in Model)
+            {
+                <div class="swiper-slide">
+                    <div class="product-item">
+                        <div class="image-holder">
+                            <img src="@product.ImageUrl" alt="@product.ProductName" class="product-image">
+                        </div>
+                        <div class="cart-concern">
+                            <div class="cart-button d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn-wrap cart-link d-flex align-items-center">
+                                    Add to cart <i class="icon icon-arrow-io"></i>
+                                </button>
+                                <button type="button" class="view-btn tooltip d-flex">
+                                    <i class="icon icon-screen-full"></i>
+                                    <span class="tooltip-text">Quick view</span>
+                                </button>
+                                <button type="button" class="wishlist-btn">
+                                    <i class="icon icon-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Phần chi tiết sản phẩm được căn giữa trên 2 dòng riêng biệt -->
+                        <div class="product-detail text-center">
+                            <h3 class="product-title">
+                                <a href="single-product.html">@product.ProductName</a>
+                            </h3>
+                            <span class="item-price text-primary d-block">@product.Price.ToString("C")</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+</div>
+
+

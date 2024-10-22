@@ -1,5 +1,6 @@
-using EcommerceChatbot.Models;
+﻿using EcommerceChatbot.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace EcommerceChatbot.Controllers
@@ -7,15 +8,18 @@ namespace EcommerceChatbot.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ECommerceAiDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ECommerceAiDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            return View(products);
         }
 
         public IActionResult Privacy()

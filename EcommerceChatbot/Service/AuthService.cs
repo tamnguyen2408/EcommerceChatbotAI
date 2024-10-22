@@ -42,7 +42,7 @@ namespace EcommerceChatbot.Service
             try
             {
                 // Add user to context and save changes
-                await _context.Users.AddAsync(newUser); // Thay đổi từ Add sang AddAsync
+                await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
             }
             catch
@@ -79,6 +79,14 @@ namespace EcommerceChatbot.Service
             await _httpContextAccessor.HttpContext.SignInAsync("AuthCookie", principal);
 
             return "Login successful!";
+        }
+
+        // SignOut method
+        public async Task<string> SignOutAsync()
+        {
+            // Sign out the user
+            await _httpContextAccessor.HttpContext.SignOutAsync("AuthCookie");
+            return "Logout successful!";
         }
     }
 }

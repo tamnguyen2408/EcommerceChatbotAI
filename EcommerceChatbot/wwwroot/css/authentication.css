@@ -1,1 +1,12 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

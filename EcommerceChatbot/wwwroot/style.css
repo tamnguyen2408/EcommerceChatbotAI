@@ -1581,241 +1581,106 @@ blockquote cite {
 .secondary-nav,
 .secondary-nav p {
     line-height: 2.5em;
- }
-.secondary-nav li {
-    padding-right: 10px;
 }
-.secondary-nav li:last-child {
-    padding-right: 0;
+
+    .secondary-nav li {
+        padding-right: 10px;
+    }
+
+        .secondary-nav li:last-child {
+            padding-right: 0;
+        }
+
+    .secondary-nav a {
+        color: var(--accent-color);
+    }
+
+        .secondary-nav a:hover {
+            color: var(--dark-color);
+        }
+
+    .secondary-nav ul,
+    .secondary-nav li,
+    .secondary-nav p {
+        margin-bottom: 0;
+    }
+
+/* Adjust search bar for better visual integration */
+.search-bar form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.secondary-nav a {
-    color: var(--accent-color);
+
+.search-bar input {
+    width: 80%;
+    max-width: 300px;
+    padding: 10px; /* Slightly increased padding for better touch area */
+    border: 1px solid var(--accent-color);
+    border-radius: 4px 0 0 4px;
+    transition: border-color 0.3s; /* Smooth transition on focus */
 }
-.secondary-nav a:hover {
-    color: var(--dark-color);
+
+    .search-bar input:focus {
+        border-color: var(--dark-color); /* Change border color on focus */
+        outline: none; /* Remove default outline */
+    }
+
+.search-bar button {
+    padding: 10px 15px; /* Adjusted padding for button */
+    border: none;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition on hover */
 }
-.secondary-nav ul,
-.secondary-nav li,
-.secondary-nav p {
-    margin-bottom: 0;
-}
+
+    .search-bar button:hover {
+        background-color: var(--dark-color);
+    }
+
+/* Hide contact info and search bar on smaller screens */
 @media only screen and (max-width: 768px) {
-    .header-contact, .shipping-purchase{
-      display: none;
+    .header-contact,
+    .search-bar {
+        display: none;
     }
 }
 
-/* submenu */
-.stellarnav ul ul {
-  background: var(--dark-color);
+
+/* Improve product item visuals */
+.product-item {
+    border: 1px solid #eaeaea; /* Light border for product items */
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.3s; /* Animation for hover effect */
 }
-.stellarnav ul ul a {
-  color: var(--light-color);
+
+    .product-item:hover {
+        transform: scale(1.02); /* Slight scale on hover */
+    }
+
+/* Ensure swiper navigation is visible on hover */
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--accent-color); /* Button color */
+    opacity: 0.8; /* Slightly transparent */
+    transition: opacity 0.3s; /* Smooth transition */
 }
-.stellarnav.desktop li.has-sub a{
-  padding-right: 30px;
-}
-.menu-list a.item-anchor{
-  text-transform: capitalize;
-}
-.menu-list a.item-anchor.active{
-  color: var(--primary-color);
-}
-.menu-list a.item-anchor:hover{
-  color: var(--primary-color);
-}
-.menu-item.has-sub .submenu a.item-anchor{
-  padding-right: 15px;
-}
-.menu-list .submenu a.item-anchor:hover{
-  color: var(--light-color);
-  background-color: #343434;
-}
-.menu-list .submenu a.item-anchor.active{
-  color: var(--light-color);
-  background-color: #343434;
-}
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        opacity: 1; /* Full opacity on hover */
+    }
+
 
 /* Search Bar
 ------------------------------------------------------------- */
 
 /** Search Form
 --------------------------------------------------------------*/
-.search-form input[type="search"].search-field {
-  width: 100%;
-  border: 2px solid var(--grey-color);
-  transition: ease-in;
-  transition-duration: 0.2s;
-  border-radius: 50px;
-  padding: 10px 40px;
-}
-.search-form input[type="search"].search-field:focus {
-  border: 2px solid var(--dark-color);
-}
-.search-form button {
-  position: absolute;
-  top: 6px;
-  right: 9px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
 /** Search Popup
 --------------------------------------------------------------*/
-.search-popup {
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 9999;
-  -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-  -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
-  transition: opacity 0.3s 0s, visibility 0s 0.3s;
-}
-.search-popup.is-visible {
-  opacity: 1;
-  visibility: visible;
-  cursor: -webkit-image-set(url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23FFF' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 1x, url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E") 2x), pointer;
-  cursor: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' d='M20 1l-1-1-9 9-9-9-1 1 9 9-9 9 1 1 9-9 9 9 1-1-9-9'/%3E%3C/svg%3E"), pointer;
-  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
-  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
-  transition: opacity 0.3s 0s, visibility 0s 0s;
-}
-.search-popup-container {
-  background-color: transparent;
-  position: relative;
-  top: 50%;
-  margin: 0 auto;
-  padding: 0;
-  width: 90%;
-  max-width: 800px;
-  text-align: center;
-  box-shadow: none;
-  cursor: default;
-  -webkit-transform: translateY(-40px);
-  transform: translateY(-40px);
-  -webkit-backface-visibility: hidden;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-}
-.is-visible .search-popup-container {
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-.search-popup-form {
-  position: relative;
-  margin: 0 0 3em 0;
-}
-.search-popup-form .form-control {
-  padding: 0 0 .375em 0;
-  font-size: 2em;
-}
-.search-popup-form #search-popup-submit {
-  display: none;
-}
-.search-popup .search-popup-close {
-  display: block;
-  position: absolute;
-  top: 2em;
-  right: 2em;
-  margin: -0.5em;
-  padding: 0.5em;
-  line-height: 0;
-}
-.search-popup .search-popup-close:hover {
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-.search-popup .search-popup-close i {
-  display: block;
-  position: relative;
-  width: 1em;
-  height: 1em;
-  fill: rgba(0,0,0,0.5);
-}
-.search-popup .search-popup-close:hover i {
-  fill: rgba(0,0,0,1);
-}
-.search-popup .cat-list-title {
-  margin-top: 40px;
-  margin-bottom: 10px;
-  font-size: 0.6em;
-  font-weight: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.search-popup .cat-list {
-  margin: 0;
-  list-style-type: none;
-}
-.search-popup .cat-list-item {
-  display: inline-block;
-  margin-bottom: 0;
-  letter-spacing: 0.015em;
-  font-size: 2em;
-}
-.search-popup .cat-list-item a:hover::after {
-  height: 1px;
-  opacity: 1;
-  -webkit-transform: translateY(2px);
-  transform: translateY(2px);
-}
-.search-popup .cat-list-item::after {
-  content: "/";
-  padding: 0 5px;
-  line-height: 1;
-  vertical-align: text-top;
-}
-.search-popup .cat-list-item:last-child::after {
-  display: none;
-}
-
-@media only screen and (max-width: 991px) {
-  .search-popup .cat-list-item,
-  .search-popup-form .form-control {
-    font-size: 1.425em;
-  }
-}
-@media only screen and (max-width: 767px) {
-.search-popup .search-popup-close {
-    top: 1em;
-    right: 1em;
-  }
-}
-@media only screen and (max-width: 575px) {
-  .search-popup .cat-list-item,
-  .search-popup-form .form-control {
-    font-size: 1.125em;
-  }
-  .search-popup .search-popup-close {
-    top: 1em;
-    right: 1em;
-  }
-}
-
-.search-popup input[type="search"] {
-  font-size: 22px;
-  height: 60px;
-  padding: 26px;
-}
-.search-popup .search-form button {
-  position: absolute;
-  top: 0;
-  right: 8px;
-  margin: 0;
-  padding: 15px;
-}
-.search-popup .search-form button i {
-  font-size: 29px;
-}
 
 /* - Main Navigation
 ------------------------------------------------------------- */

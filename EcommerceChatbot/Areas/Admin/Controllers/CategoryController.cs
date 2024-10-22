@@ -92,7 +92,22 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index)); // Redirect to the index action after saving
         }
+        // POST: Admin/Category/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await _context.ProductCategories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
 
+            _context.ProductCategories.Remove(category);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Category deleted successfully!"; // Thông báo thành công
+            return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách danh mục
+        }
 
         // GET: Admin/Category/Index
         public async Task<IActionResult> Index()
