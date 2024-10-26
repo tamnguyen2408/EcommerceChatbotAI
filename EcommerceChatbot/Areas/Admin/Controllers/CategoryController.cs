@@ -92,6 +92,30 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index)); // Redirect to the index action after saving
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await _context.ProductCategories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            // Kiểm tra xem còn sản phẩm nào thuộc danh mục này không
+            var hasProducts = await _context.Products.AnyAsync(p => p.CategoryId == id);
+            if (hasProducts)
+            {
+                // Nếu còn sản phẩm, trả về thông báo không thể xóa
+                TempData["Message"] = "Không thể xóa danh mục vì vẫn còn sản phẩm thuộc danh mục này.";
+                return RedirectToAction("Index");
+            }
+
+            // Xóa danh mục nếu không còn sản phẩm nào
+            _context.ProductCategories.Remove(category);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Xóa danh mục thành công.";
+            return RedirectToAction("Index");
+        }
 
 
         // GET: Admin/Category/Index

@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<EcommerceChatbot.Models.ProductCategory>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Message"]
+    </div>
+}
 @{
     ViewData["Title"] = "Categories";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";

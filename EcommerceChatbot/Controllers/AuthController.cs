@@ -78,7 +78,7 @@ namespace ECommerceChatbot.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("AuthCookie");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
 }

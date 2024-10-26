@@ -1,4 +1,4 @@
-using EcommerceChatbot.Service;
+﻿using EcommerceChatbot.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ECommerceChatbot.Models;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
 app.MapControllerRoute(
-    name: "admin",
+    name: "Admin",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
         name: "user",
