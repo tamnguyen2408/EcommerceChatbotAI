@@ -164,15 +164,28 @@
           text-decoration: underline;
         }
 
-                /* Error and validation messages */
-                .form span.field-validation-valid,
-                .form span.field-validation-error {
-                    color: red;
-                    font-size: 0.9rem;
-                    display: block;
-                    margin-top: -10px;
-                    margin-bottom: 10px;
-                }
+        /* Error and validation messages */
+        .form span.field-validation-valid {
+            color: green; /* Change color for valid messages */
+            font-size: 0.9rem;
+            display: block;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .form span.field-validation-error {
+            color: red; /* Color for error messages */
+            font-size: 0.9rem;
+            display: block;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        /* Add margin below fields for better spacing */
+        .wrapper form .field {
+            margin-bottom: 20px; /* Add space between fields */
+        }
+
     </style>
 </head>
 <body>

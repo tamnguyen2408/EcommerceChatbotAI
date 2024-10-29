@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "ContainingType": "EcommerceChatbot.Controllers.ChatbotController",
+    "Method": "Webhook",
+    "RelativePath": "api/Chatbot/Webhook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dialogflowRequest",
+        "Type": "EcommerceChatbot.Models.DTOs.DialogflowRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

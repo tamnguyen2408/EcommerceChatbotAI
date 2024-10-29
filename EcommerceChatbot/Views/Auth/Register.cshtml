@@ -13,31 +13,31 @@
 
         <div class="field">
             <input type="text" required asp-for="UserName" />
-            @Html.ValidationMessageFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "field-validation-error" })
             <label>Username</label>
         </div>
 
         <div class="field">
             <input type="email" required asp-for="Email" />
-            @Html.ValidationMessageFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "field-validation-error" })
             <label>Email</label>
         </div>
 
         <div class="field">
             <input type="password" required asp-for="Password" />
-            @Html.ValidationMessageFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "field-validation-error" })
             <label>Password</label>
         </div>
 
         <div class="field">
             <input type="password" required asp-for="ConfirmPassword" />
-            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "field-validation-error" })
             <label>Confirm Password</label>
         </div>
 
         <div class="field">
             <input type="text" required asp-for="Phone" />
-            @Html.ValidationMessageFor(m => m.Phone)
+            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "field-validation-error" })
             <label>Phone</label>
         </div>
 
@@ -50,4 +50,3 @@
         </div>
     </form>
 </div>
-

@@ -5,6 +5,8 @@ using EcommerceChatbot.Models;
 using Microsoft.EntityFrameworkCore;
 using EcommerceChatbot.Service;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace ECommerceChatbot.Controllers
 {
@@ -39,15 +41,19 @@ namespace ECommerceChatbot.Controllers
             }
             return View(model);
         }
-
-        // GET: auth/login
         [HttpGet("auth/login")]
         public IActionResult Login()
         {
-            return View(); // Trả về view đăng nhập
-        }
+            if (User.Identity.IsAuthenticated) // Kiểm tra xem người dùng đã đăng nhập chưa
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-        [HttpPost("/auth/login")]
+            return View(); // Trả về view đăng nhập nếu chưa đăng nhập
+        }
+    
+
+    [HttpPost("/auth/login")]
         public async Task<IActionResult> Login(Login model)
         {
             if (!ModelState.IsValid)
@@ -61,6 +67,22 @@ namespace ECommerceChatbot.Controllers
                 ModelState.AddModelError("", result);
                 return View(model);
             }
+
+            // Create claims for the user
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, model.UserName),
+                new Claim(ClaimTypes.Role, model.Role)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe, // Set persistent based on the checkbox
+                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null // Optional: Set expiration
+            };
+
+            await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(claimsIdentity), authProperties);
 
             // Redirect based on role
             if (model.Role == "admin")

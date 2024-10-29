@@ -27,19 +27,18 @@ namespace EcommerceChatbot.Controllers
         // GET: User/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var product = await _context.Products
+            if (id == 0) return RedirectToAction("Index");
+
+            var productById = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+            if (productById == null) return NotFound();
 
-            return View(product);
+            return View(productById);
         }
-       
-        
+
+
 
 
     }

@@ -13,5 +13,7 @@ namespace ECommerceChatbot.Models
 
         [Required(ErrorMessage = "Role is required")]
         public string Role { get; set; }
+        public bool RememberMe { get; set; } // Add this property
+
     }
 }

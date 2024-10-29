@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="~/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- script
@@ -24,6 +27,10 @@
     <script src="~/js/modernizr.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> <!-- Thêm Bootstrap JS -->
     <link href="~/css/authentication.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
 
 </head>
@@ -34,7 +41,200 @@
         </div>
     </div>
 
-    @RenderSection("header", required: true)
+    <header id="header">
+        <div id="header-wrap">
+            <nav class="secondary-nav border-bottom">
+                <div class="container">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-4">
+                            <p>Let's talk! <strong>+57 444 11 00 35</strong></p>
+                        </div>
+                        <div class="col-md-4">
+                            <form asp-controller="Search" asp-action="Index" method="get" class="input-group">
+                                <input type="text" name="searchTerm" class="form-control" placeholder="Search for Product...">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="col-md-4">
+                            <ul class="d-flex justify-content-end list-unstyled mb-0 gap-4">
+                                <!-- User Icon Dropdown -->
+                                <div class="dropdown">
+                                    <a href="#" class="text-muted" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="icon icon-user fs-5"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li class="dropdown-item-text text-dark fw-bold bg-light p-2 rounded shadow-sm">
+                                                Hello, <strong class="text-primary">@User.Identity.Name</strong>
+                                            </li>
+                                            <li>
+                                                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="dropdown-item">
+                                                        Logout
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown-item-text extra-bold text-primary text-uppercase">Hello, Guest</li>
+                                            <li>
+                                                <form asp-controller="Auth" asp-action="Login" method="get" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="dropdown-item">
+                                                        Login
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <!-- Cart Icon -->
+                                <li>
+                                    <a href="cart.html" class="text-muted">
+                                        <i class="icon icon-shopping-cart fs-5"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Wishlist Icon -->
+                                <li>
+                                    <a href="wishlist.html" class="text-muted">
+                                        <i class="icon icon-heart fs-5"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <nav class="primary-nav padding-small">
+                <div class="container">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-lg-2 col-md-2">
+                            <div class="main-logo">
+                                <a asp-controller="User" asp-action="Index">
+                                    <img src="~/images/logo3.png" alt="logo">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-10 col-md-10">
+                            <div class="navbar">
+                                <div id="main-nav" class="stellarnav d-flex justify-content-end right">
+                                    <ul class="menu-list">
+                                        <li class="menu-item has-sub">
+                                            <a asp-controller="User" asp-action="Index" class="item-anchor" data-effect="Home">Home</a>
+                                        </li>
+                                        <li><a href="about.html" class="item-anchor" data-effect="About">About</a></li>
+                                        <li class="menu-item has-sub">
+                                            <a href="#" class="item-anchor d-flex align-items-center" data-effect="Shop">
+                                                Shop <i class="icon icon-chevron-down"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="giày" class="item-anchor">Shoes Shop</a>
+                                                </li>
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" class="item-anchor">Clothes Shop</a>
+                                                </li>
+                                                <li>
+                                                    <a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" class="item-anchor">Handbags Shop</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="contact.html" class="item-anchor" data-effect="Contact">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+        <df-messenger intent="WELCOME"
+                      chat-title="Chat with Us"
+                      agent-id="05a0fb92-45d2-44fc-896f-f2e558e309c0"
+                      language-code="vi"></df-messenger>
+
+        <style>
+            df-messenger {
+                --df-messenger-bot-message: #e9f1f7; /* Bot message background */
+                --df-messenger-user-message: #d1e7dd; /* User message background */
+                --df-messenger-font-color: #333; /* Text color */
+                --df-messenger-button-color: #007bff; /* Button color */
+                --df-messenger-button-title-color: white; /* Button text color */
+                --df-messenger-title-color: #007bff; /* Chat title color */
+                --df-messenger-input-color: #ffffff; /* Input background color */
+                --df-messenger-input-font-color: #333; /* Input text color */
+                --df-messenger-input-border-color: #cccccc; /* Input border color */
+                --df-messenger-avatar-background: #007bff; /* Avatar background color */
+                --df-messenger-avatar-border-radius: 50%; /* Avatar border radius */
+            }
+
+                /* Avatar image for the support agent */
+                df-messenger .bot-message {
+                    background-image: url('~/images/products/avatar_chatbot.png'); /* Path to your avatar image */
+                    background-size: cover; /* Ensures the image covers the entire background */
+                    border-radius: 20px; /* Rounded corners for the message bubble */
+                    padding: 10px; /* Space inside the message bubble */
+                    color: #333; /* Text color for bot messages */
+                    font-weight: bold; /* Make text bold for better visibility */
+                }
+
+                /* Style for user's messages */
+                df-messenger .user-message {
+                    border-radius: 20px;
+                    background-color: #d1e7dd; /* User message color */
+                    padding: 10px; /* Padding for user messages */
+                }
+        </style>
+        <style>
+            /* Bỏ viền và làm mượt menu */
+
+
+            /* Thêm hiệu ứng hover cho item */
+            .dropdown-item {
+                padding: 10px 15px;
+                border-radius: 5px;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .dropdown-item:hover {
+                    background-color: #f0f0f5;
+                    color: #007bff;
+                }
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                // Khi nhấp vào biểu tượng người dùng
+                $('#userDropdown').click(function (event) {
+                    event.stopPropagation();
+                    $(this).next('.dropdown-menu').slideToggle();
+                });
+
+                // Đóng menu khi nhấp ra ngoài
+                $(document).click(function (event) {
+                    if (!$(event.target).closest('.dropdown').length) {
+                        $('.dropdown-menu').slideUp();
+                    }
+                });
+            });
+        </script>
+
+
+    </header>
+
+
+
 
     <section id="billboard" class="overflow-hidden">
         <button class="button-prev">
@@ -47,7 +247,10 @@
             <div class="swiper-wrapper">
                 <!-- Handbags Slide -->
                 <div class="swiper-slide"
-                     style="background-image: url('images/banner0.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                     style="background-image: url('@Url.Content("~/images/banner0.jpg")');
+             background-repeat: no-repeat;
+             background-size: cover;
+             background-position: center;">
                     <div class="banner-content">
                         <div class="container">
                             <div class="row">
@@ -64,10 +267,9 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Clothes Slide -->
                 <div class="swiper-slide"
-                     style="background-image: url('images/banner4.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                     style="background-image:  url('@Url.Content("~/images/banner4.jpg")');background-repeat: no-repeat;background-size: cover;background-position: center;">
                     <div class="banner-content">
                         <div class="container">
                             <div class="row">
@@ -87,7 +289,8 @@
 
                 <!-- Shoes Slide -->
                 <div class="swiper-slide"
-                     style="background-image: url('images/banner5.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;">
+                     style="background-image: url('@Url.Content("~/images/banner5.jpg")')
+ ;background-repeat: no-repeat;background-size: cover;background-position: center;">
                     <div class="banner-content">
                         <div class="container">
                             <div class="row">
@@ -120,7 +323,7 @@
                 <div class="col-lg-7 col-md-12 left-content">
                     <div class="collection-item">
                         <div class="products-thumb">
-                            <img src="images/street wear.jpg" alt="collection item" class="large-image image-rounded">
+                            <img src="~/images/street wear.jpg" alt="collection item" class="large-image image-rounded">
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 product-entry">
                             <div class="categories">casual collection</div>
@@ -137,7 +340,7 @@
                 <div class="col-lg-5 col-md-12 right-content flex-wrap">
                     <div class="collection-item top-item">
                         <div class="products-thumb">
-                            <img src="images/Nike-Shoe.jpg" alt="collection item" class="small-image image-rounded">
+                            <img src="~/images/Nike-Shoe.jpg" alt="collection item" class="small-image image-rounded">
                         </div>
                         <div class="col-md-6 product-entry">
                             <div class="categories">Basic Collection</div>
@@ -151,7 +354,7 @@
                     </div>
                     <div class="collection-item bottom-item">
                         <div class="products-thumb">
-                            <img src="images/elegant-handbag.jpg" alt="collection item" class="small-image image-rounded">
+                            <img src="~/images/elegant-handbag.jpg" alt="collection item" class="small-image image-rounded">
                         </div>
                         <div class="col-md-6 product-entry">
                             <div class="categories">Luxury Collection</div>
@@ -190,7 +393,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products1.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products1.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -216,7 +419,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products2.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products2.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -242,7 +445,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products3.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products3.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -268,7 +471,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products4.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products4.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -294,7 +497,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products5.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products5.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -320,7 +523,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products6.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products6.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -346,7 +549,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products7.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products7.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -372,7 +575,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products8.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products8.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -398,7 +601,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products13.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products13.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -424,7 +627,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products14.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products14.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -450,7 +653,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products15.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products15.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -476,7 +679,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products16.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products16.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -506,7 +709,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products13.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products13.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -532,7 +735,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products14.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products14.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -558,7 +761,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products15.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products15.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -584,7 +787,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products16.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products16.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -614,7 +817,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products3.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products3.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -640,7 +843,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products8.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products8.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -666,7 +869,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products5.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products5.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -692,7 +895,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products7.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products7.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -722,7 +925,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products1.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products1.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -748,7 +951,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products4.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products4.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -774,7 +977,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products7.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products7.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -800,7 +1003,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products2.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products2.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -830,7 +1033,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products17.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products17.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -856,7 +1059,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products4.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products4.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -882,7 +1085,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products18.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products18.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -912,7 +1115,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products3.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products3.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -938,7 +1141,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products4.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products4.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -964,7 +1167,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products6.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products6.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -990,7 +1193,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products7.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products7.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1020,7 +1223,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products5.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products5.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1046,7 +1249,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products2.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products2.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1072,7 +1275,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products6.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products6.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1102,7 +1305,7 @@
                     <div class="row d-flex flex-wrap">
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products19.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products19.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1128,7 +1331,7 @@
                         </div>
                         <div class="product-item col-lg-3 col-md-6 col-sm-6">
                             <div class="image-holder">
-                                <img src="images/selling-products20.jpg" alt="Books" class="product-image">
+                                <img src="~/images/selling-products20.jpg" alt="Books" class="product-image">
                             </div>
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
@@ -1170,7 +1373,7 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="product-item">
-                            <img src="images/selling-products9.jpg" alt="Books" class="product-image">
+                            <img src="~/images/selling-products9.jpg" alt="Books" class="product-image">
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn-wrap cart-link d-flex align-items-center">
@@ -1199,7 +1402,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="product-item">
-                            <img src="images/selling-products10.jpg" alt="Books" class="product-image">
+                            <img src="~/images/selling-products10.jpg" alt="Books" class="product-image">
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn-wrap cart-link d-flex align-items-center">
@@ -1228,7 +1431,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="product-item">
-                            <img src="images/selling-products11.jpg" alt="Books" class="product-image">
+                            <img src="~/images/selling-products11.jpg" alt="Books" class="product-image">
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn-wrap cart-link d-flex align-items-center">
@@ -1257,7 +1460,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="product-item">
-                            <img src="images/selling-products12.jpg" alt="Books" class="product-image">
+                            <img src="~/images/selling-products12.jpg" alt="Books" class="product-image">
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn-wrap cart-link d-flex align-items-center">
@@ -1286,7 +1489,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="product-item">
-                            <img src="images/selling-products8.jpg" alt="Books" class="product-image">
+                            <img src="~/images/selling-products8.jpg" alt="Books" class="product-image">
                             <div class="cart-concern">
                                 <div class="cart-button d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn-wrap cart-link d-flex align-items-center">
@@ -1333,7 +1536,7 @@
                 <article class="col-md-4 post-item">
                     <div class="image-holder zoom-effect">
                         <a href="single-post.html">
-                            <img src="images/post-img1.jpg" alt="post" class="post-image">
+                            <img src="~/images/post-img1.jpg" alt="post" class="post-image">
                         </a>
                     </div>
                     <div class="post-content d-flex">
@@ -1352,7 +1555,7 @@
                 <article class="col-md-4 post-item">
                     <div class="image-holder zoom-effect">
                         <a href="single-post.html">
-                            <img src="images/post-img2.jpg" alt="post" class="post-image">
+                            <img src="~/images/post-img2.jpg" alt="post" class="post-image">
                         </a>
                     </div>
                     <div class="post-content d-flex">
@@ -1371,7 +1574,7 @@
                 <article class="col-md-4 post-item">
                     <div class="image-holder zoom-effect">
                         <a href="single-post.html">
-                            <img src="images/post-img3.jpg" alt="post" class="post-image">
+                            <img src="~/images/post-img3.jpg" alt="post" class="post-image">
                         </a>
                     </div>
                     <div class="post-content d-flex">
@@ -1394,11 +1597,11 @@
     <section id="brand-collection" class="padding-medium bg-light-grey">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between">
-                <img src="images/brand1.png" alt="phone" class="brand-image">
-                <img src="images/brand2.png" alt="phone" class="brand-image">
-                <img src="images/brand3.png" alt="phone" class="brand-image">
-                <img src="images/brand4.png" alt="phone" class="brand-image">
-                <img src="images/brand5.png" alt="phone" class="brand-image">
+                <img src="~/images/brand1.png" alt="phone" class="brand-image">
+                <img src="~/images/brand2.png" alt="phone" class="brand-image">
+                <img src="~/images/brand3.png" alt="phone" class="brand-image">
+                <img src="~/images/brand4.png" alt="phone" class="brand-image">
+                <img src="~/images/brand5.png" alt="phone" class="brand-image">
             </div>
         </div>
     </section>
@@ -1517,9 +1720,9 @@
                 <div class="payment-method">
                     <p>Payment options :</p>
                     <div class="card-wrap">
-                        <img src="images/visa-icon.jpg" alt="visa">
-                        <img src="images/mastercard.png" alt="mastercard">
-                        <img src="images/american-express.jpg" alt="american-express">
+                        <img src="~/images/visa-icon.jpg" alt="visa">
+                        <img src="~/images/mastercard.png" alt="mastercard">
+                        <img src="~/images/american-express.jpg" alt="american-express">
                     </div>
                 </div>
             </div>
