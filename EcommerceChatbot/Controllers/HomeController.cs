@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-﻿using EcommerceChatbot.Models;
-=======
+
 using EcommerceChatbot.Models;
 using Microsoft.AspNetCore.Authentication;
->>>>>>> AdminFunction/Duong
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;

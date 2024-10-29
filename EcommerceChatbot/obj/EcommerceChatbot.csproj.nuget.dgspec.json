@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj": {}
+    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj": {
+    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
+        "projectUniqueName": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
         "projectName": "EcommerceChatbot",
-        "projectPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
-        "packagesPath": "C:\\Users\\leduo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\obj\\",
+        "projectPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
+        "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
+        "outputPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\leduo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -50,8 +46,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-<<<<<<< HEAD
-=======
             "Google.Apis.Auth": {
               "target": "Package",
               "version": "[1.68.0, )"
@@ -60,7 +54,6 @@
               "target": "Package",
               "version": "[1.62.0, )"
             },
->>>>>>> AdminFunction/Duong
             "Google.Cloud.Dialogflow.V2": {
               "target": "Package",
               "version": "[4.22.0, )"
@@ -111,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

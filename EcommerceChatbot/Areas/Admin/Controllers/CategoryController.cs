@@ -124,11 +124,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
         }
 
 
-            _context.ProductCategories.Remove(category);
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Category deleted successfully!"; // Thông báo thành công
-            return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách danh mục
-        }
+            
 
         // GET: Admin/Category/Index
         public async Task<IActionResult> Index()

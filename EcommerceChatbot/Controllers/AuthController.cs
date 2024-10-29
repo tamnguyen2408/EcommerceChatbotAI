@@ -28,7 +28,7 @@ namespace ECommerceChatbot.Controllers
 
 
         [HttpPost("auth/register")]
-          public async Task<IActionResult> Register(Register model)
+        public async Task<IActionResult> Register(Register model)
         {
             if (ModelState.IsValid)
             {
@@ -51,9 +51,9 @@ namespace ECommerceChatbot.Controllers
 
             return View(); // Trả về view đăng nhập nếu chưa đăng nhập
         }
-    
 
-    [HttpPost("/auth/login")]
+
+        [HttpPost("/auth/login")]
         public async Task<IActionResult> Login(Login model)
         {
             if (!ModelState.IsValid)

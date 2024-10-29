@@ -139,8 +139,6 @@
           }
         }
       },
-<<<<<<< HEAD
-=======
       "Google.Apis.Auth.Mvc/1.62.0": {
         "type": "package",
         "dependencies": {
@@ -158,7 +156,6 @@
           }
         }
       },
->>>>>>> AdminFunction/Duong
       "Google.Apis.Core/1.68.0": {
         "type": "package",
         "dependencies": {
@@ -3339,8 +3336,6 @@
         "lib/netstandard2.0/Google.Apis.Auth.xml"
       ]
     },
-<<<<<<< HEAD
-=======
     "Google.Apis.Auth.Mvc/1.62.0": {
       "sha512": "/Wt07xmGD71F5N3twMXRNspe13QZSMWCRLVqOd2xymY2kFyh235E2SpveAmIdEg1dJnkG7JzoFOuj2X1AHovXQ==",
       "type": "package",
@@ -3357,7 +3352,6 @@
         "lib/net45/Google.Apis.Auth.Mvc.xml"
       ]
     },
->>>>>>> AdminFunction/Duong
     "Google.Apis.Core/1.68.0": {
       "sha512": "pAqwa6pfu53UXCR2b7A/PAPXeuVg6L1OFw38WckN27NU2+mf+KTjoEg2YGv/f0UyKxzz7DxF1urOTKg/6dTP9g==",
       "type": "package",
@@ -8609,11 +8603,8 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-<<<<<<< HEAD
-=======
       "Google.Apis.Auth >= 1.68.0",
       "Google.Apis.Auth.Mvc >= 1.62.0",
->>>>>>> AdminFunction/Duong
       "Google.Cloud.Dialogflow.V2 >= 4.22.0",
       "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation >= 8.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.10",
@@ -8624,32 +8615,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\leduo\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\nguye\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "D:\\ECommerceChatbot_Đồ án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+      "projectUniqueName": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
       "projectName": "EcommerceChatbot",
-      "projectPath": "D:\\ECommerceChatbot_Đồ án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+      "projectPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
       "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
-      "outputPath": "D:\\ECommerceChatbot_Đồ án\\EcommerceChatbot\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
-      "projectName": "EcommerceChatbot",
-      "projectPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
-      "packagesPath": "C:\\Users\\leduo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\obj\\",
->>>>>>> AdminFunction/Duong
+      "outputPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\leduo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8681,8 +8659,6 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
-<<<<<<< HEAD
-=======
           "Google.Apis.Auth": {
             "target": "Package",
             "version": "[1.68.0, )"
@@ -8691,7 +8667,6 @@
             "target": "Package",
             "version": "[1.62.0, )"
           },
->>>>>>> AdminFunction/Duong
           "Google.Cloud.Dialogflow.V2": {
             "target": "Package",
             "version": "[4.22.0, )"
@@ -8742,7 +8717,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
