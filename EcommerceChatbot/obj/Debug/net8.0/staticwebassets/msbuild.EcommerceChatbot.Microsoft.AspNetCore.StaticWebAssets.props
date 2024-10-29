@@ -1712,12 +1712,20 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\b55bd454-e311-4475-8ad6-736e237cd879.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+<<<<<<< HEAD
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\bc119212-d311-405f-ad34-82cc1506da7a.jpg))">
+=======
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\b69887c1-8b2e-480d-bc9e-01964b0cf8aa.jpg))">
+>>>>>>> AdminFunction/Duong
       <SourceType>Package</SourceType>
       <SourceId>EcommerceChatbot</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/EcommerceChatbot</BasePath>
+<<<<<<< HEAD
       <RelativePath>images/products/bc119212-d311-405f-ad34-82cc1506da7a.jpg</RelativePath>
+=======
+      <RelativePath>images/products/b69887c1-8b2e-480d-bc9e-01964b0cf8aa.jpg</RelativePath>
+>>>>>>> AdminFunction/Duong
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -1726,6 +1734,7 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+<<<<<<< HEAD
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\bc119212-d311-405f-ad34-82cc1506da7a.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\c033c6e6-06f1-4c45-a6ad-fb4d1622fd4b.jpg))">
@@ -1839,6 +1848,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\dfee49f0-5101-4b97-b419-f9a81e16ca9f.jpg))</OriginalItemSpec>
+=======
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\b69887c1-8b2e-480d-bc9e-01964b0cf8aa.jpg))</OriginalItemSpec>
+>>>>>>> AdminFunction/Duong
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\products\f2dd2692-ecf5-4743-a893-1d01749c92e8.jpg))">
       <SourceType>Package</SourceType>

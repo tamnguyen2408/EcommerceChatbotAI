@@ -157,7 +157,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Product deleted successfully!";
+           
             return RedirectToAction("Index");
         }
 

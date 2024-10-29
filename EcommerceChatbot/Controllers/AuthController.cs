@@ -98,6 +98,7 @@ namespace ECommerceChatbot.Controllers
         [HttpPost("auth/logout")]
         public async Task<IActionResult> Logout()
         {
+
             await HttpContext.SignOutAsync("AuthCookie"); // Log out the user
 
             // Set a message to show on the login page
@@ -112,6 +113,10 @@ namespace ECommerceChatbot.Controllers
             {
                 return RedirectToAction("Login", "Auth"); // User redirects to Login
             }
+
+            await HttpContext.SignOutAsync("AuthCookie");
+            return RedirectToAction("Index", "Home", new { area = "" });
+
         }
 
     }
