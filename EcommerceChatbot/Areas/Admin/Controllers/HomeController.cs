@@ -71,12 +71,12 @@ namespace ECommerceChatbot.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost("auth/logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync("AuthCookie");
-            return RedirectToAction("Index", "Home", new { area = "" }); // Điều hướng về trang login
-        }
+        //[HttpPost("auth/logout")]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await HttpContext.SignOutAsync("AuthCookie");
+        //    return RedirectToAction("Index", "Home", new { area = "" }); // Điều hướng về trang login
+        //}
 
     }
 }

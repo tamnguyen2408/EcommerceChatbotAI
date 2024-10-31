@@ -7425,6 +7425,10 @@
       "PackagePath": "staticwebassets\\LayoutAdmin\\vendor\\jquery\\jquery.slim.min.map"
     },
     {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\VoiceSearch.css",
+      "PackagePath": "staticwebassets\\css\\VoiceSearch.css"
+    },
+    {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\ajax-loader.gif",
       "PackagePath": "staticwebassets\\css\\ajax-loader.gif"
     },
@@ -7757,6 +7761,10 @@
       "PackagePath": "staticwebassets\\images\\products\\200d1b41-729c-44f8-9f6e-4b64978ca28c.jpg"
     },
     {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\28f47189-5973-483b-a509-b6c84e37efb9.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\28f47189-5973-483b-a509-b6c84e37efb9.jpg"
+    },
+    {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\2d4652d2-b5d1-4b6d-82c4-6bbd2836b965.jpg",
       "PackagePath": "staticwebassets\\images\\products\\2d4652d2-b5d1-4b6d-82c4-6bbd2836b965.jpg"
     },
@@ -7803,6 +7811,10 @@
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\7497ba10-8706-4759-967f-5103ba5e5cae.jpg",
       "PackagePath": "staticwebassets\\images\\products\\7497ba10-8706-4759-967f-5103ba5e5cae.jpg"
+    },
+    {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\7c615a90-cd28-43f4-aece-d1920b8aa032.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\7c615a90-cd28-43f4-aece-d1920b8aa032.jpg"
     },
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\8b450d2c-0c17-48e5-af2c-ef737d5a07f0.jpg",
@@ -7871,6 +7883,10 @@
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\c46a34de-f5cc-4e6b-bbd7-9de0d2d71ea1.jpg",
       "PackagePath": "staticwebassets\\images\\products\\c46a34de-f5cc-4e6b-bbd7-9de0d2d71ea1.jpg"
+    },
+    {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\c7b47d13-bc6f-42a0-8586-89d9aa0cdd8d.jpg",
+      "PackagePath": "staticwebassets\\images\\products\\c7b47d13-bc6f-42a0-8586-89d9aa0cdd8d.jpg"
     },
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\c91906bc-0046-4394-9bd9-33f1d68ee8fa.jpg",

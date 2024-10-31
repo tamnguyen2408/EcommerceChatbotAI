@@ -28,6 +28,8 @@
         }
 
         .wrapper {
+            animation: fadeIn 0.8s ease-in-out; /* Apply the animation */
+
           width: 380px;
           background: #fff;
           border-radius: 15px;
@@ -164,27 +166,36 @@
           text-decoration: underline;
         }
 
-        /* Error and validation messages */
-        .form span.field-validation-valid {
-            color: green; /* Change color for valid messages */
-            font-size: 0.9rem;
-            display: block;
-            margin-top: -10px;
-            margin-bottom: 10px;
+
+        .field {
+            height: 50px;
+            width: 100%;
+            margin-top: 20px; /* Keep space between fields */
+            position: relative;
+            margin-bottom: 15px; /* Increased space below each field */
         }
 
-        .form span.field-validation-error {
-            color: red; /* Color for error messages */
+        .field-validation-error {
+            color: red !important; /* Ensure the color is always red */
             font-size: 0.9rem;
             display: block;
-            margin-top: -10px;
-            margin-bottom: 10px;
+            margin-top: 5px; /* Space between field and error message */
+            margin-bottom: 15px; /* Increased space below error message */
         }
 
-        /* Add margin below fields for better spacing */
+        .field-validation-valid {
+            color: green !important; /* Ensure the color is always green */
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 5px; /* Space between field and validation message */
+            margin-bottom: 15px; /* Increased space below validation message */
+        }
+
+        /* Existing styling */
         .wrapper form .field {
-            margin-bottom: 20px; /* Add space between fields */
+            margin-bottom: 20px; /* Space between fields */
         }
+
 
     </style>
 </head>

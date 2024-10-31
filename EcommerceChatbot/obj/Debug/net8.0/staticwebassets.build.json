@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "xVrOpswOLqByphy/qKplY957u+b4fhr/VJmYUXFjrKE=",
+  "Hash": "o+Vkllt5A63mHDgt0NWTsuZddrcc2DUSD6Gw8zLaLw8=",
   "Source": "EcommerceChatbot",
   "BasePath": "_content/EcommerceChatbot",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\vendor.css"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\VoiceSearch.css",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "css/VoiceSearch.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\VoiceSearch.css"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\icomoon\\fonts\\icomoon.eot",
@@ -1575,6 +1594,25 @@
       "OriginalItemSpec": "wwwroot\\images\\products\\200d1b41-729c-44f8-9f6e-4b64978ca28c.jpg"
     },
     {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\28f47189-5973-483b-a509-b6c84e37efb9.jpg",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "images/products/28f47189-5973-483b-a509-b6c84e37efb9.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\28f47189-5973-483b-a509-b6c84e37efb9.jpg"
+    },
+    {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\2d4652d2-b5d1-4b6d-82c4-6bbd2836b965.jpg",
       "SourceId": "EcommerceChatbot",
       "SourceType": "Discovered",
@@ -1801,6 +1839,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\products\\7497ba10-8706-4759-967f-5103ba5e5cae.jpg"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\7c615a90-cd28-43f4-aece-d1920b8aa032.jpg",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "images/products/7c615a90-cd28-43f4-aece-d1920b8aa032.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\7c615a90-cd28-43f4-aece-d1920b8aa032.jpg"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\8b450d2c-0c17-48e5-af2c-ef737d5a07f0.jpg",
@@ -2105,6 +2162,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\products\\c46a34de-f5cc-4e6b-bbd7-9de0d2d71ea1.jpg"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\c7b47d13-bc6f-42a0-8586-89d9aa0cdd8d.jpg",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "images/products/c7b47d13-bc6f-42a0-8586-89d9aa0cdd8d.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\c7b47d13-bc6f-42a0-8586-89d9aa0cdd8d.jpg"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\products\\c91906bc-0046-4394-9bd9-33f1d68ee8fa.jpg",

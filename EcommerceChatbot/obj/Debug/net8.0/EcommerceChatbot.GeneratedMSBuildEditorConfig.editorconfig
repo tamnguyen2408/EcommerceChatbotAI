@@ -26,10 +26,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\ECommerceChatbot_Đồ án\ECommerceChatbot
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Areas/Admin/Views/Auth/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Areas/Admin/Views/Category/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

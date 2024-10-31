@@ -10,6 +10,7 @@
     <div class="title">Signup</div>
     <form asp-action="Register" method="post">
         @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "field-validation-error" })
 
         <div class="field">
             <input type="text" required asp-for="UserName" />

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="~/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
+    <link href="~/css/VoiceSearch.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,13 +50,40 @@
                             <p>Let's talk! <strong>+57 444 11 00 35</strong></p>
                         </div>
                         <div class="col-md-4">
-                            <form asp-controller="Search" asp-action="Index" method="get" class="input-group">
-                                <input type="text" name="searchTerm" class="form-control" placeholder="Search for Product...">
+                            <!-- Regular Search Form -->
+                            <form asp-controller="Search" asp-action="Index" method="get" class="input-group mb-3">
+                                <input type="text" id="searchTerm" name="searchTerm" class="form-control" placeholder="Search for Product...">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-search"></i> Search
                                 </button>
                             </form>
+
+                            <!-- Voice Search Section -->
+                            <div class="input-group">
+                                <button type="button" id="voiceSearchBtn" class="btn btn-secondary">
+                                    <i class="fa fa-microphone"></i> Voice Search
+                                </button>
+                                <select id="languageSelect" class="form-select ms-2">
+                                    <option value="vi-VN" selected>Tiếng Việt</option>
+                                    <option value="en-US">English</option>
+                                </select>
+                            </div>
                         </div>
+
+                        <!-- Voice Search Modal -->
+                        <div id="voiceSearchModal" class="modal">
+                            <div class="modal-content">
+                                <span id="closeModal" class="close-btn">&times;</span>
+                                <p id="listeningText">Đang nghe...</p>
+                                <div class="mic-container">
+                                    <button id="voiceMic" class="mic-button">
+                                        <i class="fa fa-microphone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <div class="col-md-4">
                             <ul class="d-flex justify-content-end list-unstyled mb-0 gap-4">
@@ -229,8 +256,52 @@
                 });
             });
         </script>
+        <script>
+            // Get elements
+            const voiceSearchModal = document.getElementById('voiceSearchModal');
+            const voiceSearchBtn = document.getElementById('voiceSearchBtn');
+            const voiceMic = document.getElementById('voiceMic');
+            const closeModal = document.getElementById('closeModal');
+            const languageSelect = document.getElementById('languageSelect');
 
+            // Speech Recognition Setup
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = languageSelect.value; // Set default language
 
+            // Update recognition language based on selection
+            languageSelect.addEventListener('change', () => {
+                recognition.lang = languageSelect.value;
+            });
+
+            // Show modal and start recognition on button click
+            voiceSearchBtn.addEventListener('click', () => {
+                voiceSearchModal.style.display = 'block';
+                voiceMic.classList.add('listening');
+                recognition.start();
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                voiceSearchModal.style.display = 'none';
+                voiceMic.classList.remove('listening');
+                recognition.stop();
+            });
+
+            // Handle Speech Recognition events
+            recognition.onresult = function (event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('searchTerm').value = transcript; // Fill search input
+                document.querySelector('form.input-group').submit(); // Submit form
+                closeModal.click(); // Close modal after search
+            };
+
+            // Stop animation when recognition ends
+            recognition.onend = function () {
+                voiceMic.classList.remove('listening');
+            };
+
+        </script>
     </header>
 
 

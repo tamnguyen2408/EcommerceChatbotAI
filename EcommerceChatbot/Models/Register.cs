@@ -18,7 +18,6 @@ namespace ECommerceChatbot.Models
 
         [Required(ErrorMessage = "Confirm password is required")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } // New confirm password field
 
         [Phone(ErrorMessage = "Invalid phone number")]

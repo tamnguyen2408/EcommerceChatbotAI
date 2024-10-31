@@ -29,20 +29,15 @@ namespace EcommerceChatbot.Controllers
         {
             try
             {
-                // Log the incoming request
-                _logger.LogInformation("Received a webhook request: {Request}", dialogflowRequest.ToString());
+                _logger.LogInformation("Received webhook request: {Request}", dialogflowRequest.ToString());
 
-                // Check for null dialogflowRequest
-                if (dialogflowRequest == null || dialogflowRequest.QueryResult == null)
-                {
+                if (dialogflowRequest?.QueryResult == null)
                     return BadRequest("Yêu cầu không hợp lệ: dialogflowRequest là bắt buộc.");
-                }
 
-                // Extract the intent name from the Dialogflow request
                 var intentName = dialogflowRequest.QueryResult.Intent?.DisplayName;
+                var parameters = dialogflowRequest.QueryResult.Parameters;
                 string responseText;
 
-                // Switch case to handle different intents
                 switch (intentName)
                 {
                     case "SuggestProduct":
@@ -56,9 +51,24 @@ namespace EcommerceChatbot.Controllers
                         break;
 
                     case "FilterProductByCategory":
-                        var category = dialogflowRequest.QueryResult.Parameters["category"]?.ToString();
+                        var category = parameters["category"]?.ToString();
                         var filteredProducts = await GetProductsByCategory(category);
                         responseText = FormatProductList(filteredProducts);
+                        break;
+
+                    case "GetProductDetails":
+                        var detailProductName = parameters["productName"]?.ToString();
+                        responseText = await GetProductDetails(detailProductName);
+                        break;
+
+                    case "CheckStock":
+                        var stockProductName = parameters["productName"]?.ToString();
+                        responseText = await CheckStock(stockProductName);
+                        break;
+
+                    case "SearchProduct":
+                        var searchProductName = parameters["productName"]?.ToString();
+                        responseText = await SearchProduct(searchProductName);
                         break;
 
                     default:
@@ -66,18 +76,17 @@ namespace EcommerceChatbot.Controllers
                         break;
                 }
 
-                // Return the response back to Dialogflow
                 return Ok(new { fulfillmentText = responseText });
             }
             catch (Exception ex)
             {
-                // Log any errors that occur during processing
                 _logger.LogError(ex, "Error processing webhook: {Message}", ex.Message);
                 return StatusCode(500, "Lỗi trong quá trình xử lý webhook.");
             }
         }
 
 
+        // Retrieve and format product suggestions
         private async Task<List<Product>> GetProductSuggestions()
         {
             return await _context.Products.Include(p => p.Category).ToListAsync();
@@ -89,10 +98,10 @@ namespace EcommerceChatbot.Controllers
                 return "Hiện tại không có sản phẩm nào.";
 
             return string.Join("\n", products.Select(p =>
-                $"- {p.ProductName} (Category: {p.Category?.CategoryName}, Price: {p.Price})"
-            ));
+                $"- {p.ProductName} (Loại: {p.Category?.CategoryName}, Giá: {p.Price})"));
         }
 
+        // Retrieve and format product categories
         private async Task<List<ProductCategory>> GetProductCategories()
         {
             return await _context.ProductCategories.ToListAsync();
@@ -103,25 +112,72 @@ namespace EcommerceChatbot.Controllers
             if (categories == null || !categories.Any())
                 return "Hiện tại không có thể loại nào.";
 
-            return string.Join("\n", categories.Select(c =>
-                $"- {c.CategoryName}"
-            ));
+            return string.Join("\n", categories.Select(c => $"- {c.CategoryName}"));
         }
 
-
+        // Retrieve products by category
         private async Task<List<Product>> GetProductsByCategory(string category)
         {
             if (string.IsNullOrWhiteSpace(category))
                 return new List<Product>();
 
-            // Fetch products that match the given category name (case-sensitive)
             return await _context.Products
                 .Include(p => p.Category)
                 .Where(p => p.Category.CategoryName == category)
                 .ToListAsync();
         }
 
+        // Retrieve product details by product name
+        private async Task<string> GetProductDetails(string productName)
+        {
+            _logger.LogInformation("Getting details for product: {ProductName}", productName);
 
+            if (string.IsNullOrWhiteSpace(productName))
+                return "Xin lỗi, tôi cần biết tên sản phẩm để cung cấp thông tin chi tiết.";
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
+
+            if (product == null)
+                return $"Không tìm thấy sản phẩm '{productName}'.";
+
+            return $"Sản phẩm {product.ProductName} có giá {product.Price} và mô tả: {product.Description}.";
+        }
+
+        // Check stock availability for a given product
+        private async Task<string> CheckStock(string productName)
+        {
+            _logger.LogInformation("Checking stock for product: {ProductName}", productName);
+
+            if (string.IsNullOrWhiteSpace(productName))
+                return "Xin lỗi, tôi cần biết tên sản phẩm để kiểm tra tồn kho.";
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
+
+            if (product == null)
+                return $"Không tìm thấy sản phẩm '{productName}'.";
+
+            return $"Sản phẩm {product.ProductName} hiện còn {product.StockQuantity} trong kho.";
+        }
+
+        // Search for a product by name
+        private async Task<string> SearchProduct(string productName)
+        {
+            _logger.LogInformation("Searching for product: {ProductName}", productName);
+
+            if (string.IsNullOrWhiteSpace(productName))
+                return "Xin lỗi, tôi cần biết tên sản phẩm để tìm kiếm.";
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
+
+            if (product == null)
+                return $"Không tìm thấy sản phẩm '{productName}'.";
+
+            return $"Chúng tôi có sản phẩm {product.ProductName} với giá {product.Price}.";
+        }
     }
 }
-

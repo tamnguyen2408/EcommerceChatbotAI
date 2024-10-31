@@ -98,25 +98,11 @@ namespace ECommerceChatbot.Controllers
         [HttpPost("auth/logout")]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync("AuthCookie"); // Đăng xuất người dùng
+            TempData["message"] = "Successfully logged out."; // Thông báo đăng xuất thành công
 
-            await HttpContext.SignOutAsync("AuthCookie"); // Log out the user
-
-            // Set a message to show on the login page
-            TempData["message"] = "Successfully logged out.";
-
-            // Check if the user is an admin
-            if (User.IsInRole("admin"))
-            {
-                return RedirectToAction("Login", "Auth"); // Admin redirects to Login
-            }
-            else
-            {
-                return RedirectToAction("Login", "Auth"); // User redirects to Login
-            }
-
-            await HttpContext.SignOutAsync("AuthCookie");
-            return RedirectToAction("Index", "Home", new { area = "" });
-
+            // Chuyển hướng đến trang login chung
+            return RedirectToAction("Login", "Auth");
         }
 
     }
