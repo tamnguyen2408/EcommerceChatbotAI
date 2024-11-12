@@ -1,0 +1,83 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Thanh Toán";
+}
+
+<h2>Thanh Toán</h2>
+<p>Xin chào! Đây là trang thanh toán của bạn.</p>
+
+<div class="checkout-container">
+    <!-- Thông tin thanh toán -->
+    <form action="/Order/RedirectToVNPay" method="post">
+        <!-- Thông tin khách hàng -->
+        <div class="billing-info">
+            <h3>Thông Tin Khách Hàng</h3>
+            <label for="fullName">Họ và Tên:</label>
+            <input type="text" id="fullName" name="fullName" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+
+            <label for="address">Địa Chỉ:</label>
+            <input type="text" id="address" name="address" required />
+
+            <label for="phone">Số Điện Thoại:</label>
+            <input type="text" id="phone" name="phone" required />
+        </div>
+
+        <!-- Thông tin thanh toán -->
+        <div class="payment-info">
+            <h3>Thông Tin Thanh Toán</h3>
+            <label for="totalAmount">Số Tiền Thanh Toán (VND):</label>
+            <input type="number" id="totalAmount" name="totalAmount" value="@Model?.TotalPrice" readonly />
+        </div>
+
+        <!-- Nút chuyển đến VNPay -->
+        <button type="submit" class="btn btn-primary">Thanh Toán Qua VNPay</button>
+    </form>
+</div>
+
+<style>
+    /* CSS giữ nguyên */
+    .checkout-container {
+        width: 60%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    h2, h3 {
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        margin-top: 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+</style>
