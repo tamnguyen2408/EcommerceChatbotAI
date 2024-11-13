@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>EcommerceChatbot</title>
@@ -19,6 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="~/css/VoiceSearch.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMUYaF2xAg9k2Nj/aQG6DHUUYYjRV8IhtCkpjOr" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -45,30 +48,27 @@
         <div id="header-wrap">
             <nav class="secondary-nav border-bottom">
                 <div class="container">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-4">
-                            <p>Let's talk! <strong>+57 444 11 00 35</strong></p>
-                        </div>
-                        <div class="col-md-4">
-                            <!-- Regular Search Form -->
-                            <form asp-controller="Search" asp-action="Index" method="get" class="input-group mb-3">
-                                <input type="text" id="searchTerm" name="searchTerm" class="form-control" placeholder="Search for Product...">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fa fa-search"></i> Search
-                                </button>
-                            </form>
+                    <div class="row d-flex align-items">
+                        <div class="col-md-12 d-flex justify-content">
+                            <div class="unified-search-container">
+                                <!-- Search form with input and search button -->
+                                <form asp-controller="Search" asp-action="Index" method="get" class="input-group unified-search-form">
+                                    <input type="text" id="searchTerm" name="searchTerm" class="form-control"
+                                           placeholder="Tìm kiếm" aria-label="Tìm kiếm"
+                                           value="@Context.Request.Query["searchTerm"]" />
+                                    <button type="submit" class="btn btn-primary" title="Tìm kiếm">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </form>
 
-                            <!-- Voice Search Section -->
-                            <div class="input-group">
-                                <button type="button" id="voiceSearchBtn" class="btn btn-secondary">
-                                    <i class="fa fa-microphone"></i> Voice Search
+                                <!-- Microphone button placed to the right of the search bar -->
+                                <button type="button" id="voiceSearchBtn" class="voice-search" title="Tìm kiếm bằng giọng nói">
+                                    <i class="fa fa-microphone"></i>
                                 </button>
-                                <select id="languageSelect" class="form-select ms-2">
-                                    <option value="vi-VN" selected>Tiếng Việt</option>
-                                    <option value="en-US">English</option>
-                                </select>
                             </div>
                         </div>
+
+
 
                         <!-- Voice Search Modal -->
                         <div id="voiceSearchModal" class="modal">
@@ -85,58 +85,368 @@
 
 
 
-                        <div class="col-md-4">
-                            <ul class="d-flex justify-content-end list-unstyled mb-0 gap-4">
-                                <!-- User Icon Dropdown -->
-                                <div class="dropdown">
-                                    <a href="#" class="text-muted" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="icon icon-user fs-5"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                        @if (User.Identity.IsAuthenticated)
-                                        {
-                                            <li class="dropdown-item-text text-dark fw-bold bg-light p-2 rounded shadow-sm">
-                                                Hello, <strong class="text-primary">@User.Identity.Name</strong>
-                                            </li>
-                                            <li>
-                                                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
-                                                    @Html.AntiForgeryToken()
-                                                    <button type="submit" class="dropdown-item">
-                                                        Logout
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li class="dropdown-item-text extra-bold text-primary text-uppercase">Hello, Guest</li>
-                                            <li>
-                                                <form asp-controller="Auth" asp-action="Login" method="get" class="d-inline">
-                                                    @Html.AntiForgeryToken()
-                                                    <button type="submit" class="dropdown-item">
-                                                        Login
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
+                        <div class="col-md-4" style="margin-top:5px;">
+                            <ul class="d-flex flex-column align-items-end list-unstyled mb-0 gap-1" style="gap: 20px;margin-top: 5px;">
+                                <!-- Cart and Wishlist Icons -->
+                                <li class="d-flex align-items-center gap-1" style="gap: 20px;margin-top: 5px;">
 
-                                <!-- Cart Icon -->
-                                <li>
-                                    <a href="cart.html" class="text-muted">
-                                        <i class="icon icon-shopping-cart fs-5"></i>
+                                    <!-- Cart Icon -->
+                                    <a href="javascript:void(0);" id="cartIcon" class="text-muted position-relative">
+                                        <i class="bi bi-cart fs-4"></i>
                                     </a>
-                                </li>
 
-                                <!-- Wishlist Icon -->
-                                <li>
+                                    <!-- Payment Tab -->
+                                    <div id="paymentTab" class="payment-tab" style="display: none;">
+                                        <div class="payment-content">
+                                            <h4 class="text-center mb-4">Cart Details</h4>
+                                            <div id="cartItemsContainer">
+                                                <!-- Cart item example -->
+                                                <div class="cart-item">
+                                                    <div class="cart-item-info">
+                                                        <img src="product-image.jpg" alt="Product Image">
+                                                        <div class="cart-item-text">
+                                                            <div class="cart-item-name">Product Name</div>
+                                                            <div class="cart-item-quantity">Quantity: <span>1</span></div>
+                                                        </div>
+                                                        <div class="cart-item-price">$100.00</div>
+                                                    </div>
+                                                    <div class="cart-item-actions">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(0)">-</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(0)">+</button>
+                                                        <button class="btn btn-sm remove-btn" onclick="removeItem(0)">x</button>
+                                                    </div>
+                                                </div>
+                                                <!-- Repeat for each cart item -->
+                                            </div>
+                                            <div class="total-section">
+                                                <strong>Total:</strong> <span id="totalAmount">0 USD</span>
+                                            </div>
+                                            <button type="button" class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                                        </div>
+                                    </div>
+
+                                    <style>
+                                        /* Payment Tab Container */
+                                        #paymentTab {
+                                            width: 100%;
+                                            max-width: 400px;
+                                            padding: 20px;
+                                            position: absolute;
+                                            top: 60px;
+                                            right: 0;
+                                            z-index: 1000;
+                                            background-color: #fff;
+                                            border-radius: 8px;
+                                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+                                            font-family: Arial, sans-serif;
+                                            color: #333;
+                                            max-height: 600px;
+                                            overflow-y: auto;
+                                        }
+
+                                        .payment-content {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 15px;
+                                        }
+
+                                            /* Title Styling */
+                                            .payment-content h4 {
+                                                font-weight: bold;
+                                                font-size: 1.2em;
+                                                color: #333;
+                                            }
+
+                                        /* Cart Item Styling */
+                                        .cart-item {
+                                            padding: 10px 0;
+                                            border-bottom: 1px solid #e0e0e0;
+                                        }
+
+                                        .cart-item-info {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 15px; /* Giảm khoảng cách giữa ảnh và thông tin sản phẩm */
+                                        }
+
+                                        .cart-item img {
+                                            width: 50px;
+                                            height: 50px;
+                                            object-fit: cover;
+                                            border-radius: 4px;
+                                        }
+
+                                        .cart-item-text {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 5px;
+                                        }
+
+                                        .cart-item-name {
+                                            font-weight: bold;
+                                            font-size: 0.9em;
+                                            color: #555;
+                                        }
+
+                                        .cart-item-quantity {
+                                            font-size: 0.9em;
+                                            color: #777;
+                                        }
+
+                                        .cart-item-price {
+                                            font-size: 1em;
+                                            color: #333;
+                                        }
+
+                                        /* Action Buttons (Increase, Decrease, Remove) */
+                                        .cart-item-actions {
+                                            display: flex;
+                                            gap: 5px; /* Giảm khoảng cách giữa các nút */
+                                            margin-top: 5px;
+                                        }
+
+                                            .cart-item-actions button {
+                                                padding: 4px 6px;
+                                                font-size: 0.85em;
+                                                background-color: #007bff;
+                                                color: white;
+                                                border: none;
+                                                border-radius: 4px;
+                                                cursor: pointer;
+                                            }
+
+                                                .cart-item-actions button:hover {
+                                                    background-color: #0056b3;
+                                                }
+
+                                        /* Remove Button Styling */
+                                        .remove-btn {
+                                            background-color: #dc3545;
+                                            font-size: 1em;
+                                            padding: 0 4px;
+                                            border-radius: 50%;
+                                        }
+
+                                            .remove-btn:hover {
+                                                background-color: #c82333;
+                                            }
+
+                                        /* Total Section */
+                                        .total-section {
+                                            font-weight: bold;
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            padding: 10px 0;
+                                            border-top: 1px solid #e0e0e0;
+                                        }
+
+                                        /* Checkout Button */
+                                        .checkout-btn {
+                                            background-color: #007bff;
+                                            color: #fff;
+                                            font-weight: bold;
+                                            padding: 10px;
+                                            text-align: center;
+                                            border: none;
+                                            border-radius: 4px;
+                                            cursor: pointer;
+                                            font-size: 1em;
+                                        }
+
+                                            .checkout-btn:hover {
+                                                background-color: #0056b3;
+                                            }
+                                    </style>
+
+                                    <script>
+                                        // Render cart items in the payment tab
+                                        function renderCartItems() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            const cartItemsContainer = document.getElementById('cartItemsContainer');
+                                            const totalAmountElement = document.getElementById('totalAmount');
+                                            cartItemsContainer.innerHTML = '';  // Clear previous content
+
+                                            let totalAmount = 0;
+
+                                            if (cart.length === 0) {
+                                                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                                                totalAmountElement.textContent = '0 USD';
+                                                return;
+                                            }
+
+                                            cart.forEach((item, index) => {
+                                                const itemTotal = item.price * item.quantity;
+                                                totalAmount += itemTotal;
+
+                                                const itemElement = document.createElement('div');
+                                                itemElement.classList.add('cart-item');
+                                                itemElement.innerHTML = `
+                                                        <div class="d-flex justify-content-between mb-2 align-items-center cart-item-info">
+                                                            <img src="${item.image}" alt="${item.name}" style="max-width: 50px;">
+                                                            <div class="cart-item-text">
+                                                                <div class="cart-item-name">${item.name}</div>
+                                                                <div class="cart-item-quantity">Quantity: <span>${item.quantity}</span></div>
+                                                            </div>
+                                                            <div class="cart-item-price">${itemTotal.toFixed(2)} USD</div>
+                                                        </div>
+                                                        <div class="cart-item-actions">
+                                                            <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(${index})">-</button>
+                                                            <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(${index})">+</button>
+                                                            <button class="btn btn-sm remove-btn" onclick="removeItem(${index})">x</button>
+                                                        </div>
+                                                        <hr />
+                                                    `;
+                                                cartItemsContainer.appendChild(itemElement);
+                                            });
+
+                                            totalAmountElement.textContent = `${totalAmount.toFixed(2)} USD`;
+                                        }
+
+                                        // Increase quantity of a cart item
+                                        function increaseQuantity(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            cart[index].quantity += 1;
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Decrease quantity of a cart item
+                                        function decreaseQuantity(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            if (cart[index].quantity > 1) {
+                                                cart[index].quantity -= 1;
+                                            } else {
+                                                cart.splice(index, 1);  // Remove item if quantity is 0
+                                            }
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Remove item from cart
+                                        function removeItem(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            cart.splice(index, 1);  // Remove item from cart
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Update cart count on the cart icon
+                                        function updateCartCount() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                                        }
+
+                                        // Toggle payment tab display on cart icon click
+                                        document.getElementById('cartIcon').addEventListener('click', function () {
+                                            const paymentTab = document.getElementById('paymentTab');
+
+                                            if (paymentTab.style.display === 'none' || paymentTab.style.display === '') {
+                                                paymentTab.style.display = 'block';
+                                                renderCartItems();  // Update cart items in the tab
+                                            } else {
+                                                paymentTab.style.display = 'none';
+                                            }
+                                        });
+
+                                        // Proceed to Checkout
+                                        function proceedToCheckout() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            if (cart.length === 0) {
+                                                alert('Your cart is empty!');
+                                                return;
+                                            }
+
+                                            // Lưu giỏ hàng vào sessionStorage
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+
+                                            // Chuyển hướng tới trang checkout.cshtml
+                                            window.location.href = "/Cart/Checkout";  // Điều chỉnh URL này theo đường dẫn chính xác đến trang checkout của bạn
+                                        }
+
+                                    </script>
+
+
+
+
+
+
+                             <!-- Wishlist Icon -->
                                     <a href="wishlist.html" class="text-muted">
                                         <i class="icon icon-heart fs-5"></i>
                                     </a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <span class="text-dark fw-bold">Hello, <strong class="text-primary">@User.Identity.Name</strong></span>
+                                        <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline ms-2">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="btn btn-link p-0 text-primary logout-button"
+                                                    style="font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 5px; text-transform: uppercase;">
+                                                LOGOUT
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-dark fw-bold">Hello, Guest</span>
+                                        <a href="@Url.Action("Login", "Auth")"
+                                           class="btn login-button"
+                                           style="font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 5px;text-transform: uppercase;">
+                                            LOG IN
+                                        </a>
+                                    }
                                 </li>
                             </ul>
                         </div>
+
+
+                        <style>
+                            .d-flex, .align-items-center {
+                                align-items: unset !important;
+                            }
+
+                            .logout-button {
+                                margin-top: 10px;
+                                margin-bottom:10px;
+                                background: linear-gradient(45deg, #ff6b6b, #f06595, #845ef7);
+                                color: white;
+                                border: none;
+                                transition: background 0.3s, transform 0.3s;
+                            }
+
+                                .logout-button:hover {
+                                    background: linear-gradient(45deg, #845ef7, #f06595, #ff6b6b);
+                                    transform: scale(1.1);
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                                }
+
+                                .logout-button:focus {
+                                    outline: none;
+                                }
+
+                            .login-button {
+                                margin-bottom:15px;
+                                margin-top: 5px;
+                                background: linear-gradient(45deg, #4facfe, #00f2fe, #28c76f);
+                                color: white;
+                                border: none;
+                                transition: background 0.3s, transform 0.3s;
+                            }
+
+                                .login-button:hover {
+                                    background: linear-gradient(45deg, #28c76f, #00f2fe, #4facfe);
+                                    transform: scale(1.1);
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                                }
+
+                                .login-button:focus {
+                                    outline: none;
+                                }
+                        </style>
                     </div>
                 </div>
             </nav>
@@ -183,6 +493,7 @@
                 </div>
             </nav>
         </div>
+       
         <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
         <df-messenger intent="WELCOME"
                       chat-title="Chat with Us"
@@ -190,89 +501,123 @@
                       language-code="vi"></df-messenger>
 
         <style>
+            /* Giao diện chính của chatbot */
             df-messenger {
-                --df-messenger-bot-message: #e9f1f7; /* Bot message background */
-                --df-messenger-user-message: #d1e7dd; /* User message background */
-                --df-messenger-font-color: #333; /* Text color */
-                --df-messenger-button-color: #007bff; /* Button color */
-                --df-messenger-button-title-color: white; /* Button text color */
-                --df-messenger-title-color: #007bff; /* Chat title color */
-                --df-messenger-input-color: #ffffff; /* Input background color */
-                --df-messenger-input-font-color: #333; /* Input text color */
-                --df-messenger-input-border-color: #cccccc; /* Input border color */
-                --df-messenger-avatar-background: #007bff; /* Avatar background color */
-                --df-messenger-avatar-border-radius: 50%; /* Avatar border radius */
+                --df-messenger-bot-message: #f1f9fc; /* Nền tin nhắn bot */
+                --df-messenger-user-message: #e0f7fa; /* Nền tin nhắn người dùng */
+                --df-messenger-font-color: #333; /* Màu chữ mặc định */
+                --df-messenger-button-color: #28a745; /* Màu nút (xanh lá) */
+                --df-messenger-button-title-color: white; /* Màu chữ trên nút */
+                --df-messenger-title-color: #007bff; /* Màu tiêu đề chatbot */
+                --df-messenger-input-color: #ffffff; /* Màu nền ô nhập liệu */
+                --df-messenger-input-font-color: #333; /* Màu chữ trong ô nhập liệu */
+                --df-messenger-input-border-color: #ccc; /* Màu đường viền ô nhập liệu */
+                --df-messenger-avatar-background: #007bff; /* Màu nền avatar chatbot */
+                --df-messenger-avatar-border-radius: 50%; /* Avatar hình tròn */
+                --df-messenger-chat-background-color: #ffffff; /* Màu nền cho khung chat */
             }
 
-                /* Avatar image for the support agent */
+                /* Chỉnh sửa tiêu đề chatbot */
+                df-messenger .df-title {
+                    background-color: #007bff; /* Màu nền tiêu đề */
+                    color: white; /* Màu chữ tiêu đề */
+                    padding: 10px 15px; /* Padding cho tiêu đề */
+                    font-size: 18px; /* Kích thước chữ tiêu đề */
+                    font-weight: bold; /* Chữ đậm */
+                }
+
+                /* Chỉnh sửa tin nhắn của bot */
                 df-messenger .bot-message {
-                    background-image: url('~/images/products/avatar_chatbot.png'); /* Path to your avatar image */
-                    background-size: cover; /* Ensures the image covers the entire background */
-                    border-radius: 20px; /* Rounded corners for the message bubble */
-                    padding: 10px; /* Space inside the message bubble */
-                    color: #333; /* Text color for bot messages */
-                    font-weight: bold; /* Make text bold for better visibility */
+                    background-color: #f1f9fc; /* Nền tin nhắn bot */
+                    border-radius: 10px; /* Bo viền tin nhắn bot */
+                    padding: 15px; /* Padding trong tin nhắn bot */
+                    font-size: 14px; /* Kích thước chữ */
+                    line-height: 1.5; /* Khoảng cách dòng */
+                    color: #333; /* Màu chữ */
+                    font-weight: normal; /* Màu chữ đậm cho bot */
                 }
 
-                /* Style for user's messages */
+                /* Chỉnh sửa tin nhắn của người dùng */
                 df-messenger .user-message {
-                    border-radius: 20px;
-                    background-color: #d1e7dd; /* User message color */
-                    padding: 10px; /* Padding for user messages */
-                }
-        </style>
-        <style>
-            /* Bỏ viền và làm mượt menu */
-
-
-            /* Thêm hiệu ứng hover cho item */
-            .dropdown-item {
-                padding: 10px 15px;
-                border-radius: 5px;
-                transition: background-color 0.3s, color 0.3s;
-            }
-
-                .dropdown-item:hover {
-                    background-color: #f0f0f5;
-                    color: #007bff;
+                    background-color: #e0f7fa; /* Nền tin nhắn người dùng */
+                    color: #333; /* Màu chữ tin nhắn người dùng */
+                    border-radius: 10px; /* Bo viền tin nhắn người dùng */
+                    padding: 15px; /* Padding trong tin nhắn người dùng */
+                    font-size: 14px; /* Kích thước chữ */
+                    line-height: 1.5; /* Khoảng cách dòng */
                 }
 
+                /* Chỉnh sửa ô nhập liệu */
+                df-messenger .df-input {
+                    background-color: #f9f9f9; /* Màu nền ô nhập liệu */
+                    border: 1px solid #ddd; /* Đường viền cho ô nhập liệu */
+                    border-radius: 20px; /* Bo viền tròn */
+                    padding: 10px 15px; /* Padding cho ô nhập liệu */
+                    font-size: 14px; /* Kích thước chữ */
+                    width: 100%; /* Chiếm toàn bộ chiều rộng */
+                    margin-bottom: 15px; /* Khoảng cách dưới ô nhập liệu */
+                }
+
+                /* Chỉnh sửa nút trong giao diện */
+                df-messenger .df-button {
+                    background-color: #28a745; /* Màu xanh lá cho nút */
+                    color: white; /* Màu chữ trên nút */
+                    font-weight: bold; /* Chữ đậm trên nút */
+                    padding: 10px 20px; /* Padding cho nút */
+                    border-radius: 5px; /* Viền bo tròn cho nút */
+                    font-size: 14px; /* Kích thước chữ trên nút */
+                    border: none; /* Không viền cho nút */
+                    cursor: pointer; /* Hiển thị con trỏ khi hover */
+                    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+                }
+
+                    /* Màu khi hover trên nút */
+                    df-messenger .df-button:hover {
+                        background-color: #218838; /* Màu nền khi hover */
+                    }
+
+                /* Chỉnh sửa giao diện khi tin nhắn đang được gửi */
+                df-messenger .df-sending {
+                    background-color: #007bff; /* Màu nền cho trạng thái gửi tin nhắn */
+                    color: white; /* Màu chữ */
+                    border-radius: 20px; /* Viền tròn */
+                    font-size: 14px; /* Kích thước chữ */
+                    padding: 15px; /* Padding cho trạng thái gửi */
+                }
+
+                /* Cải thiện hình ảnh avatar bot */
+                df-messenger .bot-message {
+                    background-image: url('https://7313-2401-d800-be90-32f1-1d9e-8122-4297-c635.ngrok-free.app/images/products/avatar_chatbot.png'); /* Đường dẫn đến hình ảnh avatar */
+                    background-size: cover; /* Tự động điều chỉnh kích thước ảnh */
+                    background-position: center; /* Căn giữa ảnh */
+                    border-radius: 50%; /* Bo tròn hình ảnh */
+                    width: 40px; /* Kích thước avatar */
+                    height: 40px; /* Kích thước avatar */
+                }
+
+                /* Chỉnh sửa khung chat */
+                df-messenger .df-chat {
+                    border-radius: 10px; /* Bo viền khung chat */
+                    border: 1px solid #ddd; /* Đường viền cho khung chat */
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho khung chat */
+                    padding: 20px; /* Padding cho khung chat */
+                    background-color: #ffffff; /* Màu nền cho khung chat */
+                }
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                // Khi nhấp vào biểu tượng người dùng
-                $('#userDropdown').click(function (event) {
-                    event.stopPropagation();
-                    $(this).next('.dropdown-menu').slideToggle();
-                });
-
-                // Đóng menu khi nhấp ra ngoài
-                $(document).click(function (event) {
-                    if (!$(event.target).closest('.dropdown').length) {
-                        $('.dropdown-menu').slideUp();
-                    }
-                });
-            });
-        </script>
         <script>
             // Get elements
             const voiceSearchModal = document.getElementById('voiceSearchModal');
             const voiceSearchBtn = document.getElementById('voiceSearchBtn');
             const voiceMic = document.getElementById('voiceMic');
             const closeModal = document.getElementById('closeModal');
-            const languageSelect = document.getElementById('languageSelect');
+            const searchTermInput = document.getElementById('searchTerm');
 
             // Speech Recognition Setup
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
-            recognition.lang = languageSelect.value; // Set default language
-
-            // Update recognition language based on selection
-            languageSelect.addEventListener('change', () => {
-                recognition.lang = languageSelect.value;
-            });
+            recognition.lang = navigator.language || 'en-US'; // Set ngôn ngữ theo hệ thống
 
             // Show modal and start recognition on button click
             voiceSearchBtn.addEventListener('click', () => {
@@ -291,8 +636,9 @@
             // Handle Speech Recognition events
             recognition.onresult = function (event) {
                 const transcript = event.results[0][0].transcript;
-                document.getElementById('searchTerm').value = transcript; // Fill search input
-                document.querySelector('form.input-group').submit(); // Submit form
+                searchTermInput.value = transcript; // Fill search input
+                // Submit form while keeping the search term in the input field
+                document.querySelector('form.input-group').submit();
                 closeModal.click(); // Close modal after search
             };
 
@@ -300,7 +646,6 @@
             recognition.onend = function () {
                 voiceMic.classList.remove('listening');
             };
-
         </script>
     </header>
 
@@ -1803,5 +2148,9 @@
     <script src="~/js/jquery-1.11.0.min.js"></script>
     <script src="~/js/plugins.js"></script>
     <script src="~/js/script.js"></script>
+    <!--Start of Fchat.vn-->
+    <!--Start of Fchat.vn-->
+    <!--Start of Fchat.vn-->
+    @* <script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=6732e546e35c1300ef5d0259" async="async"></script> *@<!--End of Fchat.vn-->
 </body>
 </html>

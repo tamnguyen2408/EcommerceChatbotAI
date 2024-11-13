@@ -102,7 +102,7 @@ namespace ECommerceChatbot.Controllers
             TempData["message"] = "Successfully logged out."; // Thông báo đăng xuất thành công
 
             // Chuyển hướng đến trang login chung
-            return RedirectToAction("Login", "Auth");
+            return RedirectToAction("Index", "Home");
         }
 
     }

@@ -1,24 +1,22 @@
 ﻿using EcommerceChatbot.Service;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ECommerceChatbot.Models;
 using Microsoft.EntityFrameworkCore;
 using EcommerceChatbot.Areas.Admin.Service;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using EcommerceChatbot.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Kestrel to use HTTPS.
+// Configure Kestrel to use HTTPS on localhost:5167.
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenLocalhost(5167, listenOptions =>
     {
-        listenOptions.UseHttps(); // HTTPS on port 5167.
+        listenOptions.UseHttps(); // Enable HTTPS on port 5167.
     });
 
-    // Optionally, listen on port 80 but redirect HTTP to HTTPS.
+    // Optionally, listen on port 80 and redirect HTTP to HTTPS.
     options.ListenLocalhost(80);
 });
 
@@ -49,12 +47,11 @@ builder.Services.AddAuthentication("AuthCookie")
         options.Cookie.HttpOnly = true; // Prevent JavaScript access to cookies.
         options.Cookie.SameSite = SameSiteMode.Strict; // Stronger protection against CSRF.
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        options.SlidingExpiration = true; // Gia hạn cookie khi có hoạt động mới
+        options.SlidingExpiration = true; // Extend expiration time on activity
         options.LoginPath = "/auth/login";
         options.LogoutPath = "/auth/logout";
         options.AccessDeniedPath = "/auth/login";
     });
-
 
 // Configure Authorization policies.
 builder.Services.AddAuthorization(options =>
@@ -63,15 +60,15 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
 });
 
-// Configure CORS to allow specific origins.
+// Configure CORS to allow specific origins, including ngrok URL.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins("https://localhost:5167") // Allow only your HTTPS localhost.
+        policy.WithOrigins("https://3db5-118-70-118-224.ngrok-free.app") // Replace with your ngrok URL.
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Allow sending cookies with requests.
+              .AllowCredentials();
     });
 });
 
@@ -87,7 +84,7 @@ if (!app.Environment.IsDevelopment())
 // Force HTTPS redirection.
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowSpecificOrigins"); // Apply CORS policy
 
 app.UseRouting();
 
@@ -114,4 +111,3 @@ app.MapControllerRoute(
 
 // Run the application.
 app.Run();
-

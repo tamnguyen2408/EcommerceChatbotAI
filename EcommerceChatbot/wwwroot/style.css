@@ -463,7 +463,7 @@ ul {
 ol {
   list-style: decimal inside; }
 ol, ul {
-  padding-left: 0;
+  padding-right:10px ;
   margin-top: 0; }
 ul ul,
 ul ol,
@@ -523,9 +523,9 @@ blockquote,
 dl,
 figure,
 table,
-form {
+/*form {
   margin-bottom: 2rem; 
-}
+}*/
 
 /*------------------------------------------------
 /* 2.8 Utilities
@@ -1581,72 +1581,122 @@ blockquote cite {
 .secondary-nav,
 .secondary-nav p {
     line-height: 2.5em;
+ }
+.secondary-nav li {
+    padding-right: 10px;
+}
+.secondary-nav li:last-child {
+    padding-right: 0;
+}
+.secondary-nav a {
+    color: var(--accent-color);
+}
+.secondary-nav a:hover {
+    color: var(--dark-color);
+}
+.secondary-nav ul,
+.secondary-nav li,
+.secondary-nav p {
+    margin-bottom: 0;
+}
+/* Container for the search bar */
+.unified-search-container {
+    max-width: 800px;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-    .secondary-nav li {
-        padding-right: 10px;
+/* Styling the search form */
+.unified-search-form {
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    height: 40px; /* Set a fixed height to match the button */
+}
+
+    /* Input field styling */
+    .unified-search-form input.form-control {
+        flex: 1;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding:  15px; /* Horizontal padding only */
+        font-size: 15px;
+        margin-top:25px;
+        height: 100%; /* Ensures input height matches the form */
+        border-radius: 25px 0 0 25px;
+        line-height: normal; /* Resets line height */
+        display: flex;
+        align-items: center; /* Centers the text vertically */
     }
 
-        .secondary-nav li:last-child {
-            padding-right: 0;
+
+    /* Search button styling */
+    .unified-search-form button.btn-primary {
+        border-radius: 0 15px 15px 0;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        height: 100%; /* Make button height match the form's height */
+    }
+
+        /* Button hover effect */
+        .unified-search-form button.btn-primary:hover {
+            background-color: #0056b3;
+            transition: background-color 0.3s;
         }
 
-    .secondary-nav a {
-        color: var(--accent-color);
-    }
 
-        .secondary-nav a:hover {
-            color: var(--dark-color);
-        }
-
-    .secondary-nav ul,
-    .secondary-nav li,
-    .secondary-nav p {
-        margin-bottom: 0;
-    }
-
-/* Adjust search bar for better visual integration */
-.search-bar form {
+/* Microphone button styling */
+.voice-search {
+    margin-left: 20px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 18px;
+    outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px; /* Width for circular shape */
+    height: 40px; /* Height for circular shape */
+    border-radius: 50%; /* Makes the button circular */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar input {
-    width: 80%;
-    max-width: 300px;
-    padding: 10px; /* Slightly increased padding for better touch area */
-    border: 1px solid var(--accent-color);
-    border-radius: 4px 0 0 4px;
-    transition: border-color 0.3s; /* Smooth transition on focus */
-}
-
-    .search-bar input:focus {
-        border-color: var(--dark-color); /* Change border color on focus */
-        outline: none; /* Remove default outline */
+    .voice-search:hover {
+        background-color: #e1e1e1;
+        color: #007bff;
+        transition: background-color 0.3s;
     }
 
-.search-bar button {
-    padding: 10px 15px; /* Adjusted padding for button */
-    border: none;
-    background-color: var(--accent-color);
-    color: white;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition on hover */
-}
 
-    .search-bar button:hover {
-        background-color: var(--dark-color);
-    }
 
-/* Hide contact info and search bar on smaller screens */
-@media only screen and (max-width: 768px) {
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .header-contact,
     .search-bar {
         display: none;
     }
+
+    .secondary-nav p,
+    .secondary-nav ul {
+        text-align: center;
+    }
 }
+
 
 
 /* Improve product item visuals */

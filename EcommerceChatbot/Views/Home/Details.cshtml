@@ -5,30 +5,40 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row align-items-center">
+<div class="container my-5">
+    <!-- Back Button -->
+    <div class="d-flex justify-content-end mb-4">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary d-flex align-items-center">
+            <i class="bi bi-arrow-left me-2"></i> View All Products
+        </a>
+    </div>
+
+    <div class="row g-5">
+        <!-- Product Image -->
         <div class="col-md-5">
             <div class="image-holder position-relative">
-                <img src="@Model.ImageUrl" alt="@Model.ProductName" class="img-fluid rounded shadow" style="max-width: 100%; height: auto; object-fit: contain;">
-                @* <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 wishlist-btn">
-                    <i class="bi bi-heart"></i>
-                </button> *@
+                <img src="@Model.ImageUrl" alt="@Model.ProductName" class="img-fluid rounded shadow" style="object-fit: contain;">
             </div>
         </div>
-        <div class="col-md-7">
-            <h2 class="fw-bold text-uppercase">@Model.ProductName</h2>
-            <p class="text-primary fw-bold fs-4">@Model.Price.ToString("C")</p>
-            <p class="text-muted">@Model.Description</p>
 
-            <div class="d-flex align-items-center mt-3">
-                <label for="quantity" class="me-2">Quantity:</label>
-                <div class="input-group w-50">
-                    <input type="number" id="quantity" value="1" min="1" class="form-control text-center" />
+        <!-- Product Details -->
+        <div class="col-md-7">
+            <!-- Product Name and Price -->
+            <h2 class="fw-bold text-uppercase text-primary">@Model.ProductName</h2>
+            <h3 class="fw-bold text-success fs-4">@Model.Price.ToString("C", new System.Globalization.CultureInfo("en-US"))</h3>
+            <p class="text-muted mb-4">@Model.Description</p>
+
+            <!-- Quantity Selector -->
+            <div class="d-flex align-items-center mb-4">
+                <label for="quantity" class="me-3 fw-bold">Quantity:</label>
+                <div class="input-group w-25">
+                    <input type="number" id="quantity" value="1" min="1" class="form-control text-center">
                 </div>
             </div>
 
-            <div class="d-grid gap-2 mt-3">
-                <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center">
+            <!-- Add to Cart and Quick View Buttons -->
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center" id="addToCartButton">
                     <i class="bi bi-cart-plus me-2"></i> Add to Cart
                 </button>
                 <button type="button" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
@@ -36,67 +46,124 @@
                 </button>
             </div>
 
-            <div class="mt-4">
+            <!-- Customer Reviews Section -->
+            <div class="mt-5">
                 <h5 class="fw-bold">Customer Reviews</h5>
-                <div class="mb-2">
-                    <span class="text-warning">⭐⭐⭐⭐☆</span> <!-- Placeholder for rating -->
-                    <span class="text-muted">(4.5/5 from 120 reviews)</span>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="text-warning">⭐⭐⭐⭐☆</span>
+                    <span class="text-muted ms-2">(4.5/5 from 120 reviews)</span>
                 </div>
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam.</p>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. Integer vitae lorem nec eros convallis convallis non at odio.</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Image container */
     .image-holder {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
         overflow: hidden;
         position: relative;
-        height: 400px; /* Set a fixed height */
-        display: flex; /* Use flexbox for better alignment */
-        justify-content: center; /* Center the image */
-        align-items: center; /* Center the image */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        height: auto;
+        transition: all 0.3s ease;
     }
 
+        /* Image styling */
         .image-holder img {
-            max-width: 100%; /* Limit the width */
-            max-height: 100%; /* Limit the height */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: contain; /* Maintain aspect ratio within the container */
+            width: 100%;
+            height: auto;
+            object-fit: contain;
             transition: transform 0.3s ease;
         }
 
+        /* Zoom effect on image hover */
         .image-holder:hover img {
-            transform: scale(1.05); /* Scale effect on hover */
+            transform: scale(1.05); /* Slight zoom on hover */
         }
 
-    .btn-light {
-        background-color: rgba(255, 255, 255, 0.7);
+    /* Button styling */
+    .btn-outline-secondary {
+        color: #6c757d;
     }
 
-    .input-group {
-        display: flex; /* Flexbox for better layout */
-        align-items: center; /* Center items vertically */
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
     }
 
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-outline-secondary:hover {
+        color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /* Quantity input box */
     #quantity {
-        width: 60px; /* Fixed width for input */
-        text-align: center; /* Center the text in input */
+        max-width: 60px;
+        text-align: center;
+    }
+
+    /* Product Name and Price colors */
+    .text-primary {
+        color: #007bff;
+    }
+
+    .text-success {
+        color: #28a745;
+    }
+
+    /* Review stars */
+    .text-warning {
+        color: #ffc107;
+    }
+
+    /* Custom gap between items */
+    .g-5 {
+        gap: 2rem;
     }
 </style>
 
-@* <script>
-    document.getElementById('increment').addEventListener('click', function() {
-        const quantityInput = document.getElementById('quantity');
-        quantityInput.value = parseInt(quantityInput.value) + 1;
-    });
+<script>
+    // Add to Cart functionality
+    document.getElementById('addToCartButton').addEventListener('click', function () {
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const productId = @Model.ProductId;
+        const productName = "@Model.ProductName";
+        const productPrice = parseFloat(@Model.Price);
+        const productImage = "@Model.ImageUrl"; // If you want to save the product image as well
 
-    document.getElementById('decrement').addEventListener('click', function() {
-        const quantityInput = document.getElementById('quantity');
-        if (parseInt(quantityInput.value) > 1) {
-            quantityInput.value = parseInt(quantityInput.value) - 1;
+        if (isNaN(quantity) || isNaN(productPrice) || quantity <= 0 || productPrice <= 0) {
+            alert('Please enter a valid quantity and product price.');
+            return;
         }
+
+        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+        const existingProductIndex = cart.findIndex(item => item.productId === productId);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += quantity;
+        } else {
+            cart.push({
+                productId: productId,
+                name: productName,
+                price: productPrice,
+                quantity: quantity,
+                image: productImage
+            });
+        }
+
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+
+        alert('The product has been added to the cart!');
     });
-</script> *@
+</script>
