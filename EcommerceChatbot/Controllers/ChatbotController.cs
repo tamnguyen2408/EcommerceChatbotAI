@@ -17,12 +17,24 @@ namespace EcommerceChatbot.Controllers
     {
         private readonly ECommerceAiDbContext _context;
         private readonly ILogger<ChatbotController> _logger;
+        private readonly string _baseUrl;
 
         public ChatbotController(ECommerceAiDbContext context, ILogger<ChatbotController> logger)
         {
             _context = context;
             _logger = logger;
+            _baseUrl = "https://3db5-118-70-118-224.ngrok-free.app"; // Ensure this URL is active and correct
         }
+
+        private string GetProductImageUrl(string imageName)
+        {
+            // Ensure imageName does not start with a '/'
+            if (string.IsNullOrWhiteSpace(imageName))
+                return $"{_baseUrl}/images/products/default-image.jpg"; // Fallback image
+
+            return $"{_baseUrl}{imageName}"; // Use the imageName directly
+        }
+
 
         [HttpPost("Webhook")]
         public async Task<IActionResult> Webhook([FromBody] DialogflowRequest dialogflowRequest)
@@ -32,90 +44,99 @@ namespace EcommerceChatbot.Controllers
                 _logger.LogInformation("Received webhook request: {Request}", dialogflowRequest.ToString());
 
                 if (dialogflowRequest?.QueryResult == null)
-                    return BadRequest("Yêu cầu không hợp lệ: dialogflowRequest là bắt buộc.");
+                    return BadRequest("Invalid request: dialogflowRequest is required.");
 
                 var intentName = dialogflowRequest.QueryResult.Intent?.DisplayName;
                 var parameters = dialogflowRequest.QueryResult.Parameters;
-                string responseText;
+                object responsePayload;
 
                 switch (intentName)
                 {
                     case "SuggestProduct":
                         var products = await GetProductSuggestions();
-                        responseText = FormatProductList(products);
+                        responsePayload = FormatProductListWithImages(products);
                         break;
 
                     case "GetCategories":
                         var categories = await GetProductCategories();
-                        responseText = FormatCategoryList(categories);
+                        responsePayload = FormatCategoryList(categories);
                         break;
 
                     case "FilterProductByCategory":
                         var category = parameters["category"]?.ToString();
                         var filteredProducts = await GetProductsByCategory(category);
-                        responseText = FormatProductList(filteredProducts);
+                        responsePayload = FormatProductListWithImages(filteredProducts);
                         break;
 
                     case "GetProductDetails":
                         var detailProductName = parameters["productName"]?.ToString();
-                        responseText = await GetProductDetails(detailProductName);
+                        responsePayload = await GetProductDetails(detailProductName);
                         break;
 
                     case "CheckStock":
                         var stockProductName = parameters["productName"]?.ToString();
-                        responseText = await CheckStock(stockProductName);
+                        responsePayload = await CheckStock(stockProductName);
                         break;
 
                     case "SearchProduct":
                         var searchProductName = parameters["productName"]?.ToString();
-                        responseText = await SearchProduct(searchProductName);
+                        responsePayload = await SearchProduct(searchProductName);
                         break;
 
                     default:
-                        responseText = "Xin lỗi, tôi chưa hiểu ý bạn.";
+                        responsePayload = new { fulfillmentText = "Sorry, I didn't understand that." };
                         break;
                 }
 
-                return Ok(new { fulfillmentText = responseText });
+                return Ok(responsePayload);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing webhook: {Message}", ex.Message);
-                return StatusCode(500, "Lỗi trong quá trình xử lý webhook.");
+                return StatusCode(500, "An error occurred while processing the webhook.");
             }
         }
 
-
-        // Retrieve and format product suggestions
         private async Task<List<Product>> GetProductSuggestions()
         {
             return await _context.Products.Include(p => p.Category).ToListAsync();
         }
 
-        private string FormatProductList(List<Product> products)
+        private object FormatProductListWithImages(List<Product> products)
         {
             if (products == null || !products.Any())
-                return "Hiện tại không có sản phẩm nào.";
+                return new { fulfillmentText = "Currently, no products are available." };
 
-            return string.Join("\n", products.Select(p =>
-                $"- {p.ProductName} (Loại: {p.Category?.CategoryName}, Giá: {p.Price})"));
+            var cards = products.Select(p => new
+            {
+                card = new
+                {
+                    title = p.ProductName,
+                    subtitle = $"Category: {p.Category?.CategoryName}, Price: {p.Price}",
+                    imageUri = GetProductImageUrl(p.ImageUrl), // Use the correct URL for the image
+                    buttons = new[]
+                    {
+                new { text = "View Product", postback = $"{_baseUrl}/home/details/{p.ProductId}" }
+            }
+                }
+            }).ToArray();
+
+            return new { fulfillmentMessages = cards }; // Adjusted to match Dialogflow's expected structure
         }
 
-        // Retrieve and format product categories
         private async Task<List<ProductCategory>> GetProductCategories()
         {
             return await _context.ProductCategories.ToListAsync();
         }
 
-        private string FormatCategoryList(List<ProductCategory> categories)
+        private object FormatCategoryList(List<ProductCategory> categories)
         {
             if (categories == null || !categories.Any())
-                return "Hiện tại không có thể loại nào.";
+                return new { fulfillmentText = "Currently, no categories are available." };
 
-            return string.Join("\n", categories.Select(c => $"- {c.CategoryName}"));
+            return new { fulfillmentText = string.Join("\n", categories.Select(c => $"- {c.CategoryName}")) };
         }
 
-        // Retrieve products by category
         private async Task<List<Product>> GetProductsByCategory(string category)
         {
             if (string.IsNullOrWhiteSpace(category))
@@ -127,57 +148,86 @@ namespace EcommerceChatbot.Controllers
                 .ToListAsync();
         }
 
-        // Retrieve product details by product name
-        private async Task<string> GetProductDetails(string productName)
+        private async Task<object> GetProductDetails(string productName)
         {
-            _logger.LogInformation("Getting details for product: {ProductName}", productName);
-
             if (string.IsNullOrWhiteSpace(productName))
-                return "Xin lỗi, tôi cần biết tên sản phẩm để cung cấp thông tin chi tiết.";
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết." };
+
+            // Using the product name for search
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
+
+            if (product == null)
+                return new { fulfillmentText = $"Product '{productName}' not found." };
+
+            // If the product is found, return detailed information
+            return new
+            {
+                fulfillmentMessages = new[]
+                {
+            new
+            {
+                card = new
+                {
+                    title = product.ProductName,
+                    subtitle = $"Category: {product.Category?.CategoryName}, Price: {product.Price}\nDescription: {product.Description}",
+                    imageUri = GetProductImageUrl(product.ImageUrl),  // Generate full URL for image
+                    buttons = new[]
+                    {
+                        new { text = "View Product", postback = $"{_baseUrl}/products/{product.ProductId}" } // Ensure this URL is valid
+                    }
+                }
+            }
+        }
+            };
+        }
+
+        private async Task<object> CheckStock(string productName)
+        {
+            if (string.IsNullOrWhiteSpace(productName))
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để kiểm tra hàng tồn kho." };
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
+
+            if (product == null)
+                return new { fulfillmentText = $"Product '{productName}' not found." };
+
+            return new { fulfillmentText = $"{product.ProductName} có {product.StockQuantity} sản phẩm trong kho." };
+        }
+
+        private async Task<object> SearchProduct(string productName)
+        {
+            if (string.IsNullOrWhiteSpace(productName))
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để tìm kiếm." };
 
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return $"Không tìm thấy sản phẩm '{productName}'.";
+                return new { fulfillmentText = $"Product '{productName}' not found." };
 
-            return $"Sản phẩm {product.ProductName} có giá {product.Price} và mô tả: {product.Description}.";
-        }
-
-        // Check stock availability for a given product
-        private async Task<string> CheckStock(string productName)
-        {
-            _logger.LogInformation("Checking stock for product: {ProductName}", productName);
-
-            if (string.IsNullOrWhiteSpace(productName))
-                return "Xin lỗi, tôi cần biết tên sản phẩm để kiểm tra tồn kho.";
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
-
-            if (product == null)
-                return $"Không tìm thấy sản phẩm '{productName}'.";
-
-            return $"Sản phẩm {product.ProductName} hiện còn {product.StockQuantity} trong kho.";
-        }
-
-        // Search for a product by name
-        private async Task<string> SearchProduct(string productName)
-        {
-            _logger.LogInformation("Searching for product: {ProductName}", productName);
-
-            if (string.IsNullOrWhiteSpace(productName))
-                return "Xin lỗi, tôi cần biết tên sản phẩm để tìm kiếm.";
-
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
-
-            if (product == null)
-                return $"Không tìm thấy sản phẩm '{productName}'.";
-
-            return $"Chúng tôi có sản phẩm {product.ProductName} với giá {product.Price}.";
+            return new
+            {
+                fulfillmentMessages = new[]
+                {
+                    new
+                    {
+                        card = new
+                        {
+                            title = product.ProductName,
+                            subtitle = $"Price: {product.Price}",
+                            imageUri = GetProductImageUrl(product.ImageUrl), // Generate full URL for image
+                            buttons = new[]
+                            {
+                                new { text = "View Product", postback = $"{_baseUrl}/home/details/{product.ProductId}" }
+                            }
+                        }
+                    }
+                }
+            };
         }
     }
 }

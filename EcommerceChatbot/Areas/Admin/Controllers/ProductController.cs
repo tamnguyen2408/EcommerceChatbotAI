@@ -40,19 +40,21 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             {
                 // Handle image upload
                 if (productImage != null && productImage.Length > 0)
-                {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/products");
-                    Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
-                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(productImage.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    if (productImage != null && productImage.Length > 0)
                     {
-                        await productImage.CopyToAsync(stream);
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/products");
+                        Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                        string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(productImage.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await productImage.CopyToAsync(stream);
+                        }
+
+                        product.ImageUrl = "/images/products/" + uniqueFileName; // Save the path correctly
                     }
 
-                    product.ImageUrl = "/images/products/" + uniqueFileName;
-                }
 
                 product.CreatedAt = DateTime.Now;
                 product.UpdatedAt = DateTime.Now;
