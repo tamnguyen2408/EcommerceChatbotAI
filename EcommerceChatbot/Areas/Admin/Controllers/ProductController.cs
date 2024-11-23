@@ -28,9 +28,12 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
         public async Task<IActionResult> Add()
         {
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Populate categories
+            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Thêm danh sách gender
             return View();
         }
 
+
+        // POST: Admin/Product/Add
         // POST: Admin/Product/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -40,21 +43,19 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             {
                 // Handle image upload
                 if (productImage != null && productImage.Length > 0)
-                    if (productImage != null && productImage.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/products");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(productImage.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/products");
-                        Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
-                        string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(productImage.FileName);
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await productImage.CopyToAsync(stream);
-                        }
-
-                        product.ImageUrl = "/images/products/" + uniqueFileName; // Save the path correctly
+                        await productImage.CopyToAsync(stream);
                     }
 
+                    product.ImageUrl = "/images/products/" + uniqueFileName; // Save the path correctly
+                }
 
                 product.CreatedAt = DateTime.Now;
                 product.UpdatedAt = DateTime.Now;
@@ -67,8 +68,10 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             }
 
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Repopulate categories on failure
+            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Repopulate genders
             return View(product);
         }
+
         // GET: Admin/Product/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -79,6 +82,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             }
 
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Populate categories
+            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Thêm danh sách gender
             return View(product);
         }
 

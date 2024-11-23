@@ -13,28 +13,33 @@ namespace EcommerceChatbot.Controllers
             _context = context;
         }
 
-        // Display products by category
-        public async Task<IActionResult> Index(string category)
+        // Display products by category and optionally filter by gender
+        public async Task<IActionResult> Index(string category, string? gender)
         {
-            if (string.IsNullOrEmpty(category))
+            IQueryable<Product> productsQuery = _context.Products.Include(p => p.Category);
+
+            // Filter by category
+            if (!string.IsNullOrEmpty(category))
             {
-                // If no category is selected, display all products
-                var allProducts = await _context.Products.Include(p => p.Category).ToListAsync();
-                return View(allProducts);
+                productsQuery = productsQuery.Where(p => p.Category.CategoryName == category);
             }
 
-            // Filter products by category (name)
-            var productsByCategory = await _context.Products
-                .Include(p => p.Category)
-                .Where(p => p.Category.CategoryName == category)
-                .ToListAsync();
-
-            if (!productsByCategory.Any())
+            // Filter by gender
+            if (!string.IsNullOrEmpty(gender))
             {
-                ViewBag.Message = $"No products found for category '{category}'.";
+                productsQuery = productsQuery.Where(p => p.Gender == gender);
             }
 
-            return View(productsByCategory);
+            var products = await productsQuery.ToListAsync();
+
+            // Check if no products were found
+            if (!products.Any())
+            {
+                ViewBag.Message = $"No products found for category '{category}'" +
+                                  (string.IsNullOrEmpty(gender) ? "" : $" and gender '{gender}'.");
+            }
+
+            return View(products);
         }
     }
 }

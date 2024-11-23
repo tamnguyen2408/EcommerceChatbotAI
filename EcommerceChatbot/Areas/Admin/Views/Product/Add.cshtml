@@ -51,6 +51,21 @@
             </div>
         </div>
 
+        <!-- Add gender selection -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Gender" class="form-label fw-bold">Gender</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="">-- Select Gender --</option>
+                    @foreach (var gender in ViewBag.Genders as List<string>)
+                    {
+                        <option value="@gender">@gender</option>
+                    }
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+        </div>
+
         <div class="mb-3">
             <label class="form-label fw-bold">Product Image</label>
             <input type="file" name="productImage" class="form-control" />

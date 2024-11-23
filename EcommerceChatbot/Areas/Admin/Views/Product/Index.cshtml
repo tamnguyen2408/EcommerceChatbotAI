@@ -24,6 +24,7 @@
                     <th>Price</th>
                     <th>Category</th>
                     <th>Stock Quantity</th>
+                    <th>Gender</th> <!-- Add a column for Gender -->
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -47,6 +48,7 @@
                         <td>@product.Price.ToString("C")</td>
                         <td>@product.Category?.CategoryName</td>
                         <td>@product.StockQuantity</td>
+                        <td>@product.Gender</td> <!-- Display the Gender here -->
                         <td>
                             <a asp-action="Edit" asp-route-id="@product.ProductId"
                                class="btn btn-warning btn-sm me-2">

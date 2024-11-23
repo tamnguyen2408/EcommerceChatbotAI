@@ -18,11 +18,20 @@ namespace EcommerceChatbot.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? gender)
         {
-            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            IQueryable<Product> productsQuery = _context.Products.Include(p => p.Category);
+
+            // Apply gender filter if provided
+            if (!string.IsNullOrEmpty(gender))
+            {
+                productsQuery = productsQuery.Where(p => p.Gender == gender);
+            }
+
+            var products = await productsQuery.ToListAsync();
             return View(products);
         }
+
         public async Task<IActionResult> Details(int id)
         {
             if (id == 0) return RedirectToAction("Index");
@@ -36,6 +45,10 @@ namespace EcommerceChatbot.Controllers
             return View(productById);
         }
 
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
 
         public IActionResult Privacy()

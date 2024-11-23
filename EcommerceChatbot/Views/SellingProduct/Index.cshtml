@@ -1,0 +1,31 @@
+﻿@model IEnumerable<EcommerceChatbot.Models.Product>
+
+@{
+    ViewData["Title"] = "Selling_product";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+@section SellingProduct {
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Best selling products</h2>
+        </div>
+        <ul class="tabs list-unstyled">
+            <li data-tab-target="#all" class="active tab" onclick="loadProducts('all')">All</li>
+            <li data-tab-target="#shoes" class="tab" onclick="loadProducts('giày')">Shoes</li>
+            <li data-tab-target="#tshirts" class="tab" onclick="loadProducts('quần áo')">Tshirts</li>
+            <li data-tab-target="#pants" class="tab" onclick="loadProducts('túi xách')">Handbags</li>
+        </ul>
+        <div class="tab-content" id="product-container">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+    </div>
+}
+
+<script>
+    async function loadProducts(category) {
+        const response = await fetch(`/SellingProduct/GetProductsByCategory?category=${category}`);
+        const html = await response.text();
+        document.getElementById('product-container').innerHTML = html;
+    }
+</script>

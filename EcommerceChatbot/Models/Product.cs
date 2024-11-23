@@ -29,6 +29,7 @@ public partial class Product
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+    public string? Gender { get; set; }  // Male, Female, Unisex
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
