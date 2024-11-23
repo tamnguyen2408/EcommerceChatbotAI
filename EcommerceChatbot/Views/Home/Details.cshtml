@@ -36,7 +36,7 @@
 
 
             <div class="d-grid gap-2 mt-3">
-                <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex flex-column">
+                <form id="addToCartForm" asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex flex-column">
                     <input type="hidden" name="productId" value="@Model.ProductId" />
                     <input type="hidden" name="productName" value="@Model.ProductName" />
                     <input type="hidden" name="price" value="@Model.Price" />
@@ -46,6 +46,43 @@
                         <i class="bi bi-cart-plus me-2"></i> Add to Cart
                     </button>
                 </form>
+                <script>
+                    document.getElementById("addToCartForm").addEventListener("submit", function (event) {
+                        event.preventDefault(); // Ngừng form gửi đi truyền thống
+
+                        var formData = new FormData(this);
+
+                        // Gửi yêu cầu Ajax
+                        fetch('@Url.Action("AddToCart", "Cart")', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // CSRF Token
+                            }
+                        })
+                            .then(response => response.json()) // Chờ JSON trả về từ Controller
+                            .then(data => {
+                                if (data.success) {
+                                    // Cập nhật số lượng sản phẩm trên biểu tượng giỏ hàng
+                                    const cartBadge = document.getElementById('cart-item-count');
+                                    cartBadge.textContent = data.totalItems;
+                                    cartBadge.style.display = data.totalItems > 0 ? 'inline' : 'none';
+
+                                    alert('Product added to cart!');
+                                } else if (data.redirectToLogin) {
+                                    // Nếu chưa đăng nhập, chuyển hướng đến trang login
+                                    window.location.href = '@Url.Action("Login", "Auth")'; // Điều hướng đến trang login
+                                } else {
+                                    // Nếu có lỗi (ví dụ sản phẩm đã có trong giỏ), hiển thị thông báo lỗi
+                                    alert(data.message || 'Failed to add product to cart.');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+
+                </script>
+
+
                 <button type="button" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
                     <i class="bi bi-eye-fill me-2"></i> Quick View
                 </button>

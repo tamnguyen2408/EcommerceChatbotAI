@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "SaGl/sfaIEepBTPC9utlyniroq4QXl4IKVOzYQcz52c=",
+  "Hash": "+51nCs+9e743Pu7U4eje2/fNDC+14RwylAWVASct+SA=",
   "Source": "EcommerceChatbot",
   "BasePath": "_content/EcommerceChatbot",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\authentication.css"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\cart.css",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "css/cart.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\cart.css"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\normalize.css",

@@ -7437,6 +7437,10 @@
       "PackagePath": "staticwebassets\\css\\authentication.css"
     },
     {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\cart.css",
+      "PackagePath": "staticwebassets\\css\\cart.css"
+    },
+    {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\normalize.css",
       "PackagePath": "staticwebassets\\css\\normalize.css"
     },
