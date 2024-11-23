@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using EcommerceChatbot.Areas.Admin.Service;
 using Microsoft.Extensions.Logging;
 using EcommerceChatbot.Models;
+using Google.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,16 @@ builder.Logging.AddDebug();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ShoppingCart>();
+
+// Configure Session (important for saving ShoppingCart state)
+builder.Services.AddDistributedMemoryCache(); // Use in-memory cache for sessions
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian timeout của session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Configure DbContext to use SQL Server.
 builder.Services.AddDbContext<ECommerceAiDbContext>(options =>
@@ -86,6 +97,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("AllowSpecificOrigins"); // Apply CORS policy
 
+// Use Session middleware
+app.UseSession(); // Bật sử dụng Session
+
 app.UseRouting();
 
 // Ensure authentication runs before authorization.
@@ -108,6 +122,10 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.MapControllerRoute(
+//    name: "cart",
+//    pattern: "cart.html",
+//    defaults: new { controller = "Cart", action = "Index" });
 
 // Run the application.
 app.Run();
