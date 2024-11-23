@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using ECommerceChatbot.Models;
 
 namespace EcommerceChatbot.Models;
 
@@ -50,14 +51,14 @@ public partial class ECommerceAiDbContext : DbContext
 
         modelBuilder.Entity<CartItem>(entity =>
         {
-            entity.HasKey(e => e.CartItemId).HasName("PK__CartItem__488B0B2AA3A3E1BE");
+            entity.HasKey(e => e.CartItemID).HasName("PK__CartItem__488B0B2AA3A3E1BE");
 
-            entity.Property(e => e.CartItemId).HasColumnName("CartItemID");
-            entity.Property(e => e.CartId).HasColumnName("CartID");
+            entity.Property(e => e.CartItemID).HasColumnName("CartItemID");
+            entity.Property(e => e.Id).HasColumnName("CartID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
-                .HasForeignKey(d => d.CartId)
+                .HasForeignKey(d => d.Id)
                 .HasConstraintName("FK__CartItems__CartI__5165187F");
 
             entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
@@ -146,7 +147,7 @@ public partial class ECommerceAiDbContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+.HasColumnType("datetime");
             entity.Property(e => e.ImageUrl)
                 .HasMaxLength(255)
                 .HasColumnName("ImageURL");
