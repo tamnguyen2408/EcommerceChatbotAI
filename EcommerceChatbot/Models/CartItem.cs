@@ -16,4 +16,5 @@ public partial class CartItem
     public virtual Cart? Cart { get; set; }
 
     public virtual Product? Product { get; set; }
+    public int Price { get; internal set; }
 }

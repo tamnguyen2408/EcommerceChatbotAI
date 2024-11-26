@@ -6,11 +6,13 @@
 }
 
 <div class="container my-5">
+    <!-- Back Button -->
     <div class="d-flex justify-content-end mb-4">
         <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary d-flex align-items-center">
             <i class="bi bi-arrow-left me-2"></i> View All Products
         </a>
     </div>
+
     <div class="row g-5">
         <!-- Product Image -->
         <div class="col-md-5">
@@ -21,8 +23,9 @@
 
         <!-- Product Details -->
         <div class="col-md-7">
+            <!-- Product Name and Price -->
             <h2 class="fw-bold text-uppercase text-primary">@Model.ProductName</h2>
-            <h3 class="fw-bold text-success fs-4">@Model.Price.ToString("C")</h3>
+            <h3 class="fw-bold text-success fs-4">@Model.Price.ToString("C", new System.Globalization.CultureInfo("en-US"))</h3>
             <p class="text-muted mb-4">@Model.Description</p>
 
             <!-- Quantity Selector -->
@@ -33,9 +36,9 @@
                 </div>
             </div>
 
-            <!-- Buttons for Add to Cart and Quick View -->
+            <!-- Add to Cart and Quick View Buttons -->
             <div class="d-grid gap-2">
-                <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center">
+                <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center" id="addToCartButton">
                     <i class="bi bi-cart-plus me-2"></i> Add to Cart
                 </button>
                 <button type="button" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
@@ -50,13 +53,14 @@
                     <span class="text-warning">⭐⭐⭐⭐☆</span>
                     <span class="text-muted ms-2">(4.5/5 from 120 reviews)</span>
                 </div>
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam.</p>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. Integer vitae lorem nec eros convallis convallis non at odio.</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Image container */
     .image-holder {
         border: 1px solid #ddd;
         border-radius: 10px;
@@ -70,6 +74,7 @@
         transition: all 0.3s ease;
     }
 
+        /* Image styling */
         .image-holder img {
             width: 100%;
             height: auto;
@@ -77,10 +82,12 @@
             transition: transform 0.3s ease;
         }
 
+        /* Zoom effect on image hover */
         .image-holder:hover img {
             transform: scale(1.05); /* Slight zoom on hover */
         }
 
+    /* Button styling */
     .btn-outline-secondary {
         color: #6c757d;
     }
@@ -94,11 +101,18 @@
             background-color: #0056b3;
         }
 
+    .btn-outline-secondary:hover {
+        color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /* Quantity input box */
     #quantity {
         max-width: 60px;
         text-align: center;
     }
 
+    /* Product Name and Price colors */
     .text-primary {
         color: #007bff;
     }
@@ -106,4 +120,50 @@
     .text-success {
         color: #28a745;
     }
+
+    /* Review stars */
+    .text-warning {
+        color: #ffc107;
+    }
+
+    /* Custom gap between items */
+    .g-5 {
+        gap: 2rem;
+    }
 </style>
+
+<script>
+    // Add to Cart functionality
+    document.getElementById('addToCartButton').addEventListener('click', function () {
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const productId = @Model.ProductId;
+        const productName = "@Model.ProductName";
+        const productPrice = parseFloat(@Model.Price);
+        const productImage = "@Model.ImageUrl"; // If you want to save the product image as well
+
+        if (isNaN(quantity) || isNaN(productPrice) || quantity <= 0 || productPrice <= 0) {
+            alert('Please enter a valid quantity and product price.');
+            return;
+        }
+
+        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+        const existingProductIndex = cart.findIndex(item => item.productId === productId);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += quantity;
+        } else {
+            cart.push({
+                productId: productId,
+                name: productName,
+                price: productPrice,
+                quantity: quantity,
+                image: productImage
+            });
+        }
+
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+
+        alert('The product has been added to the cart!');
+    });
+</script>

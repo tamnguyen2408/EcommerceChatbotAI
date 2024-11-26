@@ -150,6 +150,7 @@ namespace EcommerceChatbot.Controllers
             if (string.IsNullOrWhiteSpace(productName))
                 return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết." };
 
+            // Using the product name for search
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));

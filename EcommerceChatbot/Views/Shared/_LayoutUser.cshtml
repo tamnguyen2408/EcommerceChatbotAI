@@ -89,11 +89,292 @@
                             <ul class="d-flex flex-column align-items-end list-unstyled mb-0 gap-1" style="gap: 20px;margin-top: 5px;">
                                 <!-- Cart and Wishlist Icons -->
                                 <li class="d-flex align-items-center gap-1" style="gap: 20px;margin-top: 5px;">
+
                                     <!-- Cart Icon -->
-                                    <a href="cart.html" class="text-muted me-2">
-                                        <i class="icon icon-shopping-cart fs-5"></i>
+                                    <a href="javascript:void(0);" id="cartIcon" class="text-muted position-relative">
+                                        <i class="bi bi-cart fs-4"></i>
                                     </a>
-                                    <!-- Wishlist Icon -->
+
+                                    <!-- Payment Tab -->
+                                    <div id="paymentTab" class="payment-tab" style="display: none;">
+                                        <div class="payment-content">
+                                            <h4 class="text-center mb-4">Cart Details</h4>
+                                            <div id="cartItemsContainer">
+                                                <!-- Cart item example -->
+                                                <div class="cart-item">
+                                                    <div class="cart-item-info">
+                                                        <img src="product-image.jpg" alt="Product Image">
+                                                        <div class="cart-item-text">
+                                                            <div class="cart-item-name">Product Name</div>
+                                                            <div class="cart-item-quantity">Quantity: <span>1</span></div>
+                                                        </div>
+                                                        <div class="cart-item-price">$100.00</div>
+                                                    </div>
+                                                    <div class="cart-item-actions">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(0)">-</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(0)">+</button>
+                                                        <button class="btn btn-sm remove-btn" onclick="removeItem(0)">x</button>
+                                                    </div>
+                                                </div>
+                                                <!-- Repeat for each cart item -->
+                                            </div>
+                                            <div class="total-section">
+                                                <strong>Total:</strong> <span id="totalAmount">0 USD</span>
+                                            </div>
+                                            <button type="button" class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                                        </div>
+                                    </div>
+
+                                    <style>
+                                        /* Payment Tab Container */
+                                        #paymentTab {
+                                            width: 100%;
+                                            max-width: 400px;
+                                            padding: 20px;
+                                            position: absolute;
+                                            top: 60px;
+                                            right: 0;
+                                            z-index: 1000;
+                                            background-color: #fff;
+                                            border-radius: 8px;
+                                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+                                            font-family: Arial, sans-serif;
+                                            color: #333;
+                                            max-height: 600px;
+                                            overflow-y: auto;
+                                        }
+
+                                        .payment-content {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 15px;
+                                        }
+
+                                            /* Title Styling */
+                                            .payment-content h4 {
+                                                font-weight: bold;
+                                                font-size: 1.2em;
+                                                color: #333;
+                                            }
+
+                                        /* Cart Item Styling */
+                                        .cart-item {
+                                            padding: 10px 0;
+                                            border-bottom: 1px solid #e0e0e0;
+                                        }
+
+                                        .cart-item-info {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 15px; /* Giảm khoảng cách giữa ảnh và thông tin sản phẩm */
+                                        }
+
+                                        .cart-item img {
+                                            width: 50px;
+                                            height: 50px;
+                                            object-fit: cover;
+                                            border-radius: 4px;
+                                        }
+
+                                        .cart-item-text {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 5px;
+                                        }
+
+                                        .cart-item-name {
+                                            font-weight: bold;
+                                            font-size: 0.9em;
+                                            color: #555;
+                                        }
+
+                                        .cart-item-quantity {
+                                            font-size: 0.9em;
+                                            color: #777;
+                                        }
+
+                                        .cart-item-price {
+                                            font-size: 1em;
+                                            color: #333;
+                                        }
+
+                                        /* Action Buttons (Increase, Decrease, Remove) */
+                                        .cart-item-actions {
+                                            display: flex;
+                                            gap: 5px; /* Giảm khoảng cách giữa các nút */
+                                            margin-top: 5px;
+                                        }
+
+                                            .cart-item-actions button {
+                                                padding: 4px 6px;
+                                                font-size: 0.85em;
+                                                background-color: #007bff;
+                                                color: white;
+                                                border: none;
+                                                border-radius: 4px;
+                                                cursor: pointer;
+                                            }
+
+                                                .cart-item-actions button:hover {
+                                                    background-color: #0056b3;
+                                                }
+
+                                        /* Remove Button Styling */
+                                        .remove-btn {
+                                            background-color: #dc3545;
+                                            font-size: 1em;
+                                            padding: 0 4px;
+                                            border-radius: 50%;
+                                        }
+
+                                            .remove-btn:hover {
+                                                background-color: #c82333;
+                                            }
+
+                                        /* Total Section */
+                                        .total-section {
+                                            font-weight: bold;
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            padding: 10px 0;
+                                            border-top: 1px solid #e0e0e0;
+                                        }
+
+                                        /* Checkout Button */
+                                        .checkout-btn {
+                                            background-color: #007bff;
+                                            color: #fff;
+                                            font-weight: bold;
+                                            padding: 10px;
+                                            text-align: center;
+                                            border: none;
+                                            border-radius: 4px;
+                                            cursor: pointer;
+                                            font-size: 1em;
+                                        }
+
+                                            .checkout-btn:hover {
+                                                background-color: #0056b3;
+                                            }
+                                    </style>
+
+                                    <script>
+                                        // Render cart items in the payment tab
+                                        function renderCartItems() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            const cartItemsContainer = document.getElementById('cartItemsContainer');
+                                            const totalAmountElement = document.getElementById('totalAmount');
+                                            cartItemsContainer.innerHTML = '';  // Clear previous content
+
+                                            let totalAmount = 0;
+
+                                            if (cart.length === 0) {
+                                                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                                                totalAmountElement.textContent = '0 USD';
+                                                return;
+                                            }
+
+                                            cart.forEach((item, index) => {
+                                                const itemTotal = item.price * item.quantity;
+                                                totalAmount += itemTotal;
+
+                                                const itemElement = document.createElement('div');
+                                                itemElement.classList.add('cart-item');
+                                                itemElement.innerHTML = `
+                                                        <div class="d-flex justify-content-between mb-2 align-items-center cart-item-info">
+                                                            <img src="${item.image}" alt="${item.name}" style="max-width: 50px;">
+                                                            <div class="cart-item-text">
+                                                                <div class="cart-item-name">${item.name}</div>
+                                                                <div class="cart-item-quantity">Quantity: <span>${item.quantity}</span></div>
+                                                            </div>
+                                                            <div class="cart-item-price">${itemTotal.toFixed(2)} USD</div>
+                                                        </div>
+                                                        <div class="cart-item-actions">
+                                                            <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(${index})">-</button>
+                                                            <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(${index})">+</button>
+                                                            <button class="btn btn-sm remove-btn" onclick="removeItem(${index})">x</button>
+                                                        </div>
+                                                        <hr />
+                                                    `;
+                                                cartItemsContainer.appendChild(itemElement);
+                                            });
+
+                                            totalAmountElement.textContent = `${totalAmount.toFixed(2)} USD`;
+                                        }
+
+                                        // Increase quantity of a cart item
+                                        function increaseQuantity(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            cart[index].quantity += 1;
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Decrease quantity of a cart item
+                                        function decreaseQuantity(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            if (cart[index].quantity > 1) {
+                                                cart[index].quantity -= 1;
+                                            } else {
+                                                cart.splice(index, 1);  // Remove item if quantity is 0
+                                            }
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Remove item from cart
+                                        function removeItem(index) {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            cart.splice(index, 1);  // Remove item from cart
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+                                            renderCartItems();
+                                            updateCartCount();
+                                        }
+
+                                        // Update cart count on the cart icon
+                                        function updateCartCount() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                                        }
+
+                                        // Toggle payment tab display on cart icon click
+                                        document.getElementById('cartIcon').addEventListener('click', function () {
+                                            const paymentTab = document.getElementById('paymentTab');
+
+                                            if (paymentTab.style.display === 'none' || paymentTab.style.display === '') {
+                                                paymentTab.style.display = 'block';
+                                                renderCartItems();  // Update cart items in the tab
+                                            } else {
+                                                paymentTab.style.display = 'none';
+                                            }
+                                        });
+
+                                        // Proceed to Checkout
+                                        function proceedToCheckout() {
+                                            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                                            if (cart.length === 0) {
+                                                alert('Your cart is empty!');
+                                                return;
+                                            }
+
+                                            // Lưu giỏ hàng vào sessionStorage
+                                            sessionStorage.setItem('cart', JSON.stringify(cart));
+
+                                            // Chuyển hướng tới trang checkout.cshtml
+                                            window.location.href = "/Cart/Checkout";  // Điều chỉnh URL này theo đường dẫn chính xác đến trang checkout của bạn
+                                        }
+
+                                    </script>
+
+
+
+
+
+
+                             <!-- Wishlist Icon -->
                                     <a href="wishlist.html" class="text-muted">
                                         <i class="icon icon-heart fs-5"></i>
                                     </a>
@@ -253,13 +534,8 @@
                 --df-messenger-avatar-background: #007bff; /* Màu nền avatar chatbot */
                 --df-messenger-avatar-border-radius: 50%; /* Avatar hình tròn */
                 --df-messenger-chat-background-color: #ffffff; /* Màu nền cho khung chat */
-                
             }
 
-            df-messenger {
-                position: relative; /* Đảm bảo z-index hoạt động */
-                z-index: 9999; /* Đặt giá trị z-index cao */
-            }
                 /* Chỉnh sửa tiêu đề chatbot */
                 df-messenger .df-title {
                     background-color: #007bff; /* Màu nền tiêu đề */
@@ -378,11 +654,11 @@
 
             // Handle Speech Recognition events
             recognition.onresult = function (event) {
-                const transcript = event.results[0][0].transcript.toLowerCase();
-                const keywords = transcript.split(' ').filter(word => word.trim().length > 0); // Tách từ khóa
-                searchTermInput.value = keywords.join(' '); // Đặt giá trị vào input
-                document.querySelector('form.input-group').submit(); // Gửi form
-                closeModal.click(); // Đóng modal sau khi tìm kiếm
+                const transcript = event.results[0][0].transcript;
+                searchTermInput.value = transcript; // Fill search input
+                // Submit form while keeping the search term in the input field
+                document.querySelector('form.input-group').submit();
+                closeModal.click(); // Close modal after search
             };
 
             // Stop animation when recognition ends

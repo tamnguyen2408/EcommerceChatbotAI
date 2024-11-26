@@ -580,3 +580,4 @@ D:\ECommerceChatbot_Đồ án\ECommerceChatbot\obj\Debug\net8.0\refint\Ecommerce
 D:\ECommerceChatbot_Đồ án\ECommerceChatbot\obj\Debug\net8.0\EcommerceChatbot.pdb
 D:\ECommerceChatbot_Đồ án\ECommerceChatbot\obj\Debug\net8.0\EcommerceChatbot.genruntimeconfig.cache
 D:\ECommerceChatbot_Đồ án\ECommerceChatbot\obj\Debug\net8.0\ref\EcommerceChatbot.dll
+D:\ECommerceChatbot_Đồ án\ECommerceChatbot\bin\Debug\net8.0\web.config

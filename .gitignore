@@ -3,3 +3,9 @@
 ################################################################################
 
 /EcommerceChatbot/.vs/EcommerceChatbot/FileContentIndex
+.vs/
+bin/
+obj/
+*.dll
+*.pdb
+*.cache

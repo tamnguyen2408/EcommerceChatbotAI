@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "AOQTrMpzzMWgY27PsKi8NseHG+x2HQzrtEHsotadpYw=",
+  "Hash": "otfgckBtUTpHjkQi4DYoWWBzVYQq4D9MtGQ3n42+6fU=",
   "Source": "EcommerceChatbot",
   "BasePath": "_content/EcommerceChatbot",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\authentication.css"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\cart.css",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "css/cart.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\cart.css"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\normalize.css",
@@ -3131,6 +3150,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\visa-icon.jpg"
+    },
+    {
+      "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\js\\cart.js",
+      "SourceId": "EcommerceChatbot",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\",
+      "BasePath": "_content/EcommerceChatbot",
+      "RelativePath": "js/cart.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\cart.js"
     },
     {
       "Identity": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\js\\jquery-1.11.0.min.js",

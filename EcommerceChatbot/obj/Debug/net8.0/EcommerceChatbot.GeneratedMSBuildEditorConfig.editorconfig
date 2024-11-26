@@ -78,6 +78,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Cart/Checkout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja291dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Category/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -96,6 +100,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/OrderConfirmation/OrderConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJDb25maXJtYXRpb25cT3JkZXJDb25maXJtYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/OrderConfirmation/OrderConfirmations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJDb25maXJtYXRpb25cT3JkZXJDb25maXJtYXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/OrderConfirmation/RedirectToVNPay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJDb25maXJtYXRpb25cUmVkaXJlY3RUb1ZOUGF5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/ECommerceChatbot_Đồ án/ECommerceChatbot/Views/Search/Index.cshtml]
