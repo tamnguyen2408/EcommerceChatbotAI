@@ -28,7 +28,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
         public async Task<IActionResult> Add()
         {
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Populate categories
-            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Thêm danh sách gender
+            ViewBag.Genders = new List<string> { "nam", "nữ", "cả nam và nữ" }; // Thêm danh sách gender
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             }
 
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Repopulate categories on failure
-            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Repopulate genders
+            ViewBag.Genders = new List<string> { "nam", "nữ", "cả nam và nữ" }; // Repopulate genders
             return View(product);
         }
 
@@ -82,7 +82,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             }
 
             ViewBag.Categories = await _context.ProductCategories.ToListAsync(); // Populate categories
-            ViewBag.Genders = new List<string> { "Male", "Female", "Unisex" }; // Thêm danh sách gender
+            ViewBag.Genders = new List<string> { "nam", "nữ", "cả nam và nữ" }; // Thêm danh sách gender
             return View(product);
         }
 

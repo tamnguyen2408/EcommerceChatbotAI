@@ -196,27 +196,27 @@
                                                 <li class="menu-item has-sub">
                                                     <a asp-controller="Category" asp-action="Index" asp-route-category="giày" class="item-anchor">Shoes Shop</a>
                                                     <ul class="submenu">
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="male" class="item-anchor">Male</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="female" class="item-anchor">Female</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="unisex" class="item-anchor">Unisex</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="nam" class="item-anchor">Male</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="nữ" class="item-anchor">Female</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="giày" asp-route-gender="cả nam và nữ" class="item-anchor">Unisex</a></li>
                                                     </ul>
                                                 </li>
                                                 <!-- Clothes Shop -->
                                                 <li class="menu-item has-sub">
                                                     <a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" class="item-anchor">Clothes Shop</a>
                                                     <ul class="submenu">
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="male" class="item-anchor">Male</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="female" class="item-anchor">Female</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="unisex" class="item-anchor">Unisex</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="nam" class="item-anchor">Male</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="nữ" class="item-anchor">Female</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="quần áo" asp-route-gender="cả nam và nữ" class="item-anchor">Unisex</a></li>
                                                     </ul>
                                                 </li>
                                                 <!-- Handbags Shop -->
                                                 <li class="menu-item has-sub">
                                                     <a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" class="item-anchor">Handbags Shop</a>
                                                     <ul class="submenu">
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="male" class="item-anchor">Male</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="female" class="item-anchor">Female</a></li>
-                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="unisex" class="item-anchor">Unisex</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="nam" class="item-anchor">Male</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="nữ" class="item-anchor">Female</a></li>
+                                                        <li><a asp-controller="Category" asp-action="Index" asp-route-category="túi xách" asp-route-gender="cả nam và nữ" class="item-anchor">Unisex</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -378,11 +378,11 @@
 
             // Handle Speech Recognition events
             recognition.onresult = function (event) {
-                const transcript = event.results[0][0].transcript;
-                searchTermInput.value = transcript; // Fill search input
-                // Submit form while keeping the search term in the input field
-                document.querySelector('form.input-group').submit();
-                closeModal.click(); // Close modal after search
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                const keywords = transcript.split(' ').filter(word => word.trim().length > 0); // Tách từ khóa
+                searchTermInput.value = keywords.join(' '); // Đặt giá trị vào input
+                document.querySelector('form.input-group').submit(); // Gửi form
+                closeModal.click(); // Đóng modal sau khi tìm kiếm
             };
 
             // Stop animation when recognition ends
@@ -795,7 +795,7 @@
                 <div class="row d-flex flex-wrap justify-content-between">
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="footer-menu">
-                            <h5 class="widget-title">Ultras</h5>
+                            <h5 class="widget-title">StyleO</h5>
                             <ul class="menu-list list-unstyled">
                                 <li class="menu-item">
                                     <a href="about.html">About us</a>

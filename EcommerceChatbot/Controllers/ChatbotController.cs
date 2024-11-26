@@ -23,7 +23,7 @@ namespace EcommerceChatbot.Controllers
         {
             _context = context;
             _logger = logger;
-            _baseUrl = "https://3db5-118-70-118-224.ngrok-free.app"; // Ensure this URL is active and correct
+            _baseUrl = "https://5b01-118-70-118-224.ngrok-free.app"; // Ensure this URL is active and correct
         }
 
         private string GetProductImageUrl(string imageName)
@@ -57,11 +57,6 @@ namespace EcommerceChatbot.Controllers
                         responsePayload = FormatProductListWithImages(products);
                         break;
 
-                    case "GetCategories":
-                        var categories = await GetProductCategories();
-                        responsePayload = FormatCategoryList(categories);
-                        break;
-
                     case "FilterProductByCategory":
                         var category = parameters["category"]?.ToString();
                         var filteredProducts = await GetProductsByCategory(category);
@@ -82,6 +77,18 @@ namespace EcommerceChatbot.Controllers
                         var searchProductName = parameters["productName"]?.ToString();
                         responsePayload = await SearchProduct(searchProductName);
                         break;
+                    case "FilterProductByGender":
+                        var gender = parameters["gender"]?.ToString();
+                        var filteredProductsByGender = await GetProductsByGender(gender);
+                        responsePayload = FormatProductListWithImages(filteredProductsByGender);
+                        break;
+                    case "SearchProductByCategoryAndGender":
+                        var genderParam = parameters["gender"]?.ToString();
+                        var categoryParam = parameters["category"]?.ToString();
+                        var filteredProductsByCategoryAndGender = await GetProductsByCategoryAndGender(categoryParam, genderParam);
+                        responsePayload = FormatProductListWithImages(filteredProductsByCategoryAndGender);
+                        break;
+                  
 
                     default:
                         responsePayload = new { fulfillmentText = "Sorry, I didn't understand that." };
@@ -107,27 +114,17 @@ namespace EcommerceChatbot.Controllers
             if (products == null || !products.Any())
                 return new { fulfillmentText = "Currently, no products are available." };
 
-            var cards = products.Select(p => new
-            {
-                card = new
-                {
-                    title = p.ProductName,
-                    subtitle = $"Category: {p.Category?.CategoryName}, Price: {p.Price}",
-                    imageUri = GetProductImageUrl(p.ImageUrl), // Use the correct URL for the image
-                    buttons = new[]
-                    {
-                new { text = "View Product", postback = $"{_baseUrl}/home/details/{p.ProductId}" }
-            }
-                }
-            }).ToArray();
+            var groupedProducts = products.GroupBy(p => p.Category?.CategoryName)
+                                          .Select(g => $"**{g.Key ?? "Uncategorized"}**\n" +
+                                                       string.Join("\n", g.Select(p =>
+                                                           $"🔸 {p.ProductName} - Price: {p.Price}\n" +
+                                                           $"   [More details]({_baseUrl}/home/details/{p.ProductId})")));
 
-            return new { fulfillmentMessages = cards }; // Adjusted to match Dialogflow's expected structure
+            var productListText = string.Join("\n\n", groupedProducts);
+
+            return new { fulfillmentText = productListText };
         }
 
-        private async Task<List<ProductCategory>> GetProductCategories()
-        {
-            return await _context.ProductCategories.ToListAsync();
-        }
 
         private object FormatCategoryList(List<ProductCategory> categories)
         {
@@ -153,7 +150,6 @@ namespace EcommerceChatbot.Controllers
             if (string.IsNullOrWhiteSpace(productName))
                 return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết." };
 
-            // Using the product name for search
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
@@ -161,28 +157,12 @@ namespace EcommerceChatbot.Controllers
             if (product == null)
                 return new { fulfillmentText = $"Product '{productName}' not found." };
 
-            // If the product is found, return detailed information
-            return new
-            {
-                fulfillmentMessages = new[]
-                {
-            new
-            {
-                card = new
-                {
-                    title = product.ProductName,
-                    subtitle = $"Category: {product.Category?.CategoryName}, Price: {product.Price}\nDescription: {product.Description}",
-                    imageUri = GetProductImageUrl(product.ImageUrl),  // Generate full URL for image
-                    buttons = new[]
-                    {
-                        new { text = "View Product", postback = $"{_baseUrl}/products/{product.ProductId}" } // Ensure this URL is valid
-                    }
-                }
-            }
-        }
-            };
-        }
+            var productDetailsText = $"{product.ProductName} - Category: {product.Category?.CategoryName}, Price: {product.Price}\n" +
+                                     $"Description: {product.Description}\n" +
+                                     $"More details: {_baseUrl}/products/{product.ProductId}";
 
+            return new { fulfillmentText = productDetailsText };
+        }
         private async Task<object> CheckStock(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName))
@@ -209,25 +189,35 @@ namespace EcommerceChatbot.Controllers
             if (product == null)
                 return new { fulfillmentText = $"Product '{productName}' not found." };
 
-            return new
-            {
-                fulfillmentMessages = new[]
-                {
-                    new
-                    {
-                        card = new
-                        {
-                            title = product.ProductName,
-                            subtitle = $"Price: {product.Price}",
-                            imageUri = GetProductImageUrl(product.ImageUrl), // Generate full URL for image
-                            buttons = new[]
-                            {
-                                new { text = "View Product", postback = $"{_baseUrl}/home/details/{product.ProductId}" }
-                            }
-                        }
-                    }
-                }
-            };
+            var productText = $"{product.ProductName} - Price: {product.Price}\n" +
+                              $"More details: {_baseUrl}/home/details/{product.ProductId}";
+
+            return new { fulfillmentText = productText };
         }
+        private async Task<List<Product>> GetProductsByGender(string gender)
+        {
+            if (string.IsNullOrWhiteSpace(gender))
+                return new List<Product>();
+
+            return await _context.Products
+                .Include(p => p.Category)
+                .Where(p => EF.Functions.Like(p.Gender, $"%{gender}%"))
+                .ToListAsync();
+        }
+
+        private async Task<List<Product>> GetProductsByCategoryAndGender(string category, string gender)
+        {
+            if (string.IsNullOrWhiteSpace(category) || string.IsNullOrWhiteSpace(gender))
+                return new List<Product>();
+
+            return await _context.Products
+                .Include(p => p.Category)
+                .Where(p => EF.Functions.Like(p.Category.CategoryName, $"%{category}%") &&
+                            EF.Functions.Like(p.Gender, $"%{gender}%"))
+                .ToListAsync();
+        }
+
+       
+
     }
 }
