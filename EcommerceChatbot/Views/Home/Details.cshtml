@@ -135,6 +135,14 @@
 <script>
     // Add to Cart functionality
     document.getElementById('addToCartButton').addEventListener('click', function () {
+        const isLoggedIn = @Html.Raw(User.Identity.IsAuthenticated.ToString().ToLower()); // Kiểm tra xem người dùng đã đăng nhập chưa
+
+        if (!isLoggedIn) {
+            // Nếu chưa đăng nhập, chuyển hướng đến trang Login
+            window.location.href = '/Auth/Login';
+            return;
+        }
+
         const quantity = parseInt(document.getElementById('quantity').value);
         const productId = @Model.ProductId;
         const productName = "@Model.ProductName";
@@ -163,7 +171,8 @@
         }
 
         sessionStorage.setItem('cart', JSON.stringify(cart));
-
+        updateCartCount(); // Gọi cập nhật sau khi thêm sản phẩm
+        renderCartItems();
         alert('The product has been added to the cart!');
     });
 </script>

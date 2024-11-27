@@ -2,17 +2,19 @@
 
 public class CartController : Controller
 {
-    // Action để hiển thị trang checkout
+    // Hiển thị trang checkout
+    [HttpGet("cart/checkout")]
     public IActionResult Checkout()
     {
         return View();  // Trả về trang checkout.cshtml
     }
 
-    // Action để xử lý thanh toán qua VNPay
-    [HttpPost]
+    // Xử lý thanh toán qua VNPay
+    [HttpPost("cart/checkout/vnpay")]
     public IActionResult RedirectToVNPay()
     {
-        // Xử lý thanh toán VNPay ở đây
+        // Xử lý thanh toán VNPay
         return RedirectToAction("Index", "Home");  // Chuyển hướng về trang chính sau khi thanh toán
     }
 }
+

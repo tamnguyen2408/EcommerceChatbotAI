@@ -93,7 +93,11 @@
                                     <!-- Cart Icon -->
                                     <a href="javascript:void(0);" id="cartIcon" class="text-muted position-relative">
                                         <i class="bi bi-cart fs-4"></i>
+                                        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.75em;">
+                                            0
+                                        </span>
                                     </a>
+
 
                                     <!-- Payment Tab -->
                                     <div id="paymentTab" class="payment-tab" style="display: none;">
@@ -134,7 +138,7 @@
                                             position: absolute;
                                             top: 60px;
                                             right: 0;
-                                            z-index: 1000;
+                                            z-index: 9999;
                                             background-color: #fff;
                                             border-radius: 8px;
                                             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -260,6 +264,8 @@
                                     </style>
 
                                     <script>
+   
+
                                         // Render cart items in the payment tab
                                         function renderCartItems() {
                                             const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -282,25 +288,26 @@
                                                 const itemElement = document.createElement('div');
                                                 itemElement.classList.add('cart-item');
                                                 itemElement.innerHTML = `
-                                                        <div class="d-flex justify-content-between mb-2 align-items-center cart-item-info">
-                                                            <img src="${item.image}" alt="${item.name}" style="max-width: 50px;">
-                                                            <div class="cart-item-text">
-                                                                <div class="cart-item-name">${item.name}</div>
-                                                                <div class="cart-item-quantity">Quantity: <span>${item.quantity}</span></div>
-                                                            </div>
-                                                            <div class="cart-item-price">${itemTotal.toFixed(2)} USD</div>
-                                                        </div>
-                                                        <div class="cart-item-actions">
-                                                            <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(${index})">-</button>
-                                                            <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(${index})">+</button>
-                                                            <button class="btn btn-sm remove-btn" onclick="removeItem(${index})">x</button>
-                                                        </div>
-                                                        <hr />
-                                                    `;
+                                                                          <div class="d-flex justify-content-between mb-2 align-items-center cart-item-info">
+                                                                              <img src="${item.image}" alt="${item.name}" style="max-width: 50px;">
+                                                                              <div class="cart-item-text">
+                                                                                  <div class="cart-item-name">${item.name}</div>
+                                                                                  <div class="cart-item-quantity">Quantity: <span>${item.quantity}</span></div>
+                                                                              </div>
+                                                                              <div class="cart-item-price">${itemTotal.toFixed(2)} USD</div>
+                                                                          </div>
+                                                                          <div class="cart-item-actions">
+                                                                              <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQuantity(${index})">-</button>
+                                                                              <button class="btn btn-sm btn-outline-secondary" onclick="increaseQuantity(${index})">+</button>
+                                                                              <button class="btn btn-sm remove-btn" onclick="removeItem(${index})">x</button>
+                                                                          </div>
+                                                                          <hr />
+                                                                      `;
                                                 cartItemsContainer.appendChild(itemElement);
                                             });
 
                                             totalAmountElement.textContent = `${totalAmount.toFixed(2)} USD`;
+
                                         }
 
                                         // Increase quantity of a cart item
@@ -309,36 +316,49 @@
                                             cart[index].quantity += 1;
                                             sessionStorage.setItem('cart', JSON.stringify(cart));
                                             renderCartItems();
-                                            updateCartCount();
+                                            updateCartCount(); // Cập nhật số lượng
                                         }
 
-                                        // Decrease quantity of a cart item
                                         function decreaseQuantity(index) {
                                             const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
                                             if (cart[index].quantity > 1) {
                                                 cart[index].quantity -= 1;
                                             } else {
-                                                cart.splice(index, 1);  // Remove item if quantity is 0
+                                                cart.splice(index, 1); // Xóa sản phẩm nếu số lượng bằng 0
                                             }
                                             sessionStorage.setItem('cart', JSON.stringify(cart));
                                             renderCartItems();
-                                            updateCartCount();
+                                            updateCartCount(); // Cập nhật số lượng
                                         }
 
-                                        // Remove item from cart
                                         function removeItem(index) {
                                             const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-                                            cart.splice(index, 1);  // Remove item from cart
+                                            cart.splice(index, 1); // Xóa sản phẩm
                                             sessionStorage.setItem('cart', JSON.stringify(cart));
                                             renderCartItems();
-                                            updateCartCount();
+                                            updateCartCount(); // Cập nhật số lượng
                                         }
 
+
+                                        // Update cart count on the cart icon
                                         // Update cart count on the cart icon
                                         function updateCartCount() {
                                             const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
                                             const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                                            const cartCountElement = document.getElementById('cartCount');
+
+                                            if (totalItems > 0) {
+                                                cartCountElement.textContent = totalItems;
+                                                cartCountElement.style.display = 'inline'; // Hiện số lượng
+                                            } else {
+                                                cartCountElement.textContent = '';
+                                                cartCountElement.style.display = 'none'; // Ẩn khi không có sản phẩm
+                                            }
                                         }
+
+                                        // Gọi hàm này sau mỗi thay đổi trong giỏ hàng
+                                        updateCartCount();
+
 
                                         // Toggle payment tab display on cart icon click
                                         document.getElementById('cartIcon').addEventListener('click', function () {
@@ -365,6 +385,8 @@
 
                                             // Chuyển hướng tới trang checkout.cshtml
                                             window.location.href = "/Cart/Checkout";  // Điều chỉnh URL này theo đường dẫn chính xác đến trang checkout của bạn
+                                            document.addEventListener('DOMContentLoaded', updateCartCount);
+
                                         }
 
                                     </script>
@@ -374,7 +396,7 @@
 
 
 
-                             <!-- Wishlist Icon -->
+                                    <!-- Wishlist Icon -->
                                     <a href="wishlist.html" class="text-muted">
                                         <i class="icon icon-heart fs-5"></i>
                                     </a>
@@ -534,6 +556,11 @@
                 --df-messenger-avatar-background: #007bff; /* Màu nền avatar chatbot */
                 --df-messenger-avatar-border-radius: 50%; /* Avatar hình tròn */
                 --df-messenger-chat-background-color: #ffffff; /* Màu nền cho khung chat */
+            }
+
+            df-messenger {
+                position: relative; /* Đảm bảo z-index hoạt động */
+                z-index: 9999; /* Đặt giá trị z-index cao */
             }
 
                 /* Chỉnh sửa tiêu đề chatbot */

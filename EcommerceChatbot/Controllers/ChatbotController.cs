@@ -23,7 +23,7 @@ namespace EcommerceChatbot.Controllers
         {
             _context = context;
             _logger = logger;
-            _baseUrl = "https://5b01-118-70-118-224.ngrok-free.app"; // Ensure this URL is active and correct
+            _baseUrl = "https://ae68-1-55-166-42.ngrok-free.app"; // Ensure this URL is active and correct
         }
 
         private string GetProductImageUrl(string imageName)
