@@ -53,47 +53,58 @@ namespace ECommerceChatbot.Controllers
         }
 
 
-        [HttpPost("/auth/login")]
-        public async Task<IActionResult> Login(Login model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+       [HttpPost("/auth/login")]
+public async Task<IActionResult> Login(Login model)
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
-            // Call LoginAsync from AuthService
-            var result = await _authService.LoginAsync(model.UserName, model.Password, model.Role);
+    // Gọi LoginAsync từ AuthService
+    var result = await _authService.LoginAsync(model.UserName, model.Password, model.Role);
 
-            if (result != "Login successful!")
-            {
-                ModelState.AddModelError("", result);
-                return View(model);
-            }
+    if (result != "Login successful!")
+    {
+        ModelState.AddModelError("", result);
+        return View(model);
+    }
 
-            // Create claims for the user
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, model.UserName),
-                new Claim(ClaimTypes.Role, model.Role)
-            };
+    // Lấy thông tin UserId từ database
+    var user = await _authService.GetUserByUsernameAsync(model.UserName);
+    if (user == null)
+    {
+        ModelState.AddModelError("", "User not found.");
+        return View(model);
+    }
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = model.RememberMe, // Set persistent based on the checkbox
-                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null // Optional: Set expiration
-            };
+    // Tạo các claims cho người dùng
+    var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, model.UserName),
+        new Claim(ClaimTypes.Role, model.Role),
+        new Claim("UserId", user.UserId.ToString()) // Thêm UserId vào claims
+    };
 
-            await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(claimsIdentity), authProperties);
+    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    var authProperties = new AuthenticationProperties
+    {
+        IsPersistent = model.RememberMe, // Ghi nhớ trạng thái đăng nhập dựa trên checkbox
+        ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null // Optional: Thiết lập thời gian hết hạn
+    };
 
-            // Redirect based on role
-            if (model.Role == "admin")
-            {
-                return RedirectToAction("Index", "Home", new { area = "admin" });
-            }
-            else
-            {
-                return RedirectToAction("Index", "User");
-            }
-        }
+    // Đăng nhập bằng claims
+    await HttpContext.SignInAsync("AuthCookie", new ClaimsPrincipal(claimsIdentity), authProperties);
+
+    // Chuyển hướng dựa trên role
+    if (model.Role == "admin")
+    {
+        return RedirectToAction("Index", "Home", new { area = "admin" });
+    }
+    else
+    {
+        return RedirectToAction("Index", "User");
+    }
+}
+
 
         [HttpPost("auth/logout")]
         public async Task<IActionResult> Logout()

@@ -1,0 +1,110 @@
+﻿@model EcommerceChatbot.Models.CheckoutViewModel
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - StyleO Store</title>
+    <link rel="stylesheet" href="~/css/order.css" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>StyleO Store</h1>
+            <nav>
+                <a asp-action="Index" asp-controller="User">Home</a>
+                <a asp-action="Index" asp-controller="Cart">Cart</a>
+                <a asp-action="Index" asp-controller="Order" class="active">Order</a>
+                <a asp-action="OrderHistory" asp-controller="Order">Order History</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="order-container">
+            <h2>Place Your Order</h2>
+
+          
+
+            <!-- Hiển thị thông báo thành công -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+
+            <!-- Form điền thông tin đặt hàng -->
+            <form method="post" asp-action="Checkout" asp-controller="Order">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="FullName" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="tel" id="phoneNumber" name="PhoneNumber" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="Address" rows="3" class="form-control" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method:</label>
+                    <select id="paymentMethod" name="PaymentMethod" class="form-control" required>
+                        <option value="CreditCard">Credit Card</option>
+                        <option value="Paypal">PayPal</option>
+                        <option value="COD">Cash on Delivery</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Additional Notes:</label>
+                    <textarea id="notes" name="Notes" rows="3" class="form-control"></textarea>
+                </div>
+
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <ul>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <li>
+                                <div class="product-image">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" />
+                                </div>
+                                <div class="product-info">
+                                    <span class="product-name">@item.ProductName</span>
+                                    <span class="quantity">@item.Quantity x</span>
+                                    <span class="price">@item.Price.ToString("C")</span>
+                                    <span class="total-amount">= $@(item.Quantity * item.Price)</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <div class="total">
+                        <p><strong>Total: @Model.TotalAmount.ToString("C")</strong></p>
+                    </div>
+                </div>
+
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Cart")'">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 StyleO Store. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

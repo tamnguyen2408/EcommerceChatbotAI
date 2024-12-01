@@ -1,38 +1,88 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using EcommerceChatbot.Extensions; // Thêm dòng này để sử dụng extension method
-using EcommerceChatbot.Models;
-using System.Linq;
+using ECommerceChatbot.Models;
 
-namespace EcommerceChatbot.Controllers
+public class CartController : Controller
 {
-    public class CartController : Controller
+    private readonly ShoppingCart _shoppingCart;
+
+    public CartController(ShoppingCart shoppingCart)
     {
-        // Action Checkout để hiển thị trang Checkout
-        public IActionResult Checkout()
+        _shoppingCart = shoppingCart;
+    }
+
+    public IActionResult Index()
+    {
+        var items = _shoppingCart.Items; // Lấy danh sách sản phẩm từ session
+        return View(items);
+    }
+    [HttpPost]
+    public JsonResult AddToCart(int productId, string productName, decimal price, string productImage, int quantity = 1)
+    {
+        if (!User.Identity.IsAuthenticated)
         {
-            // Giả sử bạn lấy giỏ hàng từ session (hoặc từ cơ sở dữ liệu)
-            var cart = GetCart(); // Phương thức này cần được cài đặt để lấy giỏ hàng từ session hoặc nơi lưu trữ khác
-
-            // Tính toán tổng tiền của giỏ hàng
-            var totalPrice = cart.Sum(item => item.Price * item.Quantity); // Cộng tổng tiền giỏ hàng
-
-            // Tạo ViewModel và truyền vào View
-            var model = new CheckoutViewModel
-            {
-                TotalPrice = totalPrice,
-                // Truyền thêm các dữ liệu khác nếu cần
-            };
-
-            return View(model); // Trả về view Checkout.cshtml với ViewModel chứa thông tin cần thiết
+            return Json(new { success = false, redirectToLogin = true });
         }
 
-        // Phương thức để lấy giỏ hàng (ví dụ: từ session)
-        private List<CartItem> GetCart()
+        // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
+        var existingItem = _shoppingCart.Items.FirstOrDefault(i => i.ProductId == productId);
+
+        if (existingItem != null)
         {
-            // Ví dụ: Giả sử giỏ hàng lưu trong session
-            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("Cart") ?? new List<CartItem>();
-            return cart;
+            return Json(new { success = false, message = "This product is already in your cart." });
         }
+
+        // Thêm sản phẩm mới vào giỏ hàng
+        var item = new CartItem
+        {
+            ProductId = productId,
+            ProductName = productName,
+            Price = price,
+            Quantity = quantity,
+            ImageUrl = productImage // Cập nhật hình ảnh sản phẩm
+        };
+
+        _shoppingCart.AddItem(item);
+
+        var totalItems = _shoppingCart.Items.Sum(i => i.Quantity);
+
+        return Json(new { success = true, totalItems });
+    }
+
+
+
+
+    [HttpPost]
+    public IActionResult RemoveFromCart(int productId)
+    {
+        _shoppingCart.RemoveItem(productId); // Xóa sản phẩm khỏi giỏ hàng
+        TempData["SuccessMessage"] = "Product removed successfully!";
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult UpdateQuantity(int productId, int quantity)
+    {
+        if (quantity < 1)
+        {
+            ModelState.AddModelError("Quantity", "Quantity must be at least 1.");
+            return RedirectToAction("Index");
+        }
+
+        _shoppingCart.UpdateQuantity(productId, quantity); // Cập nhật số lượng sản phẩm
+
+        // Thêm thông báo thành công vào TempData
+        TempData["SuccessMessage"] = "Product quantity updated successfully!";
+
+        return RedirectToAction("Index"); // Quay lại trang giỏ hàng
+    }
+
+
+
+    [HttpGet]
+    public JsonResult GetCartItemCount()
+    {
+        var totalItems = _shoppingCart.Items.Sum(item => item.Quantity); // Tổng số lượng sản phẩm
+        return Json(totalItems);
     }
 
 }

@@ -1,0 +1,158 @@
+﻿@model List<ECommerceChatbot.Models.CartItem>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/cart.css" />
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>StyleO Store</h1>
+            <nav>
+                <a asp-action="Index" asp-controller="User">Home</a>
+                <a asp-action="Index" asp-controller="Cart" class="active">Cart</a>
+                <a asp-action="Checkout" asp-controller="Order">Order</a>
+                <a asp-action="OrderHistory" asp-controller="Order">Order History</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="cart-container">
+
+            <!-- Hiển thị thông báo thành công nếu có -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" class="product-image" />
+                                </td>
+                                <td>@item.ProductName</td>
+                                <td>@item.Price.ToString("C")</td>
+                                <td>
+                                    <button class="quantity-btn decrement" data-id="@item.ProductId">-</button>
+                                    <span class="quantity">@item.Quantity</span>
+                                    <button class="quantity-btn increment" data-id="@item.ProductId">+</button>
+                                </td>
+                                <td class="product-total">
+                                    $@(item.Price * item.Quantity)
+                                </td>
+                                <td>
+                                    <form method="post" asp-action="RemoveFromCart" asp-controller="Cart">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="remove-btn">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="empty-cart-message">Your cart is currently empty.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="cart-total">
+                    <p>
+                        <strong>Total: </strong>
+                        @(Model != null && Model.Any() ? Model.Sum(item => item.Price * item.Quantity).ToString("C") : "$0.00")
+                    </p>
+                    <!-- Form for posting the checkout data -->
+                    <form method="get" asp-action="Checkout" asp-controller="Order">
+                        <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+                    </form>
+
+
+
+
+                </div>
+            }
+        </div>
+
+        <script>
+                // JavaScript xử lý tăng/giảm số lượng
+                document.querySelectorAll(".quantity-btn").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const isIncrement = this.classList.contains("increment");
+                        const productId = this.dataset.id;
+                        const quantityElement = this.parentElement.querySelector(".quantity");
+                        let currentQuantity = parseInt(quantityElement.textContent);
+
+                        // Tính toán số lượng mới
+                        const newQuantity = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
+
+                        if (newQuantity < 1) return; // Ngừng khi số lượng < 1
+
+                        // Cập nhật số lượng trong form và gửi đi
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/Cart/UpdateQuantity'; // Địa chỉ API cập nhật số lượng
+
+                        const productIdInput = document.createElement('input');
+                        productIdInput.type = 'hidden';
+                        productIdInput.name = 'productId';
+                        productIdInput.value = productId;
+                        form.appendChild(productIdInput);
+
+                        const quantityInput = document.createElement('input');
+                        quantityInput.type = 'hidden';
+                        quantityInput.name = 'quantity';
+                        quantityInput.value = newQuantity;
+                        form.appendChild(quantityInput);
+
+                        // Thêm AntiForgeryToken nếu cần
+                        const antiForgeryToken = '@Html.AntiForgeryToken()';
+                        const tokenInput = document.createElement('input');
+                        tokenInput.type = 'hidden';
+                        tokenInput.name = '__RequestVerificationToken';
+                        tokenInput.value = antiForgeryToken;
+                        form.appendChild(tokenInput);
+
+                        // Gửi form
+                        document.body.appendChild(form);
+                        form.submit();
+                    });
+                });
+        </script>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Shopping Online.</p>
+        </div>
+    </footer>
+</body>
+</html>

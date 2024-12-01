@@ -23,7 +23,7 @@ namespace EcommerceChatbot.Controllers
         {
             _context = context;
             _logger = logger;
-            _baseUrl = "https://ae68-1-55-166-42.ngrok-free.app"; // Ensure this URL is active and correct
+            _baseUrl = "https://5b01-118-70-118-224.ngrok-free.app"; // Ensure this URL is active and correct
         }
 
         private string GetProductImageUrl(string imageName)
@@ -150,7 +150,6 @@ namespace EcommerceChatbot.Controllers
             if (string.IsNullOrWhiteSpace(productName))
                 return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết." };
 
-            // Using the product name for search
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));

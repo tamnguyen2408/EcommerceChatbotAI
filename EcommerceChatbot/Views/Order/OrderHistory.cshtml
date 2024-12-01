@@ -1,0 +1,71 @@
+﻿@model List<EcommerceChatbot.Models.Order>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - StyleO Store</title>
+    <link rel="stylesheet" href="~/css/orderhistory.css" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>StyleO Store</h1>
+            <nav>
+                <a asp-action="Index" asp-controller="User">Home</a>
+                <a asp-action="Index" asp-controller="Cart">Cart</a>
+                <a asp-action="Checkout" asp-controller="Order">Order</a>
+                <a asp-action="OrderHistory" asp-controller="Order" class="active">Order History</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="order-container">
+            <h2>Order History</h2>
+
+            @if (!Model.Any())
+            {
+                <p>You have no orders yet.</p>
+            }
+            else
+            {
+                <div class="order-history">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Order Date</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>@order.OrderId</td>
+                                    <td>@order.OrderDate?.ToString("yyyy-MM-dd")</td>
+                                    <td>@order.TotalAmount.ToString("C")</td>
+                                    <td>@order.OrderStatus</td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Order" asp-route-id="@order.OrderId" class="btn btn-primary">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 StyleO Store. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

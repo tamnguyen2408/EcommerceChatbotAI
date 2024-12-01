@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerceChatbot.Models;
+using System;
 using System.Collections.Generic;
 
 namespace EcommerceChatbot.Models;

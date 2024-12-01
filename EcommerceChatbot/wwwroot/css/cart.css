@@ -1,19 +1,209 @@
-﻿/* styles.css */
-
-/* Tab thanh toán bên phải */
-.payment-tab {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background-color: #f8f9fa;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: none; /* Ẩn tab khi chưa nhấn vào biểu tượng thanh toán */
-    z-index: 9999;
+﻿/* Biến CSS */
+:root {
+    --primary-color: #333;
+    --secondary-color: #f4f4f4;
+    --accent-color: #ff5c5c;
+    --danger-color: #f44336;
+    --success-color: #4caf50;
 }
 
-.payment-content {
-    padding-top: 50px;
+/* Đặt lại một số kiểu mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body và bố cục tổng thể */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    line-height: 1.5;
+    min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao màn hình */
+    display: flex;
+    flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+}
+
+/* Header */
+header {
+    background-color: #8ecbe8;
+    color: white;
+    padding: 20px 0;
+    flex-shrink: 0; /* Header cố định ở trên */
+}
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin: 0 10px;
+    font-size: 16px;
+    border-radius: 5px; /* Làm tròn nút */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    nav a.active {
+        background-color: #3498DB; /* Màu xanh đậm hơn cho active */
+        color: black; /* Dùng màu chữ primary khi active */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
+        transform: scale(1.1); /* Phóng to nhẹ */
+    }
+
+    nav a:hover {
+        background-color: #3498DB; /* Màu xanh đậm hơn cho active */
+        color: black; /* Dùng màu chữ primary khi active */
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Đổ bóng rõ hơn khi hover */
+    }
+
+
+/* Nội dung chính */
+main {
+    flex: 1; /* Nội dung chính chiếm không gian còn lại */
+    padding: 40px 20px;
+    overflow: auto; /* Đảm bảo nội dung không bị tràn ra ngoài */
+}
+
+.cart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+    .cart-table th,
+    .cart-table td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-table th {
+        background-color: #f9f9f9;
+    }
+
+    .cart-table td input {
+        width: 50px;
+        padding: 5px;
+        text-align: center;
+    }
+
+.remove-btn {
+    padding: 8px 12px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .remove-btn:hover {
+        background-color: #d32f2f;
+        transform: scale(1.05);
+    }
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+}
+
+.checkout-btn {
+    padding: 10px 20px;
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .checkout-btn:hover {
+        background-color: #388e3c;
+        transform: scale(1.05);
+    }
+
+.empty-cart-message {
+    text-align: center;
+    font-size: 18px;
+    color: var(--primary-color);
+    margin: 20px 0;
+}
+
+footer {
+    background-color: #34495E; /* Màu xanh đậm khác header */
+    color: #ECF0F1; /* Màu chữ sáng để dễ đọc */
+    padding: 20px 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 15px;
+}
+
+    footer p {
+        margin: 0;
+        font-size: 14px;
+        color: #BDC3C7; /* Màu chữ nhạt hơn để tạo sự mềm mại */
+    }
+
+/* Điều chỉnh giao diện trên thiết bị nhỏ */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav a {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        font-size: 14px;
+    }
+
+    .cart-total {
+        flex-direction: column;
+        font-size: 18px;
+    }
+
+    .checkout-btn {
+        margin-top: 15px;
+    }
 }

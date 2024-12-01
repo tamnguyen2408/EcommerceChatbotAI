@@ -163,7 +163,7 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-
+           
             return RedirectToAction("Index");
         }
 

@@ -17,7 +17,11 @@ namespace EcommerceChatbot.Service
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
-
+        public async Task<User> GetUserByUsernameAsync(string userName)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == userName);
+        }
         // Register method
         public async Task<string> RegisterAsync(string username, string email, string password, string confirmPassword, string phone)
         {
@@ -32,7 +36,7 @@ namespace EcommerceChatbot.Service
             {
                 UserName = username,
                 Email = email,
-                Password = password, // No hashing applied
+                Password = password, // No hashing applied (you should add hashing in production)
                 Phone = phone,
                 Role = "user", // Default role
                 CreatedAt = DateTime.UtcNow,
@@ -65,17 +69,18 @@ namespace EcommerceChatbot.Service
             if (user.Role != role)
                 return "Unauthorized role.";
 
-            // Create claims for the user
+            // Tạo Claims cho người dùng, bao gồm UserId
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("UserId", user.UserId.ToString()) // Thêm UserId vào Claims
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            // Sign in the user
+            // Đăng nhập người dùng với Claims mới
             await _httpContextAccessor.HttpContext.SignInAsync("AuthCookie", principal);
 
             return "Login successful!";
@@ -84,7 +89,7 @@ namespace EcommerceChatbot.Service
         // SignOut method
         public async Task<string> SignOutAsync()
         {
-            // Sign out the user
+            // Đăng xuất người dùng
             await _httpContextAccessor.HttpContext.SignOutAsync("AuthCookie");
             return "Logout successful!";
         }

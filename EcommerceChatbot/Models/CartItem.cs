@@ -1,20 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using EcommerceChatbot.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace EcommerceChatbot.Models;
-
-public partial class CartItem
+namespace ECommerceChatbot.Models
 {
-    public int CartItemId { get; set; }
+    public class CartItem
+    {
+        [Key]
+        public int CartItemID { get; set; }
 
-    public int? CartId { get; set; }
+        [Required]
+        public int Id { get; set; }
 
-    public int? ProductId { get; set; }
+        [Required]
+        public int ProductId { get; set; }
+        [Required]
+        public int UserId { get; set; } // Thêm thuộc tính này để liên kết với User
+        public int Quantity { get; set; }
 
-    public int Quantity { get; set; }
+        // Navigation property for Cart
+        public Cart Cart { get; set; }
 
-    public virtual Cart? Cart { get; set; }
+        // Navigation property for Product
+        public Product Product { get; set; }
+        public decimal Price { get; set; }
+        public string ProductName { get; set; }
 
-    public virtual Product? Product { get; set; }
-    public int Price { get; internal set; }
+        public string ImageUrl { get; set; }
+
+    }
 }

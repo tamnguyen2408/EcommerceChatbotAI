@@ -22,21 +22,6 @@ namespace EcommerceChatbot.Controllers
             // Chuẩn hóa từ khóa tìm kiếm
             searchTerm = searchTerm.Trim().ToLower();
 
-            // Truy vấn ban đầu
-            var productsQuery = _context.Products.Include(p => p.Category).AsQueryable();
-
-            // Kiểm tra xem từ khóa có khớp chính xác với tên sản phẩm không
-            var exactMatchProduct = await productsQuery
-                .Where(p => p.ProductName.ToLower() == searchTerm)
-                .ToListAsync();
-
-            if (exactMatchProduct.Any())
-            {
-                // Nếu tìm thấy sản phẩm khớp chính xác, chỉ trả về sản phẩm đó
-                return View(exactMatchProduct);
-            }
-
-            // Nếu không có khớp chính xác, tiếp tục tìm kiếm theo các tiêu chí khác
             // Danh sách từ khóa liên quan đến giới tính
             var maleKeywords = new List<string> { "nam", "cho nam" };
             var femaleKeywords = new List<string> { "nữ", "cho nữ" };
@@ -44,6 +29,9 @@ namespace EcommerceChatbot.Controllers
 
             // Danh sách các thể loại sản phẩm ví dụ như "giày", "áo", ...
             var categoryKeywords = new List<string> { "giày", "áo", "túi xách", "mũ", "quần" }; // Thêm vào đây các thể loại sản phẩm cần tìm
+
+            // Truy vấn ban đầu
+            var productsQuery = _context.Products.Include(p => p.Category).AsQueryable();
 
             // Kiểm tra các từ khóa giới tính và thể loại
             string genderSearch = null;
@@ -112,6 +100,7 @@ namespace EcommerceChatbot.Controllers
 
             return View(products);
         }
+
 
 
     }

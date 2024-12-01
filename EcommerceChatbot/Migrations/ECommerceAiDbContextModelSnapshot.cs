@@ -45,28 +45,42 @@ namespace EcommerceChatbot.Migrations
 
             modelBuilder.Entity("EcommerceChatbot.Models.CartItem", b =>
                 {
-                    b.Property<int>("CartItemId")
+                    b.Property<int>("CartItemID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("CartItemID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemID"));
 
-                    b.Property<int?>("CartId")
+                    b.Property<int>("Id")
                         .HasColumnType("int")
                         .HasColumnName("CartID");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int")
                         .HasColumnName("ProductID");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("CartItemId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemID")
                         .HasName("PK__CartItem__488B0B2AA3A3E1BE");
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("Id");
 
                     b.HasIndex("ProductId");
 
@@ -116,6 +130,17 @@ namespace EcommerceChatbot.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("OrderDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -125,6 +150,14 @@ namespace EcommerceChatbot.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10, 2)");
@@ -144,6 +177,43 @@ namespace EcommerceChatbot.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("EcommerceChatbot.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("EcommerceChatbot.Models.OrderItem", b =>
                 {
                     b.Property<int>("OrderItemId")
@@ -153,6 +223,10 @@ namespace EcommerceChatbot.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("int")
                         .HasColumnName("OrderID");
@@ -160,6 +234,10 @@ namespace EcommerceChatbot.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int")
                         .HasColumnName("ProductID");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -356,12 +434,16 @@ namespace EcommerceChatbot.Migrations
                 {
                     b.HasOne("EcommerceChatbot.Models.Cart", "Cart")
                         .WithMany("CartItems")
-                        .HasForeignKey("CartId")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK__CartItems__CartI__5165187F");
 
                     b.HasOne("EcommerceChatbot.Models.Product", "Product")
                         .WithMany("CartItems")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK__CartItems__Produ__52593CB8");
 
                     b.Navigation("Cart");
@@ -387,6 +469,17 @@ namespace EcommerceChatbot.Migrations
                         .HasConstraintName("FK__Orders__UserID__4316F928");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EcommerceChatbot.Models.OrderDetail", b =>
+                {
+                    b.HasOne("EcommerceChatbot.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("EcommerceChatbot.Models.OrderItem", b =>
@@ -433,6 +526,8 @@ namespace EcommerceChatbot.Migrations
 
             modelBuilder.Entity("EcommerceChatbot.Models.Order", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("OrderItems");
 
                     b.Navigation("Payments");

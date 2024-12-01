@@ -7445,6 +7445,14 @@
       "PackagePath": "staticwebassets\\css\\normalize.css"
     },
     {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\order.css",
+      "PackagePath": "staticwebassets\\css\\order.css"
+    },
+    {
+      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\orderhistory.css",
+      "PackagePath": "staticwebassets\\css\\orderhistory.css"
+    },
+    {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\css\\vendor.css",
       "PackagePath": "staticwebassets\\css\\vendor.css"
     },
@@ -8075,10 +8083,6 @@
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\images\\visa-icon.jpg",
       "PackagePath": "staticwebassets\\images\\visa-icon.jpg"
-    },
-    {
-      "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\js\\cart.js",
-      "PackagePath": "staticwebassets\\js\\cart.js"
     },
     {
       "Id": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\wwwroot\\js\\jquery-1.11.0.min.js",

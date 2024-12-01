@@ -10,6 +10,8 @@ public partial class OrderItem
     public int? OrderId { get; set; }
 
     public int? ProductId { get; set; }
+    public string ProductName { get; set; } // Tên sản phẩm
+    public string ImageUrl { get; set; }   // URL hình ảnh
 
     public int Quantity { get; set; }
 
@@ -20,4 +22,5 @@ public partial class OrderItem
     public virtual Order? Order { get; set; }
 
     public virtual Product? Product { get; set; }
+
 }

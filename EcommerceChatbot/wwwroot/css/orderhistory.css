@@ -1,0 +1,203 @@
+﻿/* General Reset */
+body, h1, h2, h3, p, ul, li, a, table, th, td {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f8ff; /* Nền xanh nước biển nhạt */
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #8ecbe8;
+    padding: 20px 0;
+    color: white;
+}
+
+    header .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header h1 {
+        font-size: 28px;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    header nav a {
+        text-decoration: none;
+        color: #fff;
+        margin: 0 10px;
+        font-size: 16px;
+        padding: 10px 15px;
+        border-radius: 5px; /* Làm tròn nút */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        header nav a.active {
+            background-color: #3498DB; /* Màu xanh đậm hơn cho active */
+            color: black; /* Dùng màu chữ primary khi active */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
+            transform: scale(1.1); /* Phóng to nhẹ */
+        }
+
+        header nav a:hover {
+            background-color: #3498DB; /* Màu xanh đậm hơn cho active */
+            color: black; /* Dùng màu chữ primary khi active */
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Đổ bóng rõ hơn khi hover */
+        }
+/* Main Content */
+main {
+    flex: 1;
+    padding: 40px 20px;
+}
+
+.order-history-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+    .order-history-container h2 {
+        font-size: 26px;
+        color: #5DADE2; /* Đồng nhất màu với header */
+        margin-bottom: 20px;
+    }
+
+    .order-history-container p {
+        font-size: 16px;
+        color: #555;
+    }
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    table thead {
+        background-color: #FAD7A0; /* Màu cam nhạt */
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 3px solid #E59866; /* Đường viền cam đậm */
+    }
+
+
+    table th, table td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table td {
+        color: #666;
+    }
+
+   table tr:hover {
+    background-color: #FDEBD0; /* Màu cam nhạt hơn thead */
+    transition: background-color 0.3s ease; /* Hiệu ứng mượt mà */
+}
+
+
+/* View Details Link */
+.order-history-container a {
+    text-decoration: none;
+    color: #5DADE2;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+    .order-history-container a:hover {
+        color: #3498DB;
+    }
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secondary {
+    background-color: #B2BABB; /* Xám nhạt */
+}
+
+.btn-primary:hover {
+    background-color: #66BB6A;
+    color: black; /* Dùng màu chữ primary khi active */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Đổ bóng rõ hơn khi hover */
+}
+
+.btn-secondary:hover {
+    background-color: #A6ACAF;
+}
+
+/* Footer */
+footer {
+    background-color: #34495E; /* Màu xanh đậm khác header */
+    color: #ECF0F1; /* Màu chữ sáng để dễ đọc */
+    padding: 20px 0;
+    text-align: center;
+    margin-top: auto;
+    font-size: 15px;
+}
+
+    footer p {
+        margin: 0;
+        font-size: 14px;
+        color: #BDC3C7; /* Màu chữ nhạt hơn để tạo sự mềm mại */
+    }
+
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header nav a {
+        margin: 10px 0;
+    }
+
+    .order-history-container {
+        padding: 20px;
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
