@@ -1,9 +1,12 @@
 ﻿using EcommerceChatbot.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceChatbot.Areas.Admin.Controllers
 {
+    [Authorize(AuthenticationSchemes = "AdminCookie", Roles = "admin")]
+
     [Area("Admin")]
     public class UserManagementController : Controller
     {

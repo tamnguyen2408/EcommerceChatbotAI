@@ -6,8 +6,17 @@ using EcommerceChatbot.Areas.Admin.Service;
 using Microsoft.Extensions.Logging;
 using EcommerceChatbot.Models;
 using Google.Api;
+using System.Globalization;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configure Stripe
+var stripeSettings = builder.Configuration.GetSection("Stripe");
+StripeConfiguration.ApiKey = stripeSettings["SecretKey"];
+
+// Add services to the container.
+builder.Services.Configure<StripeSettings>(stripeSettings); // Register Stripe settings
+builder.Services.AddScoped<StripePaymentService>();
 
 // Configure Kestrel to use HTTPS on localhost:5167.
 builder.WebHost.ConfigureKestrel(options =>
@@ -31,6 +40,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ShoppingCart>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // Đăng ký IHttpContextAccessor
 
 // Configure Session (important for saving ShoppingCart state)
 builder.Services.AddDistributedMemoryCache(); // Use in-memory cache for sessions
@@ -49,27 +59,39 @@ builder.Services.AddDbContext<ECommerceAiDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<CategoryService>();
 
-// Configure Cookie Authentication.
-builder.Services.AddAuthentication("AuthCookie")
-    .AddCookie("AuthCookie", options =>
+builder.Services.AddAuthentication()
+    .AddCookie("UserCookie", options =>
     {
-        options.Cookie.Name = "EcommerceAuth";
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Require HTTPS.
-        options.Cookie.HttpOnly = true; // Prevent JavaScript access to cookies.
-        options.Cookie.SameSite = SameSiteMode.Strict; // Stronger protection against CSRF.
+        options.Cookie.Name = "EcommerceAuth_User";
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Strict;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-        options.SlidingExpiration = true; // Extend expiration time on activity
+        options.SlidingExpiration = true;
+        options.LoginPath = "/auth/login";
+        options.LogoutPath = "/auth/logout";
+        options.AccessDeniedPath = "/auth/login";
+    })
+    .AddCookie("AdminCookie", options =>
+    {
+        options.Cookie.Name = "EcommerceAuth_Admin";
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
         options.LoginPath = "/auth/login";
         options.LogoutPath = "/auth/logout";
         options.AccessDeniedPath = "/auth/login";
     });
 
-// Configure Authorization policies.
+// Configure Authorization policies
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
 });
+
 
 // Configure CORS to allow specific origins, including ngrok URL.
 builder.Services.AddCors(options =>
@@ -123,6 +145,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // Run the application.
 app.Run();

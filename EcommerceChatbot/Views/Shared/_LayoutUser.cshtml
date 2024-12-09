@@ -101,25 +101,48 @@
                                     </a>
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
-                                            function updateCartItemCount() {
-                                                fetch('/Cart/GetCartItemCount') // Gọi API từ Controller
-                                                    .then(response => response.json())
-                                                    .then(totalItems => {
-                                                        const cartBadge = document.getElementById('cart-item-count');
-                                                        if (totalItems > 0) {
-                                                            cartBadge.textContent = totalItems; // Hiển thị số lượng
-                                                            cartBadge.style.display = 'inline'; // Hiện badge
-                                                        } else {
-                                                            cartBadge.style.display = 'none'; // Ẩn badge
+                                            /**
+                                             * Hàm cập nhật số lượng sản phẩm trong giỏ hàng
+                                             */
+                                            async function updateCartItemCount() {
+                                                try {
+                                                    // Gửi yêu cầu GET tới API để lấy số lượng sản phẩm trong giỏ hàng
+                                                    const response = await fetch('/Cart/GetCartItemCount', {
+                                                        method: 'GET',
+                                                        credentials: 'include', // Đảm bảo cookie được gửi kèm theo
+                                                        headers: {
+                                                            'Accept': 'application/json', // Xác định định dạng JSON
                                                         }
-                                                    })
-                                                    .catch(error => console.error('Error fetching cart item count:', error));
+                                                    });
+
+                                                    // Kiểm tra phản hồi từ API
+                                                    if (!response.ok) {
+                                                        console.error('Failed to fetch cart item count:', response.statusText);
+                                                        return;
+                                                    }
+
+                                                    // Lấy số lượng sản phẩm từ phản hồi JSON
+                                                    const totalItems = await response.json();
+
+                                                    // Cập nhật giao diện số lượng sản phẩm
+                                                    const cartBadge = document.getElementById('cart-item-count');
+                                                    if (totalItems > 0) {
+                                                        cartBadge.textContent = totalItems; // Hiển thị số lượng
+                                                        cartBadge.style.display = 'inline'; // Hiện badge
+                                                    } else {
+                                                        cartBadge.style.display = 'none'; // Ẩn badge nếu giỏ hàng rỗng
+                                                    }
+                                                } catch (error) {
+                                                    // Xử lý lỗi khi gọi API
+                                                    console.error('Error fetching cart item count:', error);
+                                                }
                                             }
 
-                                            // Gọi hàm cập nhật ngay khi trang load
+                                            // Gọi hàm cập nhật ngay khi trang được tải
                                             updateCartItemCount();
                                         });
                                     </script>
+
 
                                     <!-- Wishlist Icon -->
                                     <a href="wishlist.html" class="text-muted">

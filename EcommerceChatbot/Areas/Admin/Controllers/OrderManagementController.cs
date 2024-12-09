@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using EcommerceChatbot.Models;
-using System.Linq;
-using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using EcommerceChatbot.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EcommerceChatbot.Areas.Admin.Controllers
 {
+    [Authorize(AuthenticationSchemes = "AdminCookie", Roles = "admin")]
     [Area("Admin")]
     public class OrderManagementController : Controller
     {
@@ -17,24 +21,40 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
         }
 
         // Hiển thị danh sách đơn hàng chờ xác nhận
-        public IActionResult Index()
+        public IActionResult Index(string orderStatus)
         {
-            var pendingOrders = _context.Orders
-                .Include(o => o.User)  // Nạp thông tin người dùng
-                .Where(o => o.OrderStatus == "Pending")
-                .OrderBy(o => o.OrderDate)
-                .ToList();
+            var orderStatuses = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "All", Value = "" },
+                new SelectListItem { Text = "Pending", Value = "Pending" },
+                new SelectListItem { Text = "Confirmed", Value = "Confirmed" },
+                new SelectListItem { Text = "Shipping", Value = "Shipping" },
+                new SelectListItem { Text = "Completed", Value = "Completed" },
+                new SelectListItem { Text = "Rejected", Value = "Rejected" },
+                new SelectListItem { Text = "Paid", Value = "Paid" }
+            };
 
-            return View(pendingOrders);
+            ViewBag.OrderStatuses = orderStatuses;
+
+            var ordersQuery = _context.Orders.Include(o => o.User).AsQueryable();
+
+            if (!string.IsNullOrEmpty(orderStatus))
+            {
+                ordersQuery = ordersQuery.Where(o => o.OrderStatus == orderStatus);
+            }
+
+            var orders = ordersQuery.OrderByDescending(o => o.OrderDate).ToList();
+            return View(orders);
         }
 
+        // Chi tiết đơn hàng
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var order = _context.Orders
-                .Include(o => o.User)          // Thông tin người dùng
-                .Include(o => o.OrderItems)    // Sản phẩm trong đơn hàng
-                .Where(o => o.OrderId == id)
-                .FirstOrDefault();
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .FirstOrDefault(o => o.OrderId == id);
 
             if (order == null)
             {
@@ -66,8 +86,6 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             return View(orderDetailsViewModel);
         }
 
-
-
         // Xác nhận đơn hàng
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -76,17 +94,21 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             var order = _context.Orders.Find(id);
             if (order == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Index");
             }
 
-            // Cập nhật trạng thái đơn hàng thành "Confirmed"
+            if (order.OrderStatus != "Pending")
+            {
+                TempData["ErrorMessage"] = "Only pending orders can be confirmed.";
+                return RedirectToAction("Index");
+            }
+
             order.OrderStatus = "Confirmed";
             order.UpdatedAt = DateTime.Now;
             _context.SaveChanges();
 
-            // Gửi thông báo cho người dùng (ví dụ, qua email hoặc thông báo trong ứng dụng)
             SendOrderStatusNotification((int)order.UserId, "confirmed");
-
             TempData["SuccessMessage"] = "Order has been confirmed successfully.";
             return RedirectToAction("Index");
         }
@@ -99,32 +121,117 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             var order = _context.Orders.Find(id);
             if (order == null)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Index");
             }
 
-            // Cập nhật trạng thái đơn hàng thành "Rejected"
+            if (order.OrderStatus != "Pending" && order.OrderStatus != "Confirmed")
+            {
+                TempData["ErrorMessage"] = "Only pending or confirmed orders can be rejected.";
+                return RedirectToAction("Index");
+            }
+
             order.OrderStatus = "Rejected";
             order.UpdatedAt = DateTime.Now;
             _context.SaveChanges();
 
-            // Gửi thông báo cho người dùng (ví dụ, qua email hoặc thông báo trong ứng dụng)
             SendOrderStatusNotification((int)order.UserId, "rejected");
-
             TempData["SuccessMessage"] = "Order has been rejected.";
             return RedirectToAction("Index");
         }
 
-        // Gửi thông báo cho người dùng khi đơn hàng được xác nhận hoặc từ chối
+        // Giao đơn hàng cho nhà vận chuyển
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult HandOverToCarrier(int id)
+        {
+            var order = _context.Orders.Find(id);
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Index");
+            }
+
+            if (order.OrderStatus != "Confirmed")
+            {
+                TempData["ErrorMessage"] = "Only confirmed orders can be handed over to the carrier.";
+                return RedirectToAction("Index");
+            }
+
+            order.OrderStatus = "Shipping";
+            order.UpdatedAt = DateTime.Now;
+            _context.SaveChanges();
+
+            SendOrderStatusNotification((int)order.UserId, "shipped");
+            TempData["SuccessMessage"] = "Order has been handed over to the carrier.";
+            return RedirectToAction("Index");
+        }
+
+        // Xóa đơn hàng
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteOrder(int id)
+        {
+            var order = _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefault(o => o.OrderId == id);
+
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Index");
+            }
+
+            if (order.OrderStatus != "Rejected")
+            {
+                TempData["ErrorMessage"] = "Only rejected orders can be deleted.";
+                return RedirectToAction("Index");
+            }
+
+            _context.OrderItems.RemoveRange(order.OrderItems);
+            _context.Orders.Remove(order);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Order has been deleted successfully.";
+            return RedirectToAction("Index");
+        }
+
+        // Đánh dấu đơn hàng đã thanh toán
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkAsPaid(int id)
+        {
+            var order = _context.Orders.Find(id);
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Order not found.";
+                return RedirectToAction("Index");
+            }
+
+            if (order.OrderStatus != "Pending" && order.OrderStatus != "Confirmed")
+            {
+                TempData["ErrorMessage"] = "Only pending or confirmed orders can be marked as paid.";
+                return RedirectToAction("Index");
+            }
+
+            order.OrderStatus = "Paid";
+            order.UpdatedAt = DateTime.Now;
+            _context.SaveChanges();
+
+            SendOrderStatusNotification((int)order.UserId, "paid");
+            TempData["SuccessMessage"] = "Order has been marked as paid.";
+            return RedirectToAction("Index");
+        }
+
+        // Gửi thông báo cho người dùng
         private void SendOrderStatusNotification(int userId, string status)
         {
             var user = _context.Users.Find(userId);
             if (user != null)
             {
                 var emailSubject = $"Your order has been {status}";
-                var emailBody = $"Dear {user.UserName},\n\nYour order status has been updated to {status}.\nThank you for shopping with us!";
-
-                // Gửi email thông báo (sử dụng thư viện gửi email hoặc API gửi email)
-                // Ví dụ: EmailService.SendEmailAsync(user.Email, emailSubject, emailBody);
+                var emailBody = $"Dear {user.UserName},\n\nYour order status has been updated to '{status}'.\nThank you for shopping with us!";
+                // EmailService.SendEmailAsync(user.Email, emailSubject, emailBody); // Implement email sending
             }
         }
     }

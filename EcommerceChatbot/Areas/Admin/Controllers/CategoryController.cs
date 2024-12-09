@@ -3,9 +3,12 @@ using EcommerceChatbot.Areas.Admin.Models;
 using EcommerceChatbot.Areas.Admin.Service;
 using EcommerceChatbot.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EcommerceChatbot.Areas.Admin.Controllers
 {
+    [Authorize(AuthenticationSchemes = "AdminCookie", Roles = "admin")]
+
     [Area("Admin")]
     public class CategoryController : Controller
     {

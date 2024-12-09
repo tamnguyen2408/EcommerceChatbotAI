@@ -19,5 +19,8 @@ public partial class Payment
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string? StripeSessionId { get; set; } // Thêm thuộc tính này
+
     public virtual Order? Order { get; set; }
 }
+

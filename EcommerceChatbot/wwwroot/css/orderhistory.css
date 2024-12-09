@@ -10,15 +10,16 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f0f8ff; /* Nền xanh nước biển nhạt */
+    background-color: #f4faff;
     color: #333;
 }
 
 /* Header */
 header {
-    background-color: #8ecbe8;
-    padding: 20px 0;
+    background-color: #5DADE2;
+    padding: 15px 0;
     color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
     header .container {
@@ -30,8 +31,7 @@ header {
     }
 
     header h1 {
-        font-size: 28px;
-        color: #fff;
+        font-size: 26px;
         font-weight: bold;
     }
 
@@ -40,141 +40,416 @@ header {
         color: #fff;
         margin: 0 10px;
         font-size: 16px;
-        padding: 10px 15px;
-        border-radius: 5px; /* Làm tròn nút */
+        padding: 8px 12px;
+        border-radius: 5px;
         transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
         header nav a.active {
-            background-color: #3498DB; /* Màu xanh đậm hơn cho active */
-            color: black; /* Dùng màu chữ primary khi active */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
-            transform: scale(1.1); /* Phóng to nhẹ */
+            background-color: #3498DB;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         header nav a:hover {
-            background-color: #3498DB; /* Màu xanh đậm hơn cho active */
+            background-color: #3498DB;
             color: black; /* Dùng màu chữ primary khi active */
-            transform: scale(1.05); /* Phóng to nhẹ khi hover */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Đổ bóng rõ hơn khi hover */
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
+
 /* Main Content */
 main {
     flex: 1;
     padding: 40px 20px;
 }
 
-.order-history-container {
-    max-width: 1000px;
-    margin: 20px auto;
+.order-container {
+    max-width: max-content;
+    margin: auto auto;
     background: #fff;
-    border-radius: 12px;
+    border-radius: 8px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    padding: 25px;
 }
 
-    .order-history-container h2 {
-        font-size: 26px;
-        color: #5DADE2; /* Đồng nhất màu với header */
+    .order-container h2 {
+        font-size: 24px;
+        color: #3498DB;
         margin-bottom: 20px;
+        text-align: center;
     }
 
-    .order-history-container p {
-        font-size: 16px;
-        color: #555;
+    .order-container p {
+        font-size: 15px;
+        color: #666;
+        text-align: center;
     }
 
-/* Table Styles */
-table {
+.scrollable-table {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    font-family: Arial, sans-serif;
     font-size: 16px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    overflow: hidden;
+    text-align: center; /* Canh giữa nội dung trong các ô */
 }
 
-    table thead {
-        background-color: #FAD7A0; /* Màu cam nhạt */
-        font-size: 18px;
+    .order-table th, .order-table td {
+        padding: 15px;
+        border: 1px solid #ddd;
+    }
+
+    .order-table th {
+        background-color: #f2f2f2;
         font-weight: bold;
-        border-bottom: 3px solid #E59866; /* Đường viền cam đậm */
     }
 
-
-    table th, table td {
-        text-align: left;
-        padding: 12px;
-        border-bottom: 1px solid #ddd;
+    .order-table tr:nth-child(even) {
+        background-color: #f9f9f9;
     }
 
-    table td {
-        color: #666;
+    .order-table td:first-child {
+        width: 10%;
     }
 
-   table tr:hover {
-    background-color: #FDEBD0; /* Màu cam nhạt hơn thead */
-    transition: background-color 0.3s ease; /* Hiệu ứng mượt mà */
-}
-
-
-/* View Details Link */
-.order-history-container a {
-    text-decoration: none;
-    color: #5DADE2;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-    .order-history-container a:hover {
-        color: #3498DB;
+    .order-table td:nth-child(2) {
+        width: 15%;
     }
 
-/* Buttons */
-.btn-primary, .btn-secondary {
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
+    .order-table td:nth-child(3) {
+        width: 15%;
+    }
+
+    .order-table td:nth-child(4) {
+        width: 50%;
+    }
+
+    .order-table .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+.btn {
     padding: 10px 20px;
-    font-size: 15px;
-    border-radius: 25px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #3e8e41;
+    }
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #d3392f;
+    }
+
+.progress-bar {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+    .progress-bar li {
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-align: center;
+        flex: 1;
+        position: relative;
+        background-color: #f4f4f4; /* Màu nền mặc định */
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 0 5px; /* Thêm khoảng trống ngang giữa các thẻ li */
+    }
+        /* Để tránh khoảng cách quá rộng ở đầu và cuối, bỏ khoảng trống ở thẻ đầu tiên và cuối cùng */
+        .progress-bar li:first-child {
+            margin-left: 0;
+        }
+
+        .progress-bar li:last-child {
+            margin-right: 0;
+        }
+        .progress-bar li::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: -1;
+            transform: translateY(-50%);
+        }
+
+        .progress-bar li:first-child::before {
+            content: none; /* Ẩn đường nối cho mục đầu tiên */
+        }
+
+        /* Trạng thái Completed */
+        .progress-bar li.completed {
+            background-color: #4CAF50; /* Xanh lá cây đậm */
+            color: white;
+            font-weight: bold;
+            border-color: #4CAF50; /* Viền cùng màu nền */
+        }
+
+
+        /* Trạng thái Pending */
+        .progress-bar li.pending {
+            background-color: #FF9800; /* Màu cam sáng */
+            color: white;
+            font-weight: bold;
+            border-color: #FF9800; /* Viền cùng màu nền */
+        }
+
+        /* Trạng thái Shipping */
+        .progress-bar li.shipping {
+            background-color: #2196F3; /* Xanh dương tươi sáng */
+            color: white;
+            font-weight: bold;
+            border-color: #2196F3; /* Viền cùng màu nền */
+        }
+
+
+        /* Trạng thái Confirmed (màu xanh lá cây nhạt) */
+        .progress-bar li.confirmed {
+            background-color: #C8E6C9; /* Xanh lá cây nhạt */
+            color: #388E3C; /* Màu chữ đậm hơn để dễ đọc */
+            font-weight: bold;
+            border-color: #C8E6C9; /* Viền cùng màu nền */
+        }
+        /* Trạng thái Paid */
+        .progress-bar li.paid {
+            background-color: #FFC107; /* Màu vàng sáng */
+            color: white;
+            font-weight: bold;
+            border-color: #FFC107; /* Viền cùng màu nền */
+        }
+
+        /* Icon Styling */
+        .progress-bar li i {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        .progress-bar li.completed i {
+            color: white;
+        }
+
+        .progress-bar li.active i {
+            color: black;
+        }
+
+        .progress-bar li.pending i {
+            color: gray;
+        }
+
+        /* Progress Bar - Line Connection */
+        .progress-bar li:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            width: 30px;
+            height: 2px;
+            background-color: #ddd;
+            z-index: 0;
+        }
+
+        .progress-bar li.completed:not(:last-child)::after {
+            background-color: #4CAF50; /* Xanh lá nếu đã hoàn thành */
+        }
+
+        .progress-bar li.active:not(:last-child)::after {
+            background-color: #FFEB3B; /* Vàng nếu đang active */
+        }
+
+
+/* Điều chỉnh nút để chữ không bị tách xuống dòng */
+.btn {
     text-decoration: none;
-    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+    display: inline-flex; /* Đảm bảo các phần tử trong nút (icon + text) hiển thị trong cùng một dòng */
+    align-items: center; /* Căn giữa icon và chữ */
 }
 
-.btn-secondary {
-    background-color: #B2BABB; /* Xám nhạt */
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút */
+    align-items: center;
 }
 
-.btn-primary:hover {
-    background-color: #66BB6A;
-    color: black; /* Dùng màu chữ primary khi active */
-    transform: scale(1.05); /* Phóng to nhẹ khi hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Đổ bóng rõ hơn khi hover */
+/* Điều chỉnh khoảng cách cho icon và chữ trong nút */
+.btn i {
+    margin-right: 5px; /* Khoảng cách giữa icon và chữ */
 }
 
-.btn-secondary:hover {
-    background-color: #A6ACAF;
+
+/* Button Colors */
+.btn-primary {
+    background-color: #3498DB;
+}
+
+    .btn-primary:hover {
+        background-color: #2A80B9;
+    }
+
+.btn-success {
+    background-color: #28A745;
+}
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+.btn-danger {
+    background-color: #E74C3C;
+}
+
+    .btn-danger:hover {
+        background-color: #C0392B;
+    }
+
+/* Success and Fail Messages */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    position: relative;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
 /* Footer */
 footer {
-    background-color: #34495E; /* Màu xanh đậm khác header */
-    color: #ECF0F1; /* Màu chữ sáng để dễ đọc */
+    background-color: #34495E;
+    color: #fff;
     padding: 20px 0;
     text-align: center;
-    margin-top: auto;
-    font-size: 15px;
 }
 
     footer p {
-        margin: 0;
         font-size: 14px;
-        color: #BDC3C7; /* Màu chữ nhạt hơn để tạo sự mềm mại */
     }
+/* Modal Styles */
+/* Initially hide the modal */
+.modal {
+    display: none; /* Hide modal by default */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+    padding-top: 60px; /* Position the modal from the top */
+    transition: all 0.3s ease;
+}
+
+    .modal.show {
+        display: block; /* Show modal when 'show' class is added */
+    }
+
+/* Modal content styling (same as your previous CSS) */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Other modal elements */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    text-align: center;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .modal-header h2 {
+        font-size: 18px;
+    }
+
+    .modal-body {
+        font-size: 14px;
+    }
+
+    .modal-footer .btn {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
 
 
 /* Responsive Enhancements */
@@ -185,19 +460,23 @@ footer {
     }
 
     header nav a {
-        margin: 10px 0;
+        margin: 8px 0;
     }
 
-    .order-history-container {
-        padding: 20px;
+    .order-container {
+        padding: 15px;
     }
 
-    table th, table td {
-        padding: 10px;
+    .order-table th, .order-table td {
+        padding: 8px;
     }
 
-    .btn-primary, .btn-secondary {
-        padding: 8px 15px;
-        font-size: 14px;
+    .btn {
+        font-size: 13px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
     }
 }

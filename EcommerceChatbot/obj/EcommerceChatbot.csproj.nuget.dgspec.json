@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {}
+    "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj": {}
   },
   "projects": {
-    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {
+    "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
+        "projectUniqueName": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
         "projectName": "EcommerceChatbot",
-        "projectPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
+        "projectPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
         "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
-        "outputPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\obj\\",
+        "outputPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -83,6 +83,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "Stripe.Net": {
+              "target": "Package",
+              "version": "[43.0.0, )"
             }
           },
           "imports": [

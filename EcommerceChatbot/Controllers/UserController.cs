@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceChatbot.Controllers
 {
-    [Authorize(Roles = "user")]
+    [Authorize(AuthenticationSchemes = "UserCookie", Roles = "user")]
     public class UserController : Controller
     {
         private readonly ECommerceAiDbContext _context;
@@ -25,7 +25,7 @@ namespace EcommerceChatbot.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult>ProductDetails(int id)
         {
             if (id == 0) return RedirectToAction("Index");
 
@@ -37,7 +37,6 @@ namespace EcommerceChatbot.Controllers
 
             return View(productById);
         }
-
 
 
 

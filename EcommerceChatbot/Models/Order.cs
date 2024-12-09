@@ -13,6 +13,9 @@
         public string Address { get; set; }
         public string PaymentMethod { get; set; }
         public string? Notes { get; set; } // Đảm bảo rằng nó có dấu hỏi (?) để cho phép null
+                                           // Lý do hủy đơn hàng
+        public string? CancelReason { get; set; } // Thêm trường lý do hủy
+        public DateTime? CancelDate { get; set; } // Thêm trường ngày giờ hủy
 
         // Sửa lại OrderDetail thành ICollection<OrderDetail>
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();

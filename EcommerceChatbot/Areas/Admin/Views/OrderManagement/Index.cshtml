@@ -1,54 +1,121 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@model List<EcommerceChatbot.Models.Order>
+
 @{
     ViewData["Title"] = "Orders";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-@model List<EcommerceChatbot.Models.Order>
-
 <div class="container mt-5">
-    <h2 class="text-center mb-4">List of Orders</h2>
-    <div class="scrollable-table" style="max-height: 400px; overflow-y: auto;">
-        <table class="table table-striped table-bordered align-middle text-center">
+    <h2 class="text-center mb-4">Order Management</h2>
+
+    <!-- Dropdown cho trạng thái -->
+    <form method="get" action="@Url.Action("Index", "OrderManagement", new { area = "Admin" })" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-4">
+                @Html.DropDownList("OrderStatus", (IEnumerable<SelectListItem>)ViewBag.OrderStatuses, "Select Status", new { @class = "form-select" })
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Bảng danh sách đơn hàng -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered text-center align-middle">
             <thead class="table-dark">
                 <tr>
                     <th>Order ID</th>
                     <th>Customer</th>
                     <th>Order Date</th>
                     <th>Total Amount</th>
+                    <th>Payment Method</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.User?.UserName</td>
+                            <td>@order.OrderDate?.ToString("dd/MM/yyyy")</td>
+                            <td>@order.TotalAmount.ToString("C")</td>
+                            <td>@order.PaymentMethod</td>
+                            <td>
+                                <span class="badge
+                                    @(order.OrderStatus == "Pending" ? "bg-secondary" :
+                                      order.OrderStatus == "Confirmed" ? "bg-primary" :
+                                      order.OrderStatus == "Shipping" ? "bg-warning text-dark" :
+                                      order.OrderStatus == "Completed" ? "bg-success" :
+                                      order.OrderStatus == "Rejected" ? "bg-danger" : "bg-info")">
+                                    @order.OrderStatus
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-info btn-sm me-2">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+
+                                @if (order.OrderStatus == "Pending")
+                                {
+                                    <form asp-action="ConfirmOrder" asp-route-id="@order.OrderId" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-success btn-sm me-2">
+                                            <i class="bi bi-check-circle"></i> Confirm
+                                        </button>
+                                    </form>
+                                    <form asp-action="RejectOrder" asp-route-id="@order.OrderId" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to reject this order?');">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </form>
+                                }
+                                else if (order.OrderStatus == "Confirmed")
+                                {
+                                    <form asp-action="HandOverToCarrier" asp-route-id="@order.OrderId" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-warning btn-sm me-2">
+                                            <i class="bi bi-truck"></i> Ship
+                                        </button>
+                                    </form>
+                                }
+                                else if (order.OrderStatus == "Rejected")
+                                {
+                                    <form asp-action="DeleteOrder" asp-route-id="@order.OrderId" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to delete this order?');">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                }
+                                else if (order.OrderStatus != "Paid")
+                                {
+                                    @if (order.PaymentMethod == "COD")
+                                    {
+                                        <form asp-action="MarkAsPaid" asp-route-id="@order.OrderId" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm me-2">
+                                                <i class="bi bi-credit-card"></i> Mark as Paid
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Paid</span>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@order.OrderId</td>
-                        <td>@order.User?.UserName</td>
-                        <td>@order.OrderDate?.ToString("dd/MM/yyyy")</td>
-                        <td>@order.TotalAmount.ToString("C")</td>
-                        <td>@order.OrderStatus</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@order.OrderId"
-                               class="btn btn-primary btn-sm me-2">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                            <form asp-action="ConfirmOrder" asp-route-id="@order.OrderId"
-                                  method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-success btn-sm me-2">
-                                    <i class="bi bi-check-circle"></i> Confirm
-                                </button>
-                            </form>
-                            <form asp-action="RejectOrder" asp-route-id="@order.OrderId"
-                                  method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Are you sure you want to reject this order?');">
-                                    <i class="bi bi-x-circle"></i> Reject
-                                </button>
-                            </form>
-                        </td>
+                        <td colspan="7" class="text-center">No orders found.</td>
                     </tr>
                 }
             </tbody>

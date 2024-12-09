@@ -27,10 +27,10 @@ body {
 
 /* Header */
 header {
-    background-color: #8ecbe8;
+    background-color: #5DADE2;
+    padding: 15px 0;
     color: white;
-    padding: 20px 0;
-    flex-shrink: 0; /* Header cố định ở trên */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
     header .container {
@@ -166,20 +166,18 @@ h2 {
     margin: 20px 0;
 }
 
+/* Footer */
 footer {
-    background-color: #34495E; /* Màu xanh đậm khác header */
-    color: #ECF0F1; /* Màu chữ sáng để dễ đọc */
+    background-color: #34495E;
+    color: #fff;
     padding: 20px 0;
     text-align: center;
-    margin-top: auto;
-    font-size: 15px;
 }
 
     footer p {
-        margin: 0;
         font-size: 14px;
-        color: #BDC3C7; /* Màu chữ nhạt hơn để tạo sự mềm mại */
     }
+
 
 /* Điều chỉnh giao diện trên thiết bị nhỏ */
 @media (max-width: 768px) {

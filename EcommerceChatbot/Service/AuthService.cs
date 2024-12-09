@@ -57,7 +57,6 @@ namespace EcommerceChatbot.Service
             return "User registered successfully!";
         }
 
-        // Login method
         public async Task<string> LoginAsync(string userName, string password, string role)
         {
             var user = await _context.Users
@@ -71,17 +70,20 @@ namespace EcommerceChatbot.Service
 
             // Tạo Claims cho người dùng, bao gồm UserId
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim("UserId", user.UserId.ToString()) // Thêm UserId vào Claims
-            };
+    {
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(ClaimTypes.Role, user.Role),
+        new Claim("UserId", user.UserId.ToString()) // Thêm UserId vào Claims
+    };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            // Đăng nhập người dùng với Claims mới
-            await _httpContextAccessor.HttpContext.SignInAsync("AuthCookie", principal);
+            // Xác định cookie scheme dựa trên vai trò
+            string cookieScheme = role == "admin" ? "AdminCookie" : "UserCookie";
+
+            // Đăng nhập người dùng với scheme phù hợp
+            await _httpContextAccessor.HttpContext.SignInAsync(cookieScheme, principal);
 
             return "Login successful!";
         }

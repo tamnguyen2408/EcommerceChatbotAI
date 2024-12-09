@@ -1,0 +1,223 @@
+﻿@model EcommerceChatbot.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container my-5">
+    <!-- Back Button -->
+    <div class="d-flex justify-content-end mb-4">
+        <a asp-action="Index" asp-controller="User" class="btn btn-outline-secondary d-flex align-items-center">
+            <i class="bi bi-arrow-left me-2"></i> View All Products
+        </a>
+    </div>
+
+    <div class="row g-5">
+        <!-- Product Image -->
+        <div class="col-md-5">
+            <div class="image-holder position-relative">
+                <img src="@Model.ImageUrl" alt="@Model.ProductName" class="img-fluid rounded shadow" style="object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-7">
+            <!-- Product Name and Price -->
+            <h2 class="fw-bold text-uppercase text-primary">@Model.ProductName</h2>
+            <h3 class="fw-bold text-success fs-4">@Model.Price.ToString("C", new System.Globalization.CultureInfo("en-US"))</h3>
+            <p class="text-muted mb-4">@Model.Description</p>
+
+            <!-- Quantity Selector -->
+            <div class="d-flex align-items-center mb-4">
+                <label for="quantity" class="me-3 fw-bold">Quantity:</label>
+                <div class="input-group w-50">
+                    <input type="number" id="quantity" value="1" min="1" class="form-control text-center"
+                           onchange="updateQuantity()" />
+                </div>
+            </div>
+            <script>
+                // Cập nhật giá trị số lượng trong input ẩn của form khi người dùng thay đổi số lượng
+                function updateQuantity() {
+                    document.getElementById('formQuantity').value = document.getElementById('quantity').value;
+                }
+            </script>
+            <!-- Add to Cart and Quick View Buttons -->
+            <div class="d-grid gap-2 mt-3">
+                <form id="addToCartForm" asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex flex-column">
+                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                    <input type="hidden" name="productName" value="@Model.ProductName" />
+                    <input type="hidden" name="productImage" value="@Model.ImageUrl" />
+                    <input type="hidden" name="price" value="@Model.Price" />
+                    <input type="hidden" name="quantity" id="formQuantity" value="1" />
+
+                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center">
+                        <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                    </button>
+                </form>
+                <script>
+                    document.getElementById("addToCartForm").addEventListener("submit", function (event) {
+                        event.preventDefault(); // Ngừng form gửi đi truyền thống
+
+                        var formData = new FormData(this);
+
+                        fetch('@Url.Action("AddToCart", "Cart")', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // CSRF Token
+                            },
+                            credentials: 'include' // Đảm bảo cookie được gửi kèm theo
+                        })
+                            .then(response => response.json()) // Chờ JSON trả về từ Controller
+                            .then(data => {
+                                if (data.success) {
+                                    const cartBadge = document.getElementById('cart-item-count');
+                                    cartBadge.textContent = data.totalItems;
+                                    cartBadge.style.display = data.totalItems > 0 ? 'inline' : 'none';
+                                    alert('Product added to cart!');
+                                } else if (data.redirectToLogin) {
+                                    window.location.href = '@Url.Action("Login", "Auth")'; // Điều hướng đến trang login
+                                } else {
+                                    alert(data.message || 'Failed to add product to cart.');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+
+                </script>
+                <button type="button" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">
+                    <i class="bi bi-eye-fill me-2"></i> Quick View
+                </button>
+            </div>
+
+            <!-- Customer Reviews Section -->
+            <div class="mt-5">
+                <h5 class="fw-bold">Customer Reviews</h5>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="text-warning">⭐⭐⭐⭐☆</span>
+                    <span class="text-muted ms-2">(4.5/5 from 120 reviews)</span>
+                </div>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. Integer vitae lorem nec eros convallis convallis non at odio.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Image container */
+    .image-holder {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        height: auto;
+        transition: all 0.3s ease;
+    }
+
+        /* Image styling */
+        .image-holder img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        /* Zoom effect on image hover */
+        .image-holder:hover img {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+    /* Button styling */
+    .btn-outline-secondary {
+        color: #6c757d;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-outline-secondary:hover {
+        color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /* Quantity input box */
+    #quantity {
+        max-width: 60px;
+        text-align: center;
+    }
+
+    /* Product Name and Price colors */
+    .text-primary {
+        color: #007bff;
+    }
+
+    .text-success {
+        color: #28a745;
+    }
+
+    /* Review stars */
+    .text-warning {
+        color: #ffc107;
+    }
+
+    /* Custom gap between items */
+    .g-5 {
+        gap: 2rem;
+    }
+</style>
+
+<script>
+    // Add to Cart functionality
+    document.getElementById('addToCartButton').addEventListener('click', function () {
+        const isLoggedIn = @Html.Raw(User.Identity.IsAuthenticated.ToString().ToLower()); // Kiểm tra xem người dùng đã đăng nhập chưa
+
+        if (!isLoggedIn) {
+            // Nếu chưa đăng nhập, chuyển hướng đến trang Login
+            window.location.href = '/Auth/Login';
+            return;
+        }
+
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const productId = @Model.ProductId;
+        const productName = "@Model.ProductName";
+        const productPrice = parseFloat(@Model.Price);
+        const productImage = "@Model.ImageUrl"; // If you want to save the product image as well
+
+        if (isNaN(quantity) || isNaN(productPrice) || quantity <= 0 || productPrice <= 0) {
+            alert('Please enter a valid quantity and product price.');
+            return;
+        }
+
+        let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+        const existingProductIndex = cart.findIndex(item => item.productId === productId);
+
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += quantity;
+        } else {
+            cart.push({
+                productId: productId,
+                name: productName,
+                price: productPrice,
+                quantity: quantity,
+                image: productImage
+            });
+        }
+
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount(); // Gọi cập nhật sau khi thêm sản phẩm
+        renderCartItems();
+        alert('The product has been added to the cart!');
+    });
+</script>

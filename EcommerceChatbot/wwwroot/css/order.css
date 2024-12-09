@@ -8,9 +8,10 @@ body, h1, h2, h3, p, ul, li, a, table {
 
 /* Header */
 header {
-    background-color: #333;
-    padding: 20px 0;
-    border-bottom: 1px solid #444;
+    background-color: #5DADE2;
+    padding: 15px 0;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
     header .container {
@@ -29,21 +30,25 @@ header {
     header nav a {
         text-decoration: none;
         color: #fff;
-        margin: 0 20px;
+        margin: 0 10px;
         font-size: 16px;
-        padding: 8px 12px;
+        padding: 10px 15px;
+        border-radius: 5px;
         transition: background-color 0.3s, color 0.3s;
     }
 
         header nav a.active {
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
+            background-color: #3498DB;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         header nav a:hover {
-            background-color: #0056b3;
-            color: #fff;
+            background-color: #3498DB;
+            color: black; /* Dùng màu chữ primary khi active */
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         }
 
 /* Main Content */
@@ -237,14 +242,12 @@ main {
 
 /* Footer */
 footer {
-    background-color: #333;
+    background-color: #34495E;
     color: #fff;
     padding: 20px 0;
     text-align: center;
-    margin-top: 40px;
 }
 
     footer p {
         font-size: 14px;
-        margin: 0;
     }

@@ -1,0 +1,163 @@
+﻿@model EcommerceChatbot.Models.OrderDetailsViewModel
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - @Model.OrderId</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card-header {
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 15px;
+            column-gap: 30px;
+        }
+
+        .info-item {
+            flex: 1 1 calc(50% - 30px); /* 50% width - khoảng cách giữa các cột */
+            max-width: calc(50% - 30px);
+        }
+
+            .info-item strong {
+                display: inline-block;
+                min-width: 120px; /* Căn chỉnh nhãn thống nhất */
+            }
+
+        .order-items-table {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+            .btn-back:hover {
+                background-color: #5a6268;
+                text-decoration: none;
+                color: #fff;
+            }
+
+        footer {
+            background-color: #34495E;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+            footer p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white py-4 text-center">
+        <h1 class="display-4">Order Details</h1>
+    </header>
+
+    <main class="container my-5">
+        <!-- Order Summary Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">
+                Order Information
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item"><strong>Order ID:</strong> @Model.OrderId</div>
+                    <div class="info-item"><strong>Order Date:</strong> @Model.OrderDate.ToString("yyyy-MM-dd")</div>
+                    <div class="info-item"><strong>Status:</strong> <span class="badge badge-primary">@Model.OrderStatus</span></div>
+                    <div class="info-item"><strong>Total Items:</strong> @Model.OrderItems.Count()</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Information Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                Customer Details
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item"><strong>Full Name:</strong> @Model.FullName</div>
+                    <div class="info-item"><strong>Phone Number:</strong> @Model.PhoneNumber</div>
+                    <div class="info-item"><strong>Address:</strong> @Model.Address</div>
+                    <div class="info-item"><strong>Payment Method:</strong> @Model.PaymentMethod</div>
+                    <div class="info-item"><strong>Notes:</strong> @(string.IsNullOrEmpty(Model.Notes) ? "No notes provided" : Model.Notes)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                Order Items
+            </div>
+            <div class="card-body order-items-table">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Image</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td class="text-center">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" style="max-width: 80px;" />
+                                </td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("C")</td>
+                                <td>@item.Subtotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a asp-action="OrderHistory" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Order History
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 StyleO Store. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

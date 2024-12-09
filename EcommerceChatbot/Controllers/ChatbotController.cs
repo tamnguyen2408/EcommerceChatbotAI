@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using EcommerceChatbot.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EcommerceChatbot.Controllers
 {
@@ -91,7 +92,7 @@ namespace EcommerceChatbot.Controllers
                   
 
                     default:
-                        responsePayload = new { fulfillmentText = "Sorry, I didn't understand that." };
+                        responsePayload = new { fulfillmentText = "Xin lỗi, tôi không hiểu điều đó." };
                         break;
                 }
 
@@ -112,7 +113,7 @@ namespace EcommerceChatbot.Controllers
         private object FormatProductListWithImages(List<Product> products)
         {
             if (products == null || !products.Any())
-                return new { fulfillmentText = "Currently, no products are available." };
+                return new { fulfillmentText = "Hiện tại chưa có sản phẩm nào có sẵn." };
 
             var groupedProducts = products.GroupBy(p => p.Category?.CategoryName)
                                           .Select(g => $"**{g.Key ?? "Uncategorized"}**\n" +
@@ -129,7 +130,7 @@ namespace EcommerceChatbot.Controllers
         private object FormatCategoryList(List<ProductCategory> categories)
         {
             if (categories == null || !categories.Any())
-                return new { fulfillmentText = "Currently, no categories are available." };
+                return new { fulfillmentText = "Hiện tại, không có danh mục nào có sẵn." };
 
             return new { fulfillmentText = string.Join("\n", categories.Select(c => $"- {c.CategoryName}")) };
         }
@@ -155,7 +156,7 @@ namespace EcommerceChatbot.Controllers
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"Product '{productName}' not found." };
+                return new { fulfillmentText = $"sản phẩm '{productName}' không tìm thấy." };
 
             var productDetailsText = $"{product.ProductName} - Category: {product.Category?.CategoryName}, Price: {product.Price}\n" +
                                      $"Description: {product.Description}\n" +
@@ -172,7 +173,7 @@ namespace EcommerceChatbot.Controllers
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"Product '{productName}' not found." };
+                return new { fulfillmentText = $"Product '{productName}' không tìm thấy." };
 
             return new { fulfillmentText = $"{product.ProductName} có {product.StockQuantity} sản phẩm trong kho." };
         }
@@ -187,7 +188,7 @@ namespace EcommerceChatbot.Controllers
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"Product '{productName}' not found." };
+                return new { fulfillmentText = $"Product '{productName}' không tìm thấy." };
 
             var productText = $"{product.ProductName} - Price: {product.Price}\n" +
                               $"More details: {_baseUrl}/home/details/{product.ProductId}";

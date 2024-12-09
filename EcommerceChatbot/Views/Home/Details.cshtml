@@ -47,13 +47,13 @@
                 <form id="addToCartForm" asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex flex-column">
                     <input type="hidden" name="productId" value="@Model.ProductId" />
                     <input type="hidden" name="productName" value="@Model.ProductName" />
-                    <input type="hidden" name="productImage" value="@Model.ImageUrl"/>
+                    <input type="hidden" name="productImage" value="@Model.ImageUrl" />
                     <input type="hidden" name="price" value="@Model.Price" />
                     <input type="hidden" name="quantity" id="formQuantity" value="1" />
-
-                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center">
+                    <button id="addToCartButton" type="button" class="btn btn-primary d-flex align-items-center justify-content-center">
                         <i class="bi bi-cart-plus me-2"></i> Add to Cart
                     </button>
+
                 </form>
                 <script>
                     document.getElementById("addToCartForm").addEventListener("submit", function (event) {
@@ -61,28 +61,24 @@
 
                         var formData = new FormData(this);
 
-                        // Gửi yêu cầu Ajax
                         fetch('@Url.Action("AddToCart", "Cart")', {
                             method: 'POST',
                             body: formData,
                             headers: {
                                 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // CSRF Token
-                            }
+                            },
+                            credentials: 'include' // Đảm bảo cookie được gửi kèm theo
                         })
                             .then(response => response.json()) // Chờ JSON trả về từ Controller
                             .then(data => {
                                 if (data.success) {
-                                    // Cập nhật số lượng sản phẩm trên biểu tượng giỏ hàng
                                     const cartBadge = document.getElementById('cart-item-count');
                                     cartBadge.textContent = data.totalItems;
                                     cartBadge.style.display = data.totalItems > 0 ? 'inline' : 'none';
-
                                     alert('Product added to cart!');
                                 } else if (data.redirectToLogin) {
-                                    // Nếu chưa đăng nhập, chuyển hướng đến trang login
                                     window.location.href = '@Url.Action("Login", "Auth")'; // Điều hướng đến trang login
                                 } else {
-                                    // Nếu có lỗi (ví dụ sản phẩm đã có trong giỏ), hiển thị thông báo lỗi
                                     alert(data.message || 'Failed to add product to cart.');
                                 }
                             })
@@ -182,13 +178,12 @@
 </style>
 
 <script>
-    // Add to Cart functionality
     document.getElementById('addToCartButton').addEventListener('click', function () {
         const isLoggedIn = @Html.Raw(User.Identity.IsAuthenticated.ToString().ToLower()); // Kiểm tra xem người dùng đã đăng nhập chưa
 
         if (!isLoggedIn) {
             // Nếu chưa đăng nhập, chuyển hướng đến trang Login
-            window.location.href = '/Auth/Login';
+            window.location.href = '/Auth/Login'; // Chuyển hướng đến trang đăng nhập
             return;
         }
 
@@ -196,7 +191,7 @@
         const productId = @Model.ProductId;
         const productName = "@Model.ProductName";
         const productPrice = parseFloat(@Model.Price);
-        const productImage = "@Model.ImageUrl"; // If you want to save the product image as well
+        const productImage = "@Model.ImageUrl"; // Nếu bạn muốn lưu cả hình ảnh sản phẩm
 
         if (isNaN(quantity) || isNaN(productPrice) || quantity <= 0 || productPrice <= 0) {
             alert('Please enter a valid quantity and product price.');
@@ -220,8 +215,8 @@
         }
 
         sessionStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount(); // Gọi cập nhật sau khi thêm sản phẩm
-        renderCartItems();
+        updateCartCount(); // Gọi hàm cập nhật số lượng giỏ hàng
+        renderCartItems(); // Gọi hàm để render giỏ hàng
         alert('The product has been added to the cart!');
     });
 </script>

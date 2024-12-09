@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order - StyleO Store</title>
     <link rel="stylesheet" href="~/css/order.css" />
+    <!-- Stripe.js library -->
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <header>
@@ -25,9 +27,7 @@
         <div class="order-container">
             <h2>Place Your Order</h2>
 
-          
-
-            <!-- Hiển thị thông báo thành công -->
+            <!-- Success Message -->
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success">
@@ -35,9 +35,8 @@
                 </div>
             }
 
-
-            <!-- Form điền thông tin đặt hàng -->
-            <form method="post" asp-action="Checkout" asp-controller="Order">
+            <!-- Order Form -->
+            <form id="orderForm" method="post" asp-action="Checkout" asp-controller="Order">
                 @Html.AntiForgeryToken()
 
                 <div class="form-group">
@@ -59,9 +58,18 @@
                     <label for="paymentMethod">Payment Method:</label>
                     <select id="paymentMethod" name="PaymentMethod" class="form-control" required>
                         <option value="CreditCard">Credit Card</option>
-                        <option value="Paypal">PayPal</option>
                         <option value="COD">Cash on Delivery</option>
                     </select>
+                </div>
+
+                <!-- Stripe Elements Section -->
+                <div class="form-group" id="card-element-container">
+                    <label for="card-element">Credit Card Information:</label>
+                    <div id="card-element">
+                        <!-- A Stripe Element will be inserted here. -->
+                    </div>
+                    <!-- Used to display form errors. -->
+                    <div id="card-errors" role="alert"></div>
                 </div>
 
                 <div class="form-group">
@@ -69,6 +77,7 @@
                     <textarea id="notes" name="Notes" rows="3" class="form-control"></textarea>
                 </div>
 
+                <!-- Order Summary -->
                 <div class="order-summary">
                     <h3>Order Summary</h3>
                     <ul>
@@ -82,20 +91,19 @@
                                     <span class="product-name">@item.ProductName</span>
                                     <span class="quantity">@item.Quantity x</span>
                                     <span class="price">@item.Price.ToString("C")</span>
-                                    <span class="total-amount">= $@(item.Quantity * item.Price)</span>
+                                    <span class="total-amount">= @((item.Quantity * item.Price).ToString("C"))</span>
                                 </div>
                             </li>
                         }
                     </ul>
                     <div class="total">
-                        <p><strong>Total: @Model.TotalAmount.ToString("C")</strong></p>
+                        <input type="hidden" id="totalAmount" name="TotalAmount" value="@Model.TotalAmount" />
                     </div>
                 </div>
 
-
                 <div class="form-buttons">
                     <button type="button" class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Cart")'">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Place Order</button>
                 </div>
             </form>
         </div>
@@ -106,5 +114,42 @@
             <p>&copy; 2024 StyleO Store. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // Set your publishable key from Stripe
+        var stripe = Stripe('pk_test_51QU28dGaCxBIXsvVEIV2toHzmm2EcbbPRlJGTsqG4ikxVX2w0qJRQal7ubmTiqymqMxUKXBsmKnCsK2LrshZzLMW00UucziVF1');
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('orderForm');
+        var cardErrors = document.getElementById('card-errors');
+        var submitButton = document.getElementById('submitButton');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Disable the submit button to prevent repeated clicks
+            submitButton.disabled = true;
+
+            stripe.createPaymentMethod('card', card).then(function (result) {
+                if (result.error) {
+                    // Show error in the UI
+                    cardErrors.textContent = result.error.message;
+                    submitButton.disabled = false;
+                } else {
+                    // Add payment method ID to the form
+                    var paymentMethodInput = document.createElement('input');
+                    paymentMethodInput.type = 'hidden';
+                    paymentMethodInput.name = 'PaymentMethodId';
+                    paymentMethodInput.value = result.paymentMethod.id;
+                    form.appendChild(paymentMethodInput);
+
+                    // Submit the form
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -21,6 +21,8 @@ namespace EcommerceChatbot.Models
         [Required(ErrorMessage = "Please select a payment method.")]
         [Display(Name = "Payment Method")]
         public string PaymentMethod { get; set; }
+        // Add PaymentMethodId for Stripe payment integration
+        public string PaymentMethodId { get; set; }
 
         [Display(Name = "Additional Notes")]
         public string Notes { get; set; }

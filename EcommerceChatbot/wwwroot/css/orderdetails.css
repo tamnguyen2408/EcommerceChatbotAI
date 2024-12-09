@@ -1,0 +1,152 @@
+﻿/* Tổng quan */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff; /* Xanh nước biển nhạt */
+    color: #333;
+}
+
+header {
+    background-color: #0078d4; /* Xanh dương */
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+    header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Main Section */
+main {
+    padding: 20px 0;
+}
+
+h2 {
+    color: #0078d4;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #0078d4;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Nút Back */
+.btn-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #0078d4;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+    .btn-back:hover {
+        background-color: #005bb5;
+    }
+
+/* Order Summary */
+.order-summary p {
+    margin: 5px 0;
+}
+
+strong {
+    color: #555;
+}
+
+/* Customer Info */
+.customer-info p {
+    margin: 5px 0;
+}
+
+/* Order Items */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+    table th,
+    table td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    table td img {
+        max-width: 50px;
+        border-radius: 4px;
+    }
+
+    table tr:hover {
+        background-color: #f9f9f9;
+    }
+/* Thêm CSS để thêm tính năng cuộn cho bảng Order Items */
+.order-items-table {
+    max-height: 300px; /* Chiều cao cố định cho bảng */
+    overflow-y: auto; /* Kích hoạt cuộn dọc */
+    display: block; /* Làm bảng có thể cuộn được */
+}
+
+    .order-items-table table {
+        width: 100%;
+        margin-bottom: 0; /* Đảm bảo không có khoảng trống dưới bảng */
+    }
+/* Nút Back */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-back i {
+        margin-right: 8px; /* Khoảng cách giữa icon và text */
+    }
+
+    .btn-back:hover {
+        background-color: #2980b9;
+    }
+
+/* Footer */
+footer {
+    background-color: #34495E;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+    footer p {
+        margin: 0;
+        font-size: 14px;
+    }

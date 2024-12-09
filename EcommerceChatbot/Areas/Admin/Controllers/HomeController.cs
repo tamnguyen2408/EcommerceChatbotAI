@@ -14,7 +14,7 @@ namespace ECommerceChatbot.Areas.Admin.Controllers
 
     [Area("admin")]
     [Route("admin")]
-    [Authorize(Roles = "admin")] // Only allow admin users
+    [Authorize(AuthenticationSchemes = "AdminCookie", Roles = "admin")]
 
 
     public class HomeController : Controller
@@ -47,12 +47,12 @@ namespace ECommerceChatbot.Areas.Admin.Controllers
             int productCount = _context.Products.Count();
             int categoryCount = _context.ProductCategories.Count();
             int userCount = _context.Users.Count();
-
+            int orderCount = _context.Orders.Count();
             // Truyền dữ liệu vào View qua ViewBag
             ViewBag.UserCount = userCount;
             ViewBag.ProductCount = productCount;
             ViewBag.CategoryCount = categoryCount;
-
+            ViewBag.OrderCount = orderCount;
             // Lấy top 10 sản phẩm đắt nhất
             var topExpensiveProducts = await _context.Products
                 .Include(p => p.Category)
