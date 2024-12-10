@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9PM3vfINhXY=",
+  "dgSpecHash": "6sDkHGtccpU=",
   "success": true,
-  "projectFilePath": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+  "projectFilePath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nguye\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\nguye\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

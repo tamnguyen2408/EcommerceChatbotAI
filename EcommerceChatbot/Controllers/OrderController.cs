@@ -155,56 +155,74 @@ namespace EcommerceChatbot.Controllers
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            // Setup Stripe API
-            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
-
-            // Create a PaymentIntent with Automatic Payment Methods enabled
-            var options = new PaymentIntentCreateOptions
+            try
             {
-                Amount = (long)(order.TotalAmount * 100), // Convert to the smallest currency unit (e.g., cents)
-                Currency = "usd", // Set the currency
-                PaymentMethod = model.PaymentMethodId, // This should be passed from your frontend (Stripe Element)
-                Confirm = true, // Automatically confirm the payment
-                AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                // Setup Stripe API
+                StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
+
+                // Create a PaymentIntent
+                var options = new PaymentIntentCreateOptions
                 {
-                    Enabled = true,
-                    AllowRedirects = "never" // Disable redirect-based payment methods
+                    Amount = (long)(order.TotalAmount * 100), // Convert to smallest currency unit (e.g., cents)
+                    Currency = "usd",
+                    PaymentMethod = model.PaymentMethodId, // This should be passed from your frontend
+                    Confirm = true, // Automatically confirm the payment
+                    PaymentMethodTypes = new List<string> { "card" } // Only allow card payments
+                };
+
+                var service = new PaymentIntentService();
+                var paymentIntent = await service.CreateAsync(options);
+
+                if (paymentIntent.Status == "succeeded")
+                {
+                    // Create a payment record
+                    var payment = new Payment
+                    {
+                        OrderId = order.OrderId,
+                        Amount = order.TotalAmount,
+                        PaymentStatus = "Paid",
+                        PaymentDate = DateTime.Now,
+                        PaymentMethod = model.PaymentMethod,
+                        StripeSessionId = paymentIntent.Id // Store the Stripe Session ID
+                    };
+
+                    _context.Payments.Add(payment);
+                    order.OrderStatus = "Paid"; // Update the order status to Paid
+                    await _context.SaveChangesAsync();
+
+                    // Clear the shopping cart and redirect to Order History
+                    _shoppingCart.Clear();
+                    TempData["SuccessMessage"] = "Your order has been placed successfully!";
+                    return RedirectToAction("OrderHistory");
                 }
-            };
-
-            var service = new PaymentIntentService();
-            PaymentIntent paymentIntent = await service.CreateAsync(options);
-
-            if (paymentIntent.Status == "succeeded")
+            }
+            catch (StripeException ex)
             {
-                // Create a payment record
+                // Create a payment record with Failed status (without storing error in Payment model)
                 var payment = new Payment
                 {
                     OrderId = order.OrderId,
                     Amount = order.TotalAmount,
-                    PaymentStatus = "Paid",
+                    PaymentStatus = "Failed",
                     PaymentDate = DateTime.Now,
                     PaymentMethod = model.PaymentMethod,
-                    StripeSessionId = paymentIntent.Id // Store the Stripe Session ID
+                    StripeSessionId = null // No session ID for failed payments
                 };
 
                 _context.Payments.Add(payment);
-                order.OrderStatus = "Paid"; // Update the order status to Paid
                 await _context.SaveChangesAsync();
 
-                // Clear the shopping cart and redirect to Order History
-                _shoppingCart.Clear();
-                TempData["SuccessMessage"] = "Your order has been placed successfully!";
+                // Save error message to TempData
+                TempData["ErrorMessage"] = $"Payment failed. Reason: {ex.Message}";
+
+                // Redirect to OrderHistory
                 return RedirectToAction("OrderHistory");
             }
-            else
-            {
-                // If payment is not successful
-                TempData["ErrorMessage"] = "Payment failed. Please try again.";
-                return RedirectToAction("Checkout");
-            }
-        }
 
+            // Fallback for unexpected errors
+            TempData["ErrorMessage"] = "An unexpected error occurred during the checkout process.";
+            return RedirectToAction("OrderHistory");
+        }
 
 
 
@@ -281,58 +299,55 @@ namespace EcommerceChatbot.Controllers
             return RedirectToAction("OrderHistory");
         }
 
-       // Hành động hủy đơn hàng
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> CancelOrder(int id, string cancelReason)
-{
-    // Kiểm tra nếu người dùng đã đăng nhập
-    if (!User.Identity.IsAuthenticated)
-    {
-        TempData["ErrorMessage"] = "Please log in to cancel your order.";
-        return RedirectToAction("Index", "User");
-    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelOrder(int orderId, string reason)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["ErrorMessage"] = "Please log in to cancel your order.";
+                return RedirectToAction("Index", "User");
+            }
 
-    // Lấy UserId từ Claims
-    var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
-    if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-    {
-        TempData["ErrorMessage"] = "Unable to retrieve user information. Please log in again.";
-        return RedirectToAction("Index", "User");
-    }
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            int.TryParse(userIdClaim?.Value, out int userId);
 
-    // Tìm đơn hàng của người dùng với id tương ứng
-    var order = await _context.Orders
-        .FirstOrDefaultAsync(o => o.OrderId == id && o.UserId == userId);
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.OrderId == orderId && o.UserId == userId);
 
-    if (order == null)
-    {
-        TempData["ErrorMessage"] = "Order not found or you do not have permission to cancel it.";
-        return RedirectToAction("OrderHistory");
-    }
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Order not found or access denied.";
+                return RedirectToAction("OrderHistory");
+            }
 
-    // Kiểm tra trạng thái đơn hàng, chỉ cho phép hủy nếu trạng thái là Pending hoặc Confirmed
-    if (order.OrderStatus != "Pending" && order.OrderStatus != "Confirmed")
-    {
-        TempData["ErrorMessage"] = "Only orders with status 'Pending' or 'Confirmed' can be canceled.";
-        return RedirectToAction("OrderHistory");
-    }
+            if (order.OrderStatus != "Pending" && order.OrderStatus != "Confirmed")
+            {
+                TempData["ErrorMessage"] = "Only orders with 'Pending' or 'Confirmed' status can be canceled.";
+                return RedirectToAction("OrderHistory");
+            }
 
-    // Cập nhật trạng thái đơn hàng và lý do hủy
-    order.OrderStatus = "Canceled";
-    order.CancelReason = cancelReason; // Giả sử `CancelReason` là một cột trong bảng Orders
-    order.CancelDate = DateTime.UtcNow; // Tùy chọn: thêm thời gian hủy (nếu cần)
+            // Chuyển trạng thái sang "Cancel Requested"
+            order.OrderStatus = "Cancel Requested";
+            order.UpdatedAt = DateTime.Now;
 
-    // Lưu thay đổi vào cơ sở dữ liệu
-    _context.Orders.Update(order);
-    await _context.SaveChangesAsync();
+            var cancellation = new Cancellation
+            {
+                OrderId = order.OrderId,
+                UserId = userId,
+                CancellationDate = DateTime.Now,
+                Reason = reason
+            };
 
-    // Thông báo hủy thành công
-    TempData["SuccessMessage"] = "Order canceled successfully!";
-    return RedirectToAction("OrderHistory");
-}
+            _context.Cancellations.Add(cancellation);
+            await _context.SaveChangesAsync();
 
-        [HttpGet]
+            TempData["SuccessMessage"] = "Your cancellation request has been submitted.";
+            return RedirectToAction("OrderHistory");
+        }
+    
+
+    [HttpGet]
         public IActionResult Details(int id)
         {
             // Lấy thông tin đơn hàng từ database

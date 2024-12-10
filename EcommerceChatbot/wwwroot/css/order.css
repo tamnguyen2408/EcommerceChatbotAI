@@ -239,6 +239,50 @@ main {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tăng độ nổi */
     }
 
+/* Stripe Card Element Styles */
+#card-element-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#card-element {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+    #card-element:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+    }
+
+#card-errors {
+    margin-top: 10px;
+    color: #ff4d4d;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Adding hover effect for the form container */
+#card-element-container:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Placeholder style for Stripe Elements */
+.StripeElement--empty {
+    color: #aaa;
+}
+
+.StripeElement--focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+}
 
 /* Footer */
 footer {

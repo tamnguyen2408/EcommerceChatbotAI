@@ -1,4 +1,4 @@
-
+﻿
 using EcommerceChatbot.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +48,21 @@ namespace EcommerceChatbot.Controllers
         public IActionResult Contact()
         {
             return View();
+        }
+        public ActionResult About()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult SendMessage(string name, string email, string message)
+        {
+            // X? l� logic g?i th�ng tin t?i ?�y (v� d?: l?u v�o c? s? d? li?u, g?i email, v.v.)
+
+            // S? d?ng TempData ?? l?u th�ng b�o g?i th�nh c�ng
+            TempData["SuccessMessage"] = "Your message has been sent successfully!";
+
+            // Chuy?n h??ng l?i v? trang hi?n t?i ho?c trang kh�c
+            return RedirectToAction("Contact"); // Gi? s? b?n chuy?n h??ng v? trang "Contact"
         }
 
 

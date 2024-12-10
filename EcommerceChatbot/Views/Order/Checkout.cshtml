@@ -62,8 +62,9 @@
                     </select>
                 </div>
 
+
                 <!-- Stripe Elements Section -->
-                <div class="form-group" id="card-element-container">
+                <div class="form-group" id="card-element-container" style="display: none;">
                     <label for="card-element">Credit Card Information:</label>
                     <div id="card-element">
                         <!-- A Stripe Element will be inserted here. -->
@@ -125,30 +126,47 @@
         var form = document.getElementById('orderForm');
         var cardErrors = document.getElementById('card-errors');
         var submitButton = document.getElementById('submitButton');
+        var paymentMethodSelect = document.getElementById('paymentMethod');
+        var cardElementContainer = document.getElementById('card-element-container');
+
+        // Show or hide card element container based on payment method
+        paymentMethodSelect.addEventListener('change', function () {
+            if (paymentMethodSelect.value === 'CreditCard') {
+                cardElementContainer.style.display = 'block';
+            } else {
+                cardElementContainer.style.display = 'none';
+            }
+        });
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Disable the submit button to prevent repeated clicks
-            submitButton.disabled = true;
+            // Check if payment method is Credit Card
+            if (paymentMethodSelect.value === 'CreditCard') {
+                // Disable the submit button to prevent repeated clicks
+                submitButton.disabled = true;
 
-            stripe.createPaymentMethod('card', card).then(function (result) {
-                if (result.error) {
-                    // Show error in the UI
-                    cardErrors.textContent = result.error.message;
-                    submitButton.disabled = false;
-                } else {
-                    // Add payment method ID to the form
-                    var paymentMethodInput = document.createElement('input');
-                    paymentMethodInput.type = 'hidden';
-                    paymentMethodInput.name = 'PaymentMethodId';
-                    paymentMethodInput.value = result.paymentMethod.id;
-                    form.appendChild(paymentMethodInput);
+                stripe.createPaymentMethod('card', card).then(function (result) {
+                    if (result.error) {
+                        // Show error in the UI
+                        cardErrors.textContent = result.error.message;
+                        submitButton.disabled = false;
+                    } else {
+                        // Add payment method ID to the form
+                        var paymentMethodInput = document.createElement('input');
+                        paymentMethodInput.type = 'hidden';
+                        paymentMethodInput.name = 'PaymentMethodId';
+                        paymentMethodInput.value = result.paymentMethod.id;
+                        form.appendChild(paymentMethodInput);
 
-                    // Submit the form
-                    form.submit();
-                }
-            });
+                        // Submit the form
+                        form.submit();
+                    }
+                });
+            } else {
+                // If not Credit Card, submit the form directly
+                form.submit();
+            }
         });
     </script>
 </body>

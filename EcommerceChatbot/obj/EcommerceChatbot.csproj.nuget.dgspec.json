@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj": {}
+    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {}
   },
   "projects": {
-    "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj": {
+    "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+        "projectUniqueName": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
         "projectName": "EcommerceChatbot",
-        "projectPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+        "projectPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\EcommerceChatbot.csproj",
         "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
-        "outputPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\obj\\",
+        "outputPath": "D:\\ECommerceChatbot_Đồ án\\ECommerceChatbot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",

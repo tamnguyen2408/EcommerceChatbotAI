@@ -35,6 +35,7 @@ public partial class ECommerceAiDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public DbSet<Cancellation> Cancellations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

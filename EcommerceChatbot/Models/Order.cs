@@ -25,5 +25,7 @@
         public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
         public virtual User? User { get; set; }
+        public Payment Payment { get; set; }
+
     }
 }

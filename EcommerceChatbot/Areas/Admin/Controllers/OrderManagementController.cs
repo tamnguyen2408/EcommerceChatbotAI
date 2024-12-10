@@ -152,9 +152,9 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (order.OrderStatus != "Confirmed")
+            if (order.OrderStatus != "Confirmed" && order.OrderStatus != "Paid")
             {
-                TempData["ErrorMessage"] = "Only confirmed orders can be handed over to the carrier.";
+                TempData["ErrorMessage"] = "Only confirmed or paid orders can be handed over to the carrier.";
                 return RedirectToAction("Index");
             }
 
@@ -166,7 +166,6 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Order has been handed over to the carrier.";
             return RedirectToAction("Index");
         }
-
         // Xóa đơn hàng
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -182,19 +181,33 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (order.OrderStatus != "Rejected")
+            // Allow deletion only for rejected or canceled orders
+            if (order.OrderStatus != "Rejected" && order.OrderStatus != "Canceled")
             {
-                TempData["ErrorMessage"] = "Only rejected orders can be deleted.";
+                TempData["ErrorMessage"] = "Only rejected or canceled orders can be deleted.";
                 return RedirectToAction("Index");
             }
 
+            // Remove related payment records
+            var payment = _context.Payments
+                .FirstOrDefault(p => p.OrderId == id);
+
+            if (payment != null)
+            {
+                _context.Payments.Remove(payment);
+            }
+
+            // Remove associated order items
             _context.OrderItems.RemoveRange(order.OrderItems);
             _context.Orders.Remove(order);
+
             _context.SaveChanges();
 
             TempData["SuccessMessage"] = "Order has been deleted successfully.";
             return RedirectToAction("Index");
         }
+
+
 
         // Đánh dấu đơn hàng đã thanh toán
         [HttpPost]
@@ -208,18 +221,65 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Kiểm tra trạng thái đơn hàng
             if (order.OrderStatus != "Pending" && order.OrderStatus != "Confirmed")
             {
                 TempData["ErrorMessage"] = "Only pending or confirmed orders can be marked as paid.";
                 return RedirectToAction("Index");
             }
 
+            // Kiểm tra phương thức thanh toán
+            if (order.PaymentMethod != "COD")
+            {
+                TempData["ErrorMessage"] = "Only orders with Cash on Delivery (COD) payment method can be marked as paid.";
+                return RedirectToAction("Index");
+            }
+
+            // Đánh dấu đơn hàng là đã thanh toán
             order.OrderStatus = "Paid";
             order.UpdatedAt = DateTime.Now;
             _context.SaveChanges();
 
+            // Gửi thông báo trạng thái đơn hàng
             SendOrderStatusNotification((int)order.UserId, "paid");
             TempData["SuccessMessage"] = "Order has been marked as paid.";
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveCancelRequest(int orderId)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Cancel Requested");
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Cancellation request not found.";
+                return RedirectToAction("Index");
+            }
+
+            order.OrderStatus = "Canceled";
+            order.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Cancellation request has been approved.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectCancelRequest(int orderId)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.OrderStatus == "Cancel Requested");
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Cancellation request not found.";
+                return RedirectToAction("Index");
+            }
+
+            order.OrderStatus = "Pending";
+            order.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Cancellation request has been rejected.";
             return RedirectToAction("Index");
         }
 
