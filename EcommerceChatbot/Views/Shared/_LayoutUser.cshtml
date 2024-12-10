@@ -144,9 +144,9 @@
                                     </script>
 
 
-                                    <!-- Wishlist Icon -->
-                                    <a href="wishlist.html" class="text-muted">
-                                        <i class="icon icon-heart fs-5"></i>
+                                    <!-- User Icon -->
+                                    <a asp-controller="Profile" asp-action="Index" class="text-muted">
+                                        <i class="icon icon-user fs-5"></i>
                                     </a>
 
                                     @if (User.Identity.IsAuthenticated)
@@ -239,7 +239,7 @@
                                         <li>
                                             <a asp-controller="Home" asp-action="Index" class="item-anchor" data-effect="Home">Home</a>
                                         </li>
-                                        <li><a href="about.html" class="item-anchor" data-effect="About">About</a></li>
+                                        <li><a asp-controller="Home" asp-action="About" class="item-anchor" data-effect="About">About</a></li>
                                         <li class="menu-item has-sub">
                                             <a href="#" class="item-anchor d-flex align-items-center" data-effect="Shop">
                                                 Shop <i class="icon icon-chevron-down"></i>

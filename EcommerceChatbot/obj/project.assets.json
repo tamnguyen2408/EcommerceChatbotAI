@@ -8656,19 +8656,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nguye\\.nuget\\packages\\": {}
+    "C:\\Users\\leduo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
+      "projectUniqueName": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
       "projectName": "EcommerceChatbot",
-      "projectPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\EcommerceChatbot.csproj",
-      "packagesPath": "C:\\Users\\nguye\\.nuget\\packages\\",
-      "outputPath": "D:\\Project_Đồ Án\\EcommerceChatbot\\obj\\",
+      "projectPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\EcommerceChatbot.csproj",
+      "packagesPath": "C:\\Users\\leduo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\leduo\\Source\\Repos\\EcommerceChatbotAI\\EcommerceChatbot\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\nguye\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\leduo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8694,7 +8699,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -8762,7 +8768,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

@@ -185,7 +185,7 @@
                                         <li>
                                             <a asp-controller="Home" asp-action="Index" class="item-anchor" data-effect="Home">Home</a>
                                         </li>
-                                        <li><a href="about.html" class="item-anchor" data-effect="About">About</a></li>
+                                        <li><a asp-controller="Home" asp-action="About" class="item-anchor" data-effect="About">About</a></li>
                                         <li class="menu-item has-sub">
                                             <a href="#" class="item-anchor d-flex align-items-center" data-effect="Shop">
                                                 Shop <i class="icon icon-chevron-down"></i>
@@ -413,30 +413,30 @@
             <!-- Contact Details -->
             <div class="col-md-6">
                 <div class="section-header">
-                    <h2 class="section-title">Liên hệ với chúng tôi</h2>
+                        <h2 class="section-title">Contact Us</h2>
                 </div>
                 <div class="contact-detail">
                     <div class="detail-list">
-                        <p>Chúng tôi rất vui lòng hỗ trợ bạn! Nếu có bất kỳ thắc mắc nào, hãy liên hệ qua thông tin dưới đây:</p>
+                            <p>We are happy to assist you! If you have any questions, please contact us via the information below:</p>
                         <ul class="list-unstyled list-icon">
                             <li>
                                 <a href="#"><i class="icon icon-phone"></i>+84 123 456 789</a>
                             </li>
                             <li>
-                                <a href="mailto:info@yourcompany.com"><i class="icon icon-mail"></i>info@yourcompany.com</a>
+                                <a href="mailto:info@yourcompany.com"><i class="icon icon-mail"></i>StileOStore@gmail.com</a>
                             </li>
                             <li>
-                                <a href="#"><i class="icon icon-map-pin"></i>123 Đường Trần Duy Hưng, Cầu Giấy, Hà Nội, Việt Nam</a>
+                                    <a href="#"><i class="icon icon-map-pin"></i>123 Tran Duy Hung Street, Cau Giay, Hanoi, Vietnam</a>
                             </li>
                         </ul>
                     </div>
                     <div class="social-links">
-                        <h3>Kết nối với chúng tôi</h3>
+                            <h3>Connect with Us</h3>
                         <ul class="d-flex list-unstyled">
-                            <li><a href="#" class="icon icon-facebook"></a></li>
-                            <li><a href="#" class="icon icon-twitter"></a></li>
-                            <li><a href="#" class="icon icon-instagram"></a></li>
-                            <li><a href="#" class="icon icon-youtube-play"></a></li>
+                                <li><a asp-controller="Home" asp-action="Index" class="icon icon-facebook"></a></li>
+                                <li><a asp-controller="Home" asp-action="Index" class="icon icon-twitter"></a></li>
+                                <li><a asp-controller="Home" asp-action="Index" class="icon icon-instagram"></a></li>
+                                <li><a asp-controller="Home" asp-action="Index" class="icon icon-youtube-play"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -445,22 +445,46 @@
             <div class="col-md-6">
                 <div class="contact-information">
                     <div class="section-header">
-                        <h2 class="section-title">Gửi tin nhắn cho chúng tôi</h2>
+                            <h2 class="section-title">Send Us Message</h2>
                     </div>
-                    <form name="contactform" action="contact.php" method="post" class="contact-form">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div id="successMessage" class="alert alert-success" style="padding: 15px; margin-bottom: 20px; background-color: #4CAF50; color: white; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
+                        <form id="contactform" name="contactform" action="/Home/SendMessage" method="post" class="contact-form">
                         <div class="form-item">
-                            <input type="text" minlength="2" name="name" placeholder="Họ và Tên" class="u-full-width bg-light" required>
+                            <input type="text" minlength="2" name="name" placeholder="Full Name" class="u-full-width bg-light" required>
                             <input type="email" name="email" placeholder="E-mail" class="u-full-width bg-light" required>
-                            <textarea class="u-full-width bg-light" name="message" placeholder="Lời nhắn" style="height: 180px;" required></textarea>
+                                <textarea class="u-full-width bg-light" name="message" placeholder="Message" style="height: 180px;" required></textarea>
                         </div>
                         <label>
                             <input type="checkbox" required>
-                            <span class="label-body">Tôi đồng ý với các <a href="#">điều khoản và điều kiện</a></span>
+                                <span class="label-body">I agree with the terms and conditions</a></span>
                         </label>
-                        <button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Gửi tin nhắn</button>
+                            <button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Send Message</button>
                     </form>
                 </div>
             </div>
+                <script>
+                    // Ẩn thông báo sau 5 giây và thêm hiệu ứng mờ dần
+                    window.onload = function() {
+                        var successMessage = document.getElementById("successMessage");
+                        if (successMessage) {
+                            // Giảm độ mờ sau 4 giây để tạo hiệu ứng mờ dần
+                            setTimeout(function() {
+                                successMessage.style.transition = "opacity 1s ease-out"; // Thêm hiệu ứng mờ dần
+                                successMessage.style.opacity = "0"; // Giảm độ mờ
+                            }, 4000); // Bắt đầu mờ dần sau 4 giây
+
+                            // Ẩn thông báo hoàn toàn sau 5 giây
+                            setTimeout(function() {
+                                successMessage.style.display = "none"; // Ẩn thông báo sau 5 giây
+                            }, 5000); // 5 giây
+                        }
+                    }
+                </script>
         </div>
     </div>
 </section>
@@ -473,22 +497,22 @@
                             <h5 class="widget-title">Ultras</h5>
                             <ul class="menu-list list-unstyled">
                                 <li class="menu-item">
-                                    <a href="about.html">About us</a>
+                                    <a asp-controller="Home" asp-action="About">About us</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Conditions </a>
+                                    <a>Conditions </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="blog.html">Our Journals</a>
+                                    <a >Our Journals</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Careers</a>
+                                    <a >Careers</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Affiliate Programme</a>
+                                    <a >Affiliate Programme</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Ultras Press</a>
+                                    <a >Ultras Press</a>
                                 </li>
                             </ul>
                         </div>
@@ -498,22 +522,22 @@
                             <h5 class="widget-title">Customer Service</h5>
                             <ul class="menu-list list-unstyled">
                                 <li class="menu-item">
-                                    <a href="faqs.html">FAQ</a>
+                                    <a >FAQ</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="contact.html">Contact</a>
+                                    <a href="~/Home/Contact">Contact</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Privacy Policy</a>
+                                    <a >Privacy Policy</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Returns & Refunds</a>
+                                    <a >Returns & Refunds</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Cookie Guidelines</a>
+                                    <a >Cookie Guidelines</a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="#">Delivery Information</a>
+                                    <a >Delivery Information</a>
                                 </li>
                             </ul>
                         </div>

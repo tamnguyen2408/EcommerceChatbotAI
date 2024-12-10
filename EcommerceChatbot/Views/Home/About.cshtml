@@ -1,0 +1,199 @@
+﻿@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        /* General styles for About page */
+        .about-page .container {
+            margin-top: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .about-page h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .about-page p {
+            line-height: 1.8;
+            font-size: 1rem;
+            color: #5a5c69;
+        }
+
+        .about-page a {
+            color: #4e73df;
+            text-decoration: none;
+        }
+
+            .about-page a:hover {
+                text-decoration: underline;
+            }
+
+        /* Card styles for About page */
+        .about-page .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+            .about-page .card:hover {
+                transform: translateY(-5px);
+            }
+
+        .about-page .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 15px;
+            text-align: center;
+        }
+
+            .about-page .card-header h6 {
+                margin: 0;
+                font-size: 1.25rem;
+                color: #4e73df;
+                font-weight: bold;
+            }
+
+        .about-page .card-body {
+            padding: 20px;
+            font-size: 1rem;
+            color: #5a5c69;
+            line-height: 1.6;
+        }
+
+        /* Team Section - Horizontal Layout */
+        .about-page .team-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 20px;
+        }
+
+        .about-page .team-member {
+            text-align: center;
+            width: 23%; /* Adjusting width for 4 members */
+        }
+
+            .about-page .team-member img {
+                border-radius: 50%;
+                width: 150px;
+                height: 150px;
+                margin-bottom: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease;
+            }
+
+                .about-page .team-member img:hover {
+                    transform: scale(1.1);
+                }
+
+            .about-page .team-member p {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: #333;
+                transition: color 0.3s ease, transform 0.3s ease;
+            }
+
+            .about-page .team-member span {
+                font-size: 1rem;
+                color: #666;
+                display: block;
+                margin-top: 5px;
+            }
+
+            .about-page .team-member:hover p {
+                color: #4e73df;
+                transform: scale(1.05);
+            }
+
+            .about-page .team-member:hover span {
+                color: #4e73df;
+                transform: translateY(-3px);
+            }
+
+        /* Card Container */
+        .about-page .card-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="about-page container">
+        <h1>About Us</h1>
+
+        <!-- Developed By Section -->
+        <div class="about-page card">
+            <div class="card-header">
+                <h6>Developed by</h6>
+            </div>
+            <div class="card-body">
+                <div class="about-page team-row">
+                    <div class="team-member">
+                        <img src="/images/team/tam.jpg" alt="Nguyễn Ngọc Tâm">
+                        <p>Nguyễn Ngọc Tâm</p>
+                        <span>Team Leader</span>
+                    </div>
+                    <div class="team-member">
+                        <img src="/images/team/tu.png" alt="Nguyễn Minh Tú">
+                        <p>Nguyễn Minh Tú</p>
+                        <span>Back-end Developer</span>
+                    </div>
+                    <div class="team-member">
+                        <img src="/images/team/duongtungle.jpg" alt="Lê Tùng Dương">
+                        <p>Lê Tùng Dương</p>
+                        <span>Front-end Developer</span>
+                    </div>
+                    <div class="team-member">
+                        <img src="/images/team/kien.png" alt="Bùi Lê Anh Kiên">
+                        <p>Bùi Lê Anh Kiên</p>
+                        <span>QA Engineer</span>
+                    </div>
+                </div>
+                <p>
+                    To dive deeper into the features, technologies, and innovations behind our platform, we invite you to explore our comprehensive project repository:
+                    <a target="_blank" rel="nofollow" href="/Home/Index">ECommerceChatbot Project</a>, where you can uncover the efforts and dedication of our team in creating an intelligent and user-centric shopping experience.
+                </p>
+            </div>
+        </div>
+
+        <!-- About Us Section -->
+        <div class="about-page card">
+            <div class="card-header">
+                <h6>About Us</h6>
+            </div>
+            <div class="card-body">
+                <p>
+                    Our e-commerce platform offers a seamless and robust shopping experience tailored to meet the needs of modern consumers. With a diverse range of high-quality products, including footwear, clothing, and accessories, we strive to make shopping convenient and enjoyable.
+                </p>
+                <p>
+                    What truly sets us apart is our integration of advanced artificial intelligence technology to enhance customer engagement. Our intelligent AI chatbot works tirelessly in real-time, assisting users with inquiries, providing personalized product recommendations, and simplifying customer support.
+                </p>
+                <p>
+                    By leveraging data insights and customer feedback, we continually improve our offerings to provide a shopping experience that feels both intuitive and rewarding.
+                </p>
+                <p>
+                    At the core of our mission is a dedication to blending innovation with customer satisfaction, making our platform a trusted destination for all your fashion needs.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

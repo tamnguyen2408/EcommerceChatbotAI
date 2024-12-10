@@ -49,6 +49,21 @@ namespace EcommerceChatbot.Controllers
         {
             return View();
         }
+        public ActionResult About()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult SendMessage(string name, string email, string message)
+        {
+            // X? lý logic g?i thông tin t?i ?ây (ví d?: l?u vào c? s? d? li?u, g?i email, v.v.)
+
+            // S? d?ng TempData ?? l?u thông báo g?i thành công
+            TempData["SuccessMessage"] = "Your message has been sent successfully!";
+
+            // Chuy?n h??ng l?i v? trang hi?n t?i ho?c trang khác
+            return RedirectToAction("Contact"); // Gi? s? b?n chuy?n h??ng v? trang "Contact"
+        }
 
 
         public IActionResult Privacy()
