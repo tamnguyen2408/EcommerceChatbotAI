@@ -31,7 +31,10 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
                 new SelectListItem { Text = "Shipping", Value = "Shipping" },
                 new SelectListItem { Text = "Completed", Value = "Completed" },
                 new SelectListItem { Text = "Rejected", Value = "Rejected" },
-                new SelectListItem { Text = "Paid", Value = "Paid" }
+                new SelectListItem { Text = "Paid", Value = "Paid" },
+                new SelectListItem { Text = "Cancel Requested", Value = "Cancel Requested" },
+                new SelectListItem { Text = "Canceled", Value = "Canceled" }
+
             };
 
             ViewBag.OrderStatuses = orderStatuses;

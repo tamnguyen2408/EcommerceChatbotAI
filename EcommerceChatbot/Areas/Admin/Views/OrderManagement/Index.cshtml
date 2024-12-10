@@ -6,9 +6,25 @@
     ViewData["Title"] = "Orders";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<!-- Success message -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Error message -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Order Management</h2>
+
 
     <!-- Dropdown cho trạng thái -->
     <form method="get" action="@Url.Action("Index", "OrderManagement", new { area = "Admin" })" class="mb-4">
