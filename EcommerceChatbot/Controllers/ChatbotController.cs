@@ -110,17 +110,28 @@ namespace EcommerceChatbot.Controllers
 
         private async Task<List<Product>> GetProductSuggestions()
         {
-            return await _context.Products.Include(p => p.Category).ToListAsync();
+            // Lấy tất cả sản phẩm và sắp xếp theo ngày tạo (hoặc trường phù hợp với sản phẩm mới nhất)
+            return await _context.Products
+                                 .Include(p => p.Category)
+                                 .OrderByDescending(p => p.CreatedAt) // Giả sử bạn có trường CreatedDate để xác định sản phẩm mới nhất
+                                 .ToListAsync();
         }
+
 
         private object FormatProductListWithImages(List<Product> products)
         {
             if (products == null || !products.Any())
                 return new { fulfillmentText = "Hiện tại chưa có sản phẩm nào có sẵn." };
 
+            // Nhóm sản phẩm theo loại và lấy 5 sản phẩm mới nhất mỗi loại
             var groupedProducts = products.GroupBy(p => p.Category?.CategoryName)
-                                          .Select(g => $"**{g.Key ?? "Uncategorized"}**\n" +
-                                                       string.Join("\n", g.Select(p =>
+                                          .Select(g => new
+                                          {
+                                              Category = g.Key ?? "Uncategorized",
+                                              Products = g.Take(5) // Lấy 5 sản phẩm mới nhất trong mỗi nhóm
+                                          })
+                                          .Select(g => $"**{g.Category}**\n" +
+                                                       string.Join("\n", g.Products.Select(p =>
                                                        {
                                                            string productImageUrl = GetProductImageUrl(p.ImageUrl); // Get image URL
                                                            return $"🌟 **{p.ProductName}**\n" +
@@ -135,6 +146,8 @@ namespace EcommerceChatbot.Controllers
 
             return new { fulfillmentText = productListText };
         }
+
+
 
 
 
@@ -241,20 +254,33 @@ namespace EcommerceChatbot.Controllers
 
             if (products.Any())
             {
+                // Nhóm sản phẩm theo loại
+                var groupedProducts = products.GroupBy(p => p.Category?.CategoryName)
+                    .Select(g => new
+                    {
+                        Category = g.Key ?? "Uncategorized",
+                        Products = g.Take(5) // Lấy 5 sản phẩm mới nhất trong mỗi nhóm
+                    })
+                    .Select(g => $"**{g.Category}**\n" +
+                                 string.Join("\n", g.Products.Select(p =>
+                                 {
+                                     string productImageUrl = GetProductImageUrl(p.ImageUrl); // Get image URL
+                                     return $"🌟 **{p.ProductName}** - {p.Price:C}\n" +
+                                            $"📂 **Danh mục**: {p.Category?.CategoryName ?? "Không có"}\n" +
+                                            $"📝 **Mô tả**: {p.Description ?? "Không có mô tả"}\n" +
+                                            $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/products/{p.ProductId})\n" +
+                                            $"------------------------------------------------------------";
+                                 })));
+
                 var responseText = $"🛒 **Sản phẩm cho {gender}**:\n";
-                foreach (var product in products)
-                {
-                    string productImageUrl = GetProductImageUrl(product.ImageUrl);
-                    responseText += $"\n🌟 **{product.ProductName}** - {product.Price:C}\n" +
-                                    $"📂 **Danh mục**: {product.Category?.CategoryName ?? "Không có"}\n" +
-                                    $"📝 **Mô tả**: {product.Description ?? "Không có mô tả"}\n" +
-                                    $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/products/{product.ProductId})\n";
-                }
+                responseText += string.Join("\n\n", groupedProducts); // Gộp các nhóm sản phẩm vào kết quả
+
                 return new { fulfillmentText = responseText };
             }
 
             return new { fulfillmentText = $"Không có sản phẩm nào cho giới tính **{gender}**." };
         }
+
 
         private async Task<object> GetProductsByCategoryAndGender(string category, string gender)
         {

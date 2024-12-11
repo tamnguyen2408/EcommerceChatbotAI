@@ -155,9 +155,17 @@ namespace EcommerceChatbot.Controllers
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
+            // Nếu không thanh toán bằng Credit Card, chỉ cần lưu đơn hàng và chuyển hướng về OrderHistory
+            if (model.PaymentMethod != "CreditCard")
+            {
+                _shoppingCart.Clear(); // Xóa giỏ hàng sau khi đơn hàng được lưu
+                TempData["SuccessMessage"] = "Your order has been placed successfully!";
+                return RedirectToAction("OrderHistory");
+            }
+
             try
             {
-                // Setup Stripe API
+                // Nếu thanh toán bằng Credit Card, tiếp tục xử lý với Stripe
                 StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
 
                 // Create a PaymentIntent
@@ -223,6 +231,7 @@ namespace EcommerceChatbot.Controllers
             TempData["ErrorMessage"] = "An unexpected error occurred during the checkout process.";
             return RedirectToAction("OrderHistory");
         }
+
 
 
 

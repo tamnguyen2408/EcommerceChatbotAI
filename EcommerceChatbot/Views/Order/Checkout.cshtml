@@ -210,12 +210,14 @@
         });
         $(document).ready(function () {
             const cardElementContainer = $('#card-element-container');
+            const paymentMethodSelect = $('#paymentMethod');
+            const submitButton = $('#submitButton');
 
             // Ẩn phần tử nhập thông tin thẻ khi tải trang
             cardElementContainer.hide();
 
             // Lắng nghe sự thay đổi trên trường Payment Method
-            $('#paymentMethod').on('change', function () {
+            paymentMethodSelect.on('change', function () {
                 const selectedPaymentMethod = $(this).val();
 
                 if (selectedPaymentMethod === 'CreditCard') {
@@ -224,43 +226,47 @@
                     cardElementContainer.hide(); // Ẩn trường thẻ
                 }
             });
-        });
 
+            var stripe = Stripe('pk_test_51QU28dGaCxBIXsvVEIV2toHzmm2EcbbPRlJGTsqG4ikxVX2w0qJRQal7ubmTiqymqMxUKXBsmKnCsK2LrshZzLMW00UucziVF1');
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
 
-        // Set your publishable key from Stripe
-        var stripe = Stripe('pk_test_51QU28dGaCxBIXsvVEIV2toHzmm2EcbbPRlJGTsqG4ikxVX2w0qJRQal7ubmTiqymqMxUKXBsmKnCsK2LrshZzLMW00UucziVF1');
-        var elements = stripe.elements();
-        var card = elements.create('card');
-        card.mount('#card-element');
+            var form = document.getElementById('orderForm');
+            var cardErrors = document.getElementById('card-errors');
 
-        var form = document.getElementById('orderForm');
-        var cardErrors = document.getElementById('card-errors');
-        var submitButton = document.getElementById('submitButton');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+                // Kiểm tra nếu phương thức thanh toán là Credit Card
+                if (paymentMethodSelect.val() === 'CreditCard') {
+                    // Disable the submit button to prevent repeated clicks
+                    submitButton.prop('disabled', true);
 
-            // Disable the submit button to prevent repeated clicks
-            submitButton.disabled = true;
+                    stripe.createPaymentMethod('card', card).then(function (result) {
+                        if (result.error) {
+                            // Show error in the UI
+                            cardErrors.textContent = result.error.message;
+                            submitButton.prop('disabled', false);
+                        } else {
+                            // Add payment method ID to the form
+                            var paymentMethodInput = document.createElement('input');
+                            paymentMethodInput.type = 'hidden';
+                            paymentMethodInput.name = 'PaymentMethodId';
+                            paymentMethodInput.value = result.paymentMethod.id;
+                            form.appendChild(paymentMethodInput);
 
-            stripe.createPaymentMethod('card', card).then(function (result) {
-                if (result.error) {
-                    // Show error in the UI
-                    cardErrors.textContent = result.error.message;
-                    submitButton.disabled = false;
+                            // Submit the form
+                            form.submit();
+                        }
+                    });
                 } else {
-                    // Add payment method ID to the form
-                    var paymentMethodInput = document.createElement('input');
-                    paymentMethodInput.type = 'hidden';
-                    paymentMethodInput.name = 'PaymentMethodId';
-                    paymentMethodInput.value = result.paymentMethod.id;
-                    form.appendChild(paymentMethodInput);
-
-                    // Submit the form
+                    // If not Credit Card, submit the form directly
                     form.submit();
                 }
             });
         });
+
     </script>
 </body>
 </html>

@@ -413,7 +413,10 @@
             // Speech Recognition Setup
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
-            recognition.lang = navigator.language || 'en-US'; // Set ngôn ngữ theo hệ thống
+
+            // Dynamically set the language for voice recognition based on system language or user preference
+            const userLanguage = navigator.language || 'en-US'; // Detect system language
+            recognition.lang = userLanguage.startsWith('vi') ? 'vi-VN' : 'en-US'; // Default to Vietnamese or English
 
             // Show modal and start recognition on button click
             voiceSearchBtn.addEventListener('click', () => {
@@ -432,10 +435,10 @@
             // Handle Speech Recognition events
             recognition.onresult = function (event) {
                 const transcript = event.results[0][0].transcript.toLowerCase();
-                const keywords = transcript.split(' ').filter(word => word.trim().length > 0); // Tách từ khóa
-                searchTermInput.value = keywords.join(' '); // Đặt giá trị vào input
-                document.querySelector('form.input-group').submit(); // Gửi form
-                closeModal.click(); // Đóng modal sau khi tìm kiếm
+                const keywords = transcript.split(' ').filter(word => word.trim().length > 0); // Split transcript into keywords
+                searchTermInput.value = keywords.join(' '); // Set the value in input field
+                document.querySelector('form.input-group').submit(); // Submit the form
+                closeModal.click(); // Close the modal after submitting
             };
 
             // Stop animation when recognition ends

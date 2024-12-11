@@ -154,8 +154,6 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
             return _context.Products.Any(e => e.ProductId == id);
         }
         // POST: Admin/Product/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -164,9 +162,17 @@ namespace EcommerceChatbot.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            // Remove the references to the product in the OrderItems table
+            var orderItems = _context.OrderItems.Where(o => o.ProductId == id);
+            foreach (var item in orderItems)
+            {
+                item.ProductId = null;  // or set to a default product ID if needed
+            }
+
+            // Remove the product after clearing related order items
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-           
+
             return RedirectToAction("Index");
         }
 

@@ -1,6 +1,7 @@
 ﻿using EcommerceChatbot.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace EcommerceChatbot.Controllers
 {
@@ -11,6 +12,7 @@ namespace EcommerceChatbot.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -19,16 +21,16 @@ namespace EcommerceChatbot.Controllers
                 return View(new List<Product>());
             }
 
-            // Chuẩn hóa từ khóa tìm kiếm
+            // Chuẩn hóa từ khóa tìm kiếm (normalize the search term)
             searchTerm = searchTerm.Trim().ToLower();
 
-            // Danh sách từ khóa liên quan đến giới tính
-            var maleKeywords = new List<string> { "nam", "cho nam" };
-            var femaleKeywords = new List<string> { "nữ", "cho nữ" };
-            var unisexKeywords = new List<string> { "cả nam và nữ", "cho cả nam và nữ" };
+            // Từ khóa tìm kiếm tiếng Việt và tiếng Anh cho giới tính
+            var maleKeywords = new List<string> { "nam", "cho nam", "male" };
+            var femaleKeywords = new List<string> { "nữ", "cho nữ", "female" };
+            var unisexKeywords = new List<string> { "cả nam và nữ", "cho cả nam và nữ", "unisex" };
 
-            // Danh sách các thể loại sản phẩm ví dụ như "giày", "áo", ...
-            var categoryKeywords = new List<string> { "giày", "áo", "túi xách", "mũ", "quần" }; // Thêm vào đây các thể loại sản phẩm cần tìm
+            // Danh sách các thể loại sản phẩm
+            var categoryKeywords = new List<string> { "giày", "áo", "túi xách", "shoes", "clothes", "bags" };
 
             // Truy vấn ban đầu
             var productsQuery = _context.Products.Include(p => p.Category).AsQueryable();
@@ -59,6 +61,17 @@ namespace EcommerceChatbot.Controllers
                     categorySearch = category;
                     break;
                 }
+            }
+
+            // Tìm kiếm theo tên chính xác
+            var exactMatch = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.ProductName.ToLower() == searchTerm)
+                .ToListAsync();
+
+            if (exactMatch.Any())
+            {
+                return View(exactMatch); // If exact match found, return these products
             }
 
             // Tìm kiếm theo giới tính và thể loại
@@ -100,8 +113,5 @@ namespace EcommerceChatbot.Controllers
 
             return View(products);
         }
-
-
-
     }
 }
