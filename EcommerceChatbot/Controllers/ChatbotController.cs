@@ -58,10 +58,23 @@ namespace EcommerceChatbot.Controllers
                         responsePayload = FormatProductListWithImages(products);
                         break;
 
+                    case "FilterProductByGender":
+                        var gender = parameters["gender"]?.ToString();
+                        var filteredProductsByGender = await GetProductsByGender(gender);
+                        responsePayload = filteredProductsByGender;
+                        break;
+
+                    case "SearchProductByCategoryAndGender":
+                        var genderParam = parameters["gender"]?.ToString();
+                        var categoryParam = parameters["category"]?.ToString();
+                        var filteredProductsByCategoryAndGender = await GetProductsByCategoryAndGender(categoryParam, genderParam);
+                        responsePayload = filteredProductsByCategoryAndGender;
+                        break;
+
                     case "FilterProductByCategory":
                         var category = parameters["category"]?.ToString();
                         var filteredProducts = await GetProductsByCategory(category);
-                        responsePayload = FormatProductListWithImages(filteredProducts);
+                        responsePayload = filteredProducts;
                         break;
 
                     case "GetProductDetails":
@@ -78,17 +91,7 @@ namespace EcommerceChatbot.Controllers
                         var searchProductName = parameters["productName"]?.ToString();
                         responsePayload = await SearchProduct(searchProductName);
                         break;
-                    case "FilterProductByGender":
-                        var gender = parameters["gender"]?.ToString();
-                        var filteredProductsByGender = await GetProductsByGender(gender);
-                        responsePayload = FormatProductListWithImages(filteredProductsByGender);
-                        break;
-                    case "SearchProductByCategoryAndGender":
-                        var genderParam = parameters["gender"]?.ToString();
-                        var categoryParam = parameters["category"]?.ToString();
-                        var filteredProductsByCategoryAndGender = await GetProductsByCategoryAndGender(categoryParam, genderParam);
-                        responsePayload = FormatProductListWithImages(filteredProductsByCategoryAndGender);
-                        break;
+                   
                   
 
                     default:
@@ -118,13 +121,21 @@ namespace EcommerceChatbot.Controllers
             var groupedProducts = products.GroupBy(p => p.Category?.CategoryName)
                                           .Select(g => $"**{g.Key ?? "Uncategorized"}**\n" +
                                                        string.Join("\n", g.Select(p =>
-                                                           $"🔸 {p.ProductName} - Price: {p.Price}\n" +
-                                                           $"   [More details]({_baseUrl}/home/details/{p.ProductId})")));
+                                                       {
+                                                           string productImageUrl = GetProductImageUrl(p.ImageUrl); // Get image URL
+                                                           return $"🌟 **{p.ProductName}**\n" +
+                                                                  $"💰 **Giá**: {p.Price:C}\n" +
+                                                                  $"📅 **Mô tả**: {p.Description ?? "Không có mô tả"}\n" +
+                                                                  $"📂 **Danh mục**: {p.Category?.CategoryName ?? "Không có"}\n" +
+                                                                  $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/home/details/{p.ProductId})\n" +
+                                                                  $"------------------------------------------------------------";
+                                                       })));
 
             var productListText = string.Join("\n\n", groupedProducts);
 
             return new { fulfillmentText = productListText };
         }
+
 
 
         private object FormatCategoryList(List<ProductCategory> categories)
@@ -135,90 +146,151 @@ namespace EcommerceChatbot.Controllers
             return new { fulfillmentText = string.Join("\n", categories.Select(c => $"- {c.CategoryName}")) };
         }
 
-        private async Task<List<Product>> GetProductsByCategory(string category)
-        {
-            if (string.IsNullOrWhiteSpace(category))
-                return new List<Product>();
 
-            return await _context.Products
-                .Include(p => p.Category)
-                .Where(p => p.Category.CategoryName == category)
-                .ToListAsync();
-        }
+
 
         private async Task<object> GetProductDetails(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName))
-                return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết." };
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để cung cấp thông tin chi tiết. Vui lòng cung cấp tên sản phẩm!" };
 
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"sản phẩm '{productName}' không tìm thấy." };
+                return new { fulfillmentText = $"Sản phẩm **'{productName}'** không tìm thấy. Vui lòng kiểm tra lại tên sản phẩm." };
 
-            var productDetailsText = $"{product.ProductName} - Category: {product.Category?.CategoryName}, Price: {product.Price}\n" +
-                                     $"Description: {product.Description}\n" +
-                                     $"More details: {_baseUrl}/products/{product.ProductId}";
+            var productDetailsText = $"🔍 **Chi tiết sản phẩm**: **{product.ProductName}**\n" +
+                                     $"💼 **Danh mục**: {product.Category?.CategoryName ?? "Không có"}\n" +
+                                     $"💰 **Giá**: {product.Price:C}\n" +
+                                     $"📝 **Mô tả**: {product.Description ?? "Không có mô tả"}\n\n";
 
             return new { fulfillmentText = productDetailsText };
         }
+
         private async Task<object> CheckStock(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName))
-                return new { fulfillmentText = "Tôi cần tên sản phẩm để kiểm tra hàng tồn kho." };
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để kiểm tra hàng tồn kho. Vui lòng cung cấp tên sản phẩm!" };
 
             var product = await _context.Products
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"Product '{productName}' không tìm thấy." };
+                return new { fulfillmentText = $"Sản phẩm **'{productName}'** không tìm thấy." };
 
-            return new { fulfillmentText = $"{product.ProductName} có {product.StockQuantity} sản phẩm trong kho." };
+            return new { fulfillmentText = $"**{product.ProductName}** hiện có **{product.StockQuantity}** sản phẩm trong kho." };
         }
 
         private async Task<object> SearchProduct(string productName)
         {
             if (string.IsNullOrWhiteSpace(productName))
-                return new { fulfillmentText = "Tôi cần tên sản phẩm để tìm kiếm." };
+                return new { fulfillmentText = "Tôi cần tên sản phẩm để tìm kiếm. Vui lòng cung cấp tên sản phẩm!" };
 
             var product = await _context.Products
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(p => EF.Functions.Like(p.ProductName, $"%{productName}%"));
 
             if (product == null)
-                return new { fulfillmentText = $"Product '{productName}' không tìm thấy." };
+                return new { fulfillmentText = $"Sản phẩm **'{productName}'** không tìm thấy." };
 
-            var productText = $"{product.ProductName} - Price: {product.Price}\n" +
-                              $"More details: {_baseUrl}/home/details/{product.ProductId}";
+            var productText = $"🔎 **Tìm thấy sản phẩm**: **{product.ProductName}**\n" +
+                              $"💰 **Giá**: {product.Price:C}\n" +
+                              $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/home/details/{product.ProductId})";
 
             return new { fulfillmentText = productText };
         }
-        private async Task<List<Product>> GetProductsByGender(string gender)
+
+        private async Task<object> GetProductsByCategory(string category)
+        {
+            if (string.IsNullOrWhiteSpace(category))
+                return new { fulfillmentText = "Không có danh mục nào được cung cấp." };
+
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => EF.Functions.Like(p.Category.CategoryName, $"%{category}%"))
+                .ToListAsync();
+
+            if (products.Any())
+            {
+                var responseText = $"🛍️ **Sản phẩm trong danh mục '{category}'**:\n";
+                foreach (var product in products)
+                {
+                    string productImageUrl = GetProductImageUrl(product.ImageUrl);
+                    responseText += $"\n🌟 **{product.ProductName}** - {product.Price:C}\n" +
+                                    $"📂 **Danh mục**: {product.Category?.CategoryName ?? "Không có"}\n" +
+                                    $"📝 **Mô tả**: {product.Description ?? "Không có mô tả"}\n" +
+                                    $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/products/{product.ProductId})\n";
+                }
+                return new { fulfillmentText = responseText };
+            }
+
+            return new { fulfillmentText = $"Không có sản phẩm nào trong danh mục **{category}**." };
+        }
+
+        private async Task<object> GetProductsByGender(string gender)
         {
             if (string.IsNullOrWhiteSpace(gender))
-                return new List<Product>();
+                return new { fulfillmentText = "Không có giới tính nào được cung cấp." };
 
-            return await _context.Products
+            var products = await _context.Products
                 .Include(p => p.Category)
                 .Where(p => EF.Functions.Like(p.Gender, $"%{gender}%"))
                 .ToListAsync();
+
+            if (products.Any())
+            {
+                var responseText = $"🛒 **Sản phẩm cho {gender}**:\n";
+                foreach (var product in products)
+                {
+                    string productImageUrl = GetProductImageUrl(product.ImageUrl);
+                    responseText += $"\n🌟 **{product.ProductName}** - {product.Price:C}\n" +
+                                    $"📂 **Danh mục**: {product.Category?.CategoryName ?? "Không có"}\n" +
+                                    $"📝 **Mô tả**: {product.Description ?? "Không có mô tả"}\n" +
+                                    $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/products/{product.ProductId})\n";
+                }
+                return new { fulfillmentText = responseText };
+            }
+
+            return new { fulfillmentText = $"Không có sản phẩm nào cho giới tính **{gender}**." };
         }
 
-        private async Task<List<Product>> GetProductsByCategoryAndGender(string category, string gender)
+        private async Task<object> GetProductsByCategoryAndGender(string category, string gender)
         {
             if (string.IsNullOrWhiteSpace(category) || string.IsNullOrWhiteSpace(gender))
-                return new List<Product>();
+                return new { fulfillmentText = "Vui lòng cung cấp danh mục và giới tính." };
 
-            return await _context.Products
+            var products = await _context.Products
                 .Include(p => p.Category)
                 .Where(p => EF.Functions.Like(p.Category.CategoryName, $"%{category}%") &&
                             EF.Functions.Like(p.Gender, $"%{gender}%"))
                 .ToListAsync();
+
+            if (products.Any())
+            {
+                var responseText = $"🛒 **Sản phẩm cho {gender} trong danh mục '{category}'**:\n";
+                foreach (var product in products)
+                {
+                    string productImageUrl = GetProductImageUrl(product.ImageUrl);
+                    responseText += $"🌟 **{product.ProductName}** - {product.Price:C}\n" +
+                                    $"📂 **Danh mục**: {product.Category?.CategoryName ?? "Không có"}\n" +
+                                    $"📝 **Mô tả**: {product.Description ?? "Không có mô tả"}\n\n" +
+                                    $"🔗 **Xem chi tiết**: [Tại đây]({_baseUrl}/products/{product.ProductId})\n";
+                }
+
+                return new { fulfillmentText = responseText };
+            }
+
+            return new { fulfillmentText = $"Không có sản phẩm nào cho {gender} trong danh mục **{category}**." };
         }
 
-       
+
+
+
+
+
+
 
     }
 }

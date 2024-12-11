@@ -3,32 +3,16 @@
   "WorkspaceRootPath": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\shared\\_layoutuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\shared\\_layoutuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:controllers\\chatbotcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\order\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\order\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\wwwroot\\css\\orderhistory.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:wwwroot\\css\\orderhistory.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|d:\\ecommercechatbot_\u0111\u1ED3 \u00E1n\\ecommercechatbot\\views\\order\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1295F5BC-C5B4-412E-8249-072D50FEDD12}|EcommerceChatbot.csproj|solutionrelative:views\\order\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -55,92 +39,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "About.cshtml",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Home\\About.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\About.cshtml",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Home\\About.cshtml",
-              "RelativeToolTip": "Views\\Home\\About.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-10T14:23:46.403Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAYwDUAAAAYAAAAAAAAAA==",
+              "Title": "Product.cs",
+              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "Models\\Product.cs",
+              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Models\\Product.cs",
+              "RelativeToolTip": "Models\\Product.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAiwCgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-10T14:23:40.801Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Contact.cshtml",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Home\\Contact.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Contact.cshtml",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Home\\Contact.cshtml",
-              "RelativeToolTip": "Views\\Home\\Contact.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADsCAABOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-10T14:19:41.266Z",
+              "WhenOpened": "2024-12-11T08:40:43.625Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "_LayoutUser.cshtml",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Shared\\_LayoutUser.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutUser.cshtml",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Shared\\_LayoutUser.cshtml*",
-              "RelativeToolTip": "Views\\Shared\\_LayoutUser.cshtml*",
-              "ViewState": "AgIAAH0AAAAAAAAAAAAYwJIAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-10T14:15:00.662Z",
+              "Title": "ChatbotController.cs",
+              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Controllers\\ChatbotController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatbotController.cs",
+              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Controllers\\ChatbotController.cs",
+              "RelativeToolTip": "Controllers\\ChatbotController.cs",
+              "ViewState": "AgIAAAUBAAAAAAAAAAAtwBEBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T08:03:00.773Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "orderhistory.css",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\wwwroot\\css\\orderhistory.css",
-              "RelativeDocumentMoniker": "wwwroot\\css\\orderhistory.css",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\wwwroot\\css\\orderhistory.css",
-              "RelativeToolTip": "wwwroot\\css\\orderhistory.css",
-              "ViewState": "AgIAAOcBAAAAAAAAAAAQwAgCAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-12-10T14:07:11.776Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "OrderHistory.cshtml",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\OrderHistory.cshtml",
-              "RelativeDocumentMoniker": "Views\\Order\\OrderHistory.cshtml",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\OrderHistory.cshtml",
-              "RelativeToolTip": "Views\\Order\\OrderHistory.cshtml",
-              "ViewState": "AgIAAIMAAAAAAAAAAAAowJ8AAAAqAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "Checkout.cshtml",
+              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\Checkout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Order\\Checkout.cshtml",
+              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\Checkout.cshtml",
+              "RelativeToolTip": "Views\\Order\\Checkout.cshtml",
+              "ViewState": "AgIAAMkAAAAAAAAAAAAowOMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-10T14:06:54.602Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Details.cshtml",
-              "DocumentMoniker": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\Details.cshtml",
-              "RelativeDocumentMoniker": "Views\\Order\\Details.cshtml",
-              "ToolTip": "D:\\ECommerceChatbot_\u0110\u1ED3 \u00E1n\\EcommerceChatbot\\Views\\Order\\Details.cshtml",
-              "RelativeToolTip": "Views\\Order\\Details.cshtml",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-12-10T14:06:36.612Z",
+              "WhenOpened": "2024-12-11T07:46:25.911Z",
               "EditorCaption": ""
             }
           ]

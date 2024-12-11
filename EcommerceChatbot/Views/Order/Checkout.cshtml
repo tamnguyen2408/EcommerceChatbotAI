@@ -9,6 +9,47 @@
     <link rel="stylesheet" href="~/css/order.css" />
     <!-- Stripe.js library -->
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- FontAwesome for the location icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Đảm bảo danh sách gợi ý hiển thị chính xác dưới trường nhập liệu */
+        #suggestions {
+            border: 1px solid #ddd;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            z-index: 1000;
+            background: #fff;
+            width: 100%;
+            margin-top: 0; /* Loại bỏ khoảng cách trên */
+            box-sizing: border-box; /* Đảm bảo chiều rộng bao gồm cả padding và border */
+        }
+
+            #suggestions div {
+                padding: 10px;
+                cursor: pointer;
+            }
+
+                #suggestions div:hover {
+                    background-color: #f0f0f0;
+                }
+
+            /* Optional styling for location icon */
+            #suggestions i {
+                color: #ff6600; /* Location pin color */
+                margin-right: 10px; /* Khoảng cách giữa icon và địa chỉ */
+            }
+
+        /* Đảm bảo trường địa chỉ có kiểu dáng sạch sẽ */
+        #address {
+            padding-right: 10px; /* Padding bên phải để tạo khoảng cách đẹp */
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+    </style>
 </head>
 <body>
     <header>
@@ -51,7 +92,8 @@
 
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <textarea id="address" name="Address" rows="3" class="form-control" required></textarea>
+                    <input type="text" id="address" name="Address" class="form-control" placeholder="Enter your address" required />
+                    <div id="suggestions"></div>
                 </div>
 
                 <div class="form-group">
@@ -62,9 +104,8 @@
                     </select>
                 </div>
 
-
                 <!-- Stripe Elements Section -->
-                <div class="form-group" id="card-element-container" style="display: none;">
+                <div class="form-group" id="card-element-container">
                     <label for="card-element">Credit Card Information:</label>
                     <div id="card-element">
                         <!-- A Stripe Element will be inserted here. -->
@@ -117,6 +158,75 @@
     </footer>
 
     <script>
+        const apiKey = "ESJYsylq73kZc0TK3jw6VVXjWiwZMbBS5aCebh4D"; // Thay thế với API Key của bạn
+
+        $(document).ready(function () {
+            $('#address').on('input', function () {
+                const query = $(this).val();
+
+                if (query.length > 2) {
+                    $.get(`https://rsapi.goong.io/Place/AutoComplete`, {
+                        api_key: apiKey,
+                        input: query
+                    })
+                        .done(function (data) {
+                            // Kiểm tra nếu có gợi ý và xử lý chúng
+                            if (data.predictions && data.predictions.length > 0) {
+                                const suggestions = data.predictions.map(prediction => {
+                                    return `
+                                                <div data-place-id="${prediction.place_id}">
+                                                    <i class="fa fa-map-marker" style="margin-right: 10px;"></i>
+                                                    ${prediction.description}
+                                                </div>
+                                            `;
+                                }).join('');
+
+                                $('#suggestions').html(suggestions).show();
+                            } else {
+                                $('#suggestions').hide();
+                            }
+                        })
+                        .fail(function () {
+                            console.error("Error fetching autocomplete suggestions.");
+                        });
+                } else {
+                    $('#suggestions').hide();
+                }
+            });
+
+            // Xử lý khi người dùng chọn một gợi ý
+            $('#suggestions').on('click', 'div', function () {
+                const selectedAddress = $(this).text().trim(); // Cắt bỏ khoảng trắng thừa
+                $('#address').val(selectedAddress); // Cập nhật giá trị vào trường địa chỉ
+                $('#suggestions').hide(); // Ẩn danh sách gợi ý
+            });
+
+            // Ẩn danh sách gợi ý nếu người dùng nhấp ra ngoài
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#address, #suggestions').length) {
+                    $('#suggestions').hide();
+                }
+            });
+        });
+        $(document).ready(function () {
+            const cardElementContainer = $('#card-element-container');
+
+            // Ẩn phần tử nhập thông tin thẻ khi tải trang
+            cardElementContainer.hide();
+
+            // Lắng nghe sự thay đổi trên trường Payment Method
+            $('#paymentMethod').on('change', function () {
+                const selectedPaymentMethod = $(this).val();
+
+                if (selectedPaymentMethod === 'CreditCard') {
+                    cardElementContainer.show(); // Hiển thị trường thẻ
+                } else {
+                    cardElementContainer.hide(); // Ẩn trường thẻ
+                }
+            });
+        });
+
+
         // Set your publishable key from Stripe
         var stripe = Stripe('pk_test_51QU28dGaCxBIXsvVEIV2toHzmm2EcbbPRlJGTsqG4ikxVX2w0qJRQal7ubmTiqymqMxUKXBsmKnCsK2LrshZzLMW00UucziVF1');
         var elements = stripe.elements();
@@ -126,47 +236,30 @@
         var form = document.getElementById('orderForm');
         var cardErrors = document.getElementById('card-errors');
         var submitButton = document.getElementById('submitButton');
-        var paymentMethodSelect = document.getElementById('paymentMethod');
-        var cardElementContainer = document.getElementById('card-element-container');
-
-        // Show or hide card element container based on payment method
-        paymentMethodSelect.addEventListener('change', function () {
-            if (paymentMethodSelect.value === 'CreditCard') {
-                cardElementContainer.style.display = 'block';
-            } else {
-                cardElementContainer.style.display = 'none';
-            }
-        });
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Check if payment method is Credit Card
-            if (paymentMethodSelect.value === 'CreditCard') {
-                // Disable the submit button to prevent repeated clicks
-                submitButton.disabled = true;
+            // Disable the submit button to prevent repeated clicks
+            submitButton.disabled = true;
 
-                stripe.createPaymentMethod('card', card).then(function (result) {
-                    if (result.error) {
-                        // Show error in the UI
-                        cardErrors.textContent = result.error.message;
-                        submitButton.disabled = false;
-                    } else {
-                        // Add payment method ID to the form
-                        var paymentMethodInput = document.createElement('input');
-                        paymentMethodInput.type = 'hidden';
-                        paymentMethodInput.name = 'PaymentMethodId';
-                        paymentMethodInput.value = result.paymentMethod.id;
-                        form.appendChild(paymentMethodInput);
+            stripe.createPaymentMethod('card', card).then(function (result) {
+                if (result.error) {
+                    // Show error in the UI
+                    cardErrors.textContent = result.error.message;
+                    submitButton.disabled = false;
+                } else {
+                    // Add payment method ID to the form
+                    var paymentMethodInput = document.createElement('input');
+                    paymentMethodInput.type = 'hidden';
+                    paymentMethodInput.name = 'PaymentMethodId';
+                    paymentMethodInput.value = result.paymentMethod.id;
+                    form.appendChild(paymentMethodInput);
 
-                        // Submit the form
-                        form.submit();
-                    }
-                });
-            } else {
-                // If not Credit Card, submit the form directly
-                form.submit();
-            }
+                    // Submit the form
+                    form.submit();
+                }
+            });
         });
     </script>
 </body>
